@@ -17,6 +17,7 @@ import lombok.ToString;
 /*
     Esta es la entidad del usuario que pertenece a la tabla 'users'
 
+    
     que falta:
         - vincular las claves foraneas de roles, locations, social_links
           (estas tablas todavia no estan listas por eso no se agregaron).
