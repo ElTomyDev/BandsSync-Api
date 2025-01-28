@@ -25,19 +25,18 @@ public class Location {
     @Column(name = "country", nullable = false)
     private String country;
 
-    @Column(name = "state", nullable = true)
+    @Column(name = "state", nullable = false)
     private String state;
 
     @Column(name = "city", nullable = false)
     private String city;
 
     @Column(name = "postal_code", nullable = true)
-    private String postalCode;
-
-    @Column(name = "neighborhood", nullable = true)
-    private String neighborhood;
+    @Builder.Default
+    private String postalCode = null;
     
     @Column(name = "address", nullable = true)
-    private String address;
-    
+    @Builder.Default
+    private String address = null;
+
 }
