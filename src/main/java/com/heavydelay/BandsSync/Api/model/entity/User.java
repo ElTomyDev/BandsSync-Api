@@ -43,19 +43,15 @@ public class User {
     private String imageUrl;
 
     @Column(name = "name", nullable = false)
-    @Size(max = 100)
     private String name;
 
     @Column(name = "lastname", nullable = false)
-    @Size(max = 100)
     private String lastname;
     
     @Column(name = "username", nullable = false, unique = true)
-    @Size(min = 4, max = 50)
     private String username;
     
     @Column(name = "description", nullable = true)
-    @Size(max = 360)
     private String description;
 
     @Column(name = "status")
@@ -63,7 +59,6 @@ public class User {
     private UserStatus status = UserStatus.active;
 
     @Column(name = "phone_number", nullable = true)
-    @Size(max = 25)
     @Builder.Default
     private String phoneNumber = null;
     
