@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -24,7 +23,6 @@ public class Role {
     private Integer idRole;
 
     @Column(name = "role_name")
-    @Size(max = 50)
     private String roleName;
 
 }
