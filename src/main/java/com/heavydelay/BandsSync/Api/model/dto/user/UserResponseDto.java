@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.heavydelay.BandsSync.Api.enums.UserStatus;
 
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
