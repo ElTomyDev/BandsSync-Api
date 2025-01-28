@@ -1,4 +1,4 @@
-package com.heavydelay.BandsSync.Api.model.dto.role;
+package com.heavydelay.BandsSync.Api.model.dto.gender;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -10,10 +10,9 @@ import lombok.ToString;
 @ToString
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RoleResponseDto {
+public class GenderResponseDto {
 
-    private Integer idRole;
+    private Integer idGender;
 
-    private String roleName;
-    
+    private String genderName;
 }
