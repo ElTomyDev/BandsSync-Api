@@ -10,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -18,6 +17,7 @@ import lombok.ToString;
 /*
     Esta es la entidad del usuario que pertenece a la tabla 'users'
 
+    
     que falta:
         - vincular las claves foraneas de roles, locations, social_links
           (estas tablas todavia no estan listas por eso no se agregaron).
@@ -43,19 +43,15 @@ public class User {
     private String imageUrl;
 
     @Column(name = "name", nullable = false)
-    @Size(max = 100)
     private String name;
 
     @Column(name = "lastname", nullable = false)
-    @Size(max = 100)
     private String lastname;
     
     @Column(name = "username", nullable = false, unique = true)
-    @Size(min = 4, max = 50)
     private String username;
     
     @Column(name = "description", nullable = true)
-    @Size(max = 360)
     private String description;
 
     @Column(name = "status")
@@ -63,7 +59,6 @@ public class User {
     private UserStatus status = UserStatus.active;
 
     @Column(name = "phone_number", nullable = true)
-    @Size(max = 25)
     @Builder.Default
     private String phoneNumber = null;
     
