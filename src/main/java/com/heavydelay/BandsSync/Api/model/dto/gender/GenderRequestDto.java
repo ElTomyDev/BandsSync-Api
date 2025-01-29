@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 public class GenderRequestDto {
 
     @NotBlank(message = "Gender name cannot be blank")
-    @Size(max = 50, message = "Gender name cannot exceed 50 characters")
+    @Size(max = 60, message = "Gender name cannot exceed 60 characters")
     private String genderName;
 
 }
