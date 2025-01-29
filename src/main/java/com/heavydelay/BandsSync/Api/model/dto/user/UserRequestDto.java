@@ -16,7 +16,7 @@ public class UserRequestDto {
 
     // aca faltan las claves foraneas roles, locations, social_links.
     @Size(max = 255, message = "Image URL cannot exceed 255 characters")
-    private String imageUrl;
+    private String imageURL;
     
     @NotBlank(message = "Name cannot be blank")
     @Size(max = 100, message = "Name cannot exceed 100 characters")
