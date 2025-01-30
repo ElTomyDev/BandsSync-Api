@@ -57,7 +57,7 @@ public class Band {
     private String biography;
 
     @CreationTimestamp
-    @Column(name = "create_date", updatable = false)
+    @Column(name = "create_date", nullable = false, updatable = false)
     private LocalDateTime createDate;
 
 

@@ -56,21 +56,21 @@ public class User {
     @Column(name = "description", nullable = true)
     private String description;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     @Builder.Default
     private UserStatus status = UserStatus.active;
 
     @Column(name = "phone_number", nullable = true)
     private String phoneNumber;
     
-    @Column(name = "find_bands")
+    @Column(name = "find_bands", nullable = false)
     @Builder.Default
     private Boolean findBands = false;
     
     @Column(name = "last_failed_login", nullable = true)
     private LocalDateTime lastFailedLogin;
 
-    @Column(name = "failed_login_attempts")
+    @Column(name = "failed_login_attempts", nullable = false)
     @Builder.Default
     private Integer failedLoginAttempts = 0;
 
@@ -78,6 +78,6 @@ public class User {
     private LocalDateTime lastConnection;
 
     @CreationTimestamp
-    @Column(name = "create_date", updatable = false)
+    @Column(name = "create_date", nullable = false, updatable = false)
     private LocalDateTime createDate;
 }
