@@ -29,11 +29,11 @@ public class BandMember {
     private Long idBandMember;
 
     @ManyToOne
-    @JoinColumn(name = "id_users", nullable = false)
+    @JoinColumn(name = "id_users", updatable = false, nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "id_bands", nullable = false)
+    @JoinColumn(name = "id_bands", updatable = false, nullable = false)
     private Band band;
 
     @ManyToOne
