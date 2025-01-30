@@ -2,6 +2,7 @@ package com.heavydelay.BandsSync.Api.model.dto.band_member;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.heavydelay.BandsSync.Api.model.entity.Band;
 import com.heavydelay.BandsSync.Api.model.entity.Role;
 import com.heavydelay.BandsSync.Api.model.entity.User;
@@ -13,6 +14,7 @@ import lombok.ToString;
 @Data
 @ToString
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BandMemberResponseDto {
     
     private Long idBandMember;
