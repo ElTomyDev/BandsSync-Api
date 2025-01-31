@@ -18,6 +18,7 @@ public class UserPreferenceResponseDto {
     private Long idPreference;
 
     private User user;
+    private String username;
 
     private String preferenceKey;
 
