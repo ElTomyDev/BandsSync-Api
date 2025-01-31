@@ -21,7 +21,7 @@ import lombok.ToString;
 @Builder
 @Entity
 @Table(name = "user_preferences")
-public class UserPreferences {
+public class UserPreference {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
