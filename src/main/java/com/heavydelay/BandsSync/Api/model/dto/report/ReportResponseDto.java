@@ -1,0 +1,39 @@
+package com.heavydelay.BandsSync.Api.model.dto.report;
+
+import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.heavydelay.BandsSync.Api.enums.ReportType;
+import com.heavydelay.BandsSync.Api.enums.ResolutionType;
+import com.heavydelay.BandsSync.Api.model.entity.User;
+
+import lombok.Builder;
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
+@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ReportResponseDto {
+
+    private Long idReport;
+
+    private User UserReporter;
+    private String UsernameReporter;
+
+    private User UserReported;
+    private String UsernameReported;
+
+    private ReportType reportType;
+
+    private String reportReason;
+
+    private LocalDateTime reportDate;
+
+    private Boolean isResolved;
+
+    private LocalDateTime resolutionDate;
+
+    private ResolutionType resolutionType;
+}
