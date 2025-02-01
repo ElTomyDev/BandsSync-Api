@@ -19,11 +19,11 @@ public class ReportResponseDto {
 
     private Long idReport;
 
-    private User UserReporter;
-    private String UsernameReporter;
+    private User userReporter;
+    private String usernameReporter;
 
-    private User UserReported;
-    private String UsernameReported;
+    private User userReported;
+    private String usernameReported;
 
     private ReportType reportType;
 

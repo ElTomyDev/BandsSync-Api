@@ -33,11 +33,11 @@ public class Report {
 
     @ManyToOne
     @JoinColumn(name = "id_user_reporter", nullable = false)
-    private User UserReporter;
+    private User userReporter;
 
     @ManyToOne
     @JoinColumn(name = "id_user_reported", nullable = false)
-    private User UserReported;
+    private User userReported;
 
     @Column(name = "report_type", nullable = false)
     @Builder.Default
