@@ -18,7 +18,7 @@ public class UserResponseDto {
 
     // aca faltan las claves foraneas roles, locations, social_links.
 
-    private String imageUrl;
+    private String imageURL;
 
     private String name;
 

@@ -2,6 +2,8 @@ package com.heavydelay.BandsSync.Api.model.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.heavydelay.BandsSync.Api.enums.UserStatus;
 
 import jakarta.persistence.Column;
@@ -40,7 +42,7 @@ public class User {
     // crear clave foranea vinculada a 'social'
 
     @Column(name = "image_url", nullable = true)
-    private String imageUrl;
+    private String imageURL;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -54,31 +56,28 @@ public class User {
     @Column(name = "description", nullable = true)
     private String description;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     @Builder.Default
     private UserStatus status = UserStatus.active;
 
     @Column(name = "phone_number", nullable = true)
-    @Builder.Default
-    private String phoneNumber = null;
+    private String phoneNumber;
     
-    @Column(name = "find_bands")
+    @Column(name = "find_bands", nullable = false)
     @Builder.Default
     private Boolean findBands = false;
     
     @Column(name = "last_failed_login", nullable = true)
-    @Builder.Default
-    private LocalDateTime lastFailedLogin = null;
+    private LocalDateTime lastFailedLogin;
 
-    @Column(name = "failed_login_attempts")
+    @Column(name = "failed_login_attempts", nullable = false)
     @Builder.Default
     private Integer failedLoginAttempts = 0;
 
     @Column(name = "last_connection", nullable = true)
-    @Builder.Default
-    private LocalDateTime lastConnection = null;
+    private LocalDateTime lastConnection;
 
-    @Column(name = "create_date")
-    @Builder.Default
-    private LocalDateTime createDate = LocalDateTime.now();
+    @CreationTimestamp
+    @Column(name = "create_date", nullable = false, updatable = false)
+    private LocalDateTime createDate;
 }
