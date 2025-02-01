@@ -33,7 +33,8 @@ public class Audio {
     private Long size;
 
     @Column(name = "bitrate", nullable = false)
-    private Short bitrate;
+    @Builder.Default
+    private Short bitrate = 192;
 
     @CreationTimestamp
     @Column(name = "upload_date", nullable = false, updatable = false)
