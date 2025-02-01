@@ -13,7 +13,7 @@ public class AlbumRequestDto {
     @Size(min = 3, max = 100, message = "Setlist name It must not exceed 100 characters and must have a minimum of 3")
     private String setlistName;
 
-    @NotBlank(message = "Setlist name must not be blank")
+    @NotBlank(message = "Album name must not be blank")
     @Size(max = 100, message = "Album name it must not exceed 100 characters.")
     private String albumName;
 
