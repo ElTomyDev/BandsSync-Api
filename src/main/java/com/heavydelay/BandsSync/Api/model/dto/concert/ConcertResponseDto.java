@@ -2,10 +2,19 @@ package com.heavydelay.BandsSync.Api.model.dto.concert;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.heavydelay.BandsSync.Api.model.entity.Band;
 import com.heavydelay.BandsSync.Api.model.entity.Location;
 import com.heavydelay.BandsSync.Api.model.entity.Setlist;
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
+@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ConcertResponseDto {
     
     private Long idConcert;
