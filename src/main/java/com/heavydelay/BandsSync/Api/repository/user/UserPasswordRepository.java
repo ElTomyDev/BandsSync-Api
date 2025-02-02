@@ -1,4 +1,4 @@
-package com.heavydelay.BandsSync.Api.repository;
+package com.heavydelay.BandsSync.Api.repository.user;
 
 import org.springframework.data.repository.CrudRepository;
 
