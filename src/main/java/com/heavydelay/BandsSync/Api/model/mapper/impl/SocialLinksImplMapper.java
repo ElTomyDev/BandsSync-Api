@@ -1,6 +1,6 @@
 package com.heavydelay.BandsSync.Api.model.mapper.impl;
 
-import com.heavydelay.BandsSync.Api.model.dto.social.SocialLinksResponseDto;
+import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
 import com.heavydelay.BandsSync.Api.model.mapper.ISocialLinksMapper;
 

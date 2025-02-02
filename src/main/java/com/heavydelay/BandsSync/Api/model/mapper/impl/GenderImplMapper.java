@@ -1,6 +1,6 @@
 package com.heavydelay.BandsSync.Api.model.mapper.impl;
 
-import com.heavydelay.BandsSync.Api.model.dto.gender.GenderResponseDto;
+import com.heavydelay.BandsSync.Api.model.dto.external_data.gender.GenderResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Gender;
 import com.heavydelay.BandsSync.Api.model.mapper.IGenderMapper;
 

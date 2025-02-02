@@ -1,6 +1,6 @@
 package com.heavydelay.BandsSync.Api.model.mapper.impl;
 
-import com.heavydelay.BandsSync.Api.model.dto.user_password.UserPasswordResponseDto;
+import com.heavydelay.BandsSync.Api.model.dto.user.user_password.UserPasswordResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.UserPassword;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserPasswordMapper;
 

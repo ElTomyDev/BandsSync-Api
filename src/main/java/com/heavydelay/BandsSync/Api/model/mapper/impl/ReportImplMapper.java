@@ -1,6 +1,6 @@
 package com.heavydelay.BandsSync.Api.model.mapper.impl;
 
-import com.heavydelay.BandsSync.Api.model.dto.report.ReportResponseDto;
+import com.heavydelay.BandsSync.Api.model.dto.external_data.report.ReportResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Report;
 import com.heavydelay.BandsSync.Api.model.mapper.IReportMapper;
 

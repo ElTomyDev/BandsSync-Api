@@ -1,6 +1,6 @@
 package com.heavydelay.BandsSync.Api.model.mapper.impl;
 
-import com.heavydelay.BandsSync.Api.model.dto.concert.ConcertResponseDto;
+import com.heavydelay.BandsSync.Api.model.dto.musical_resources.concert.ConcertResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Concert;
 import com.heavydelay.BandsSync.Api.model.mapper.IConcertMapper;
 

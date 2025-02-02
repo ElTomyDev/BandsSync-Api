@@ -1,6 +1,6 @@
 package com.heavydelay.BandsSync.Api.model.mapper.impl;
 
-import com.heavydelay.BandsSync.Api.model.dto.user_preference.UserPreferenceResponseDto;
+import com.heavydelay.BandsSync.Api.model.dto.user.user_preference.UserPreferenceResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.UserPreference;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserPreferenceMapper;
 

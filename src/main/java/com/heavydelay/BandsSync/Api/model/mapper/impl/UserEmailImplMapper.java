@@ -1,6 +1,6 @@
 package com.heavydelay.BandsSync.Api.model.mapper.impl;
 
-import com.heavydelay.BandsSync.Api.model.dto.user_email.UserEmailResponseDto;
+import com.heavydelay.BandsSync.Api.model.dto.user.user_email.UserEmailResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.UserEmail;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserEmailMapper;
 

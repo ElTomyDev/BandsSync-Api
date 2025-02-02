@@ -1,6 +1,6 @@
 package com.heavydelay.BandsSync.Api.model.mapper.impl;
 
-import com.heavydelay.BandsSync.Api.model.dto.setlist.SetlistResponseDto;
+import com.heavydelay.BandsSync.Api.model.dto.musical_resources.setlist.SetlistResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Setlist;
 import com.heavydelay.BandsSync.Api.model.mapper.ISetlistMapper;
 
