@@ -1,4 +1,4 @@
-package com.heavydelay.BandsSync.Api.model.mapper.impl;
+package com.heavydelay.BandsSync.Api.model.mapper.impl.musical_resources;
 
 import com.heavydelay.BandsSync.Api.model.dto.musical_resources.album.AlbumResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Album;
