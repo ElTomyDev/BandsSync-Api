@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.heavydelay.BandsSync.Api.model.entity.Gender;
 
-public interface GenderRepository extends CrudRepository<Gender, Long>{
+public interface GenderRepository extends CrudRepository<Gender, Integer>{
 
 }
