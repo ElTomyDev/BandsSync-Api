@@ -4,12 +4,17 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserResponseDto;
+import com.heavydelay.BandsSync.Api.model.entity.User;
+import com.heavydelay.BandsSync.Api.model.entity.UserEmail;
+import com.heavydelay.BandsSync.Api.model.entity.UserPassword;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserEmailMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserPasswordMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserPreferenceMapper;
+import com.heavydelay.BandsSync.Api.repository.external_data.RoleRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserEmailRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserPasswordRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserPreferenceRepository;
@@ -24,31 +29,42 @@ public class UserService implements IUser{
     private UserEmailRepository userEmailRepository;
     private UserPasswordRepository userPasswordRepository;
     private UserPreferenceRepository userPreferenceRepository;
-
+    
     // mappeos
     private IUserMapper userMapper;
     private IUserEmailMapper userEmailMapper;
     private IUserPasswordMapper userPasswordMapper;
     private IUserPreferenceMapper userPreferenceMapper;
+    
+    //otros
+    private RoleRepository roleRepository;
+
 
     public UserService(UserRepository userRepository, UserEmailRepository userEmailRepository,
             UserPasswordRepository userPasswordRepository, UserPreferenceRepository userPreferenceRepository,
             IUserMapper userMapper, IUserEmailMapper userEmailMapper, IUserPasswordMapper userPasswordMapper,
-            IUserPreferenceMapper userPreferenceMapper) {
+            IUserPreferenceMapper userPreferenceMapper, RoleRepository roleRepository) {
+        
         this.userRepository = userRepository;
         this.userEmailRepository = userEmailRepository;
         this.userPasswordRepository = userPasswordRepository;
         this.userPreferenceRepository = userPreferenceRepository;
+
         this.userMapper = userMapper;
         this.userEmailMapper = userEmailMapper;
         this.userPasswordMapper = userPasswordMapper;
         this.userPreferenceMapper = userPreferenceMapper;
+
+        this.roleRepository = roleRepository;
     }
 
     @Override
     public void deleteUserById(Long id) {
-        // TODO Auto-generated method stub
-        
+        User user = userRepository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("The user with ID '" + id + "' not found")
+        );
+
+        userRepository.delete(user);
     }
 
     @Override
@@ -59,8 +75,27 @@ public class UserService implements IUser{
 
     @Override
     public UserResponseDto registerNewUser(UserRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+        User user = User.builder()
+                    .name(dto.getName())
+                    .lastname(dto.getLastname())
+                    .username(dto.getUsername())
+                    .role(roleRepository.findByRoleName("None").orElseThrow(
+                        () -> new ResourceNotFoundException("There is no role with the name 'None'")
+                    )).build();
+        
+        UserPassword password = UserPassword.builder()
+                                .user(user)
+                                .password(dto.getPassword()).build();
+        
+        UserEmail email = UserEmail.builder()
+                          .user(user)
+                          .email(dto.getEmail()).build();
+        
+        userRepository.save(user);
+        userPasswordRepository.save(password);
+        userEmailRepository.save(email);
+
+        return userMapper.toBasicDto(user);
     }
 
     @Override
