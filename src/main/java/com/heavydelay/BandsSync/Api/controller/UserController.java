@@ -30,7 +30,7 @@ public class UserController {
         UserResponseDto userRegister = userService.registerNewUser(dto);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("Gender created successfully")
+            .message("User registered successfully")
             .status(HttpStatus.CREATED.value())
             .objectResponse(userRegister)
             .build(), HttpStatus.CREATED
