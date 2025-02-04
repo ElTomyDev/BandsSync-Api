@@ -7,9 +7,12 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserRequestDto.RegisterView;
+import com.heavydelay.BandsSync.Api.model.payload.MessageResponse;
 import com.heavydelay.BandsSync.Api.service.IUser;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -23,9 +26,15 @@ public class UserController {
     
     @PostMapping("/register")
     @JsonView(RegisterView.class)
-    public String postMethodName(@RequestBody UserRequestDto dto) {
+    public ResponseEntity<MessageResponse> postMethodName(@RequestBody UserRequestDto dto) {
         UserResponseDto userRegister = userService.registerNewUser(dto);
-        return entity;
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Gender created successfully")
+            .status(HttpStatus.CREATED.value())
+            .objectResponse(userRegister)
+            .build(), HttpStatus.CREATED
+        );
     }
     
 }
