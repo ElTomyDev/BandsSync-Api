@@ -10,6 +10,7 @@ public class UserImplMapper implements IUserMapper{
     public UserResponseDto toBasicDto(User user) {
         return UserResponseDto.builder()
                .idUser(user.getIdUser())
+               .roleName(user.getRole().getRoleName())
                .name(user.getName())
                .lastname(user.getLastname())
                .username(user.getUsername())
@@ -24,6 +25,10 @@ public class UserImplMapper implements IUserMapper{
     public UserResponseDto toDetailedDto(User user) {
         return UserResponseDto.builder()
                .idUser(user.getIdUser())
+               .role(user.getRole())
+               .location(user.getLocation())
+               .socialLinks(user.getSocialLinks())
+               .imageURL(user.getImageURL())
                .name(user.getName())
                .lastname(user.getLastname())
                .username(user.getUsername())
