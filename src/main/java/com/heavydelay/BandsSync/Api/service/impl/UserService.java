@@ -1,6 +1,8 @@
 package com.heavydelay.BandsSync.Api.service.impl;
 
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -101,14 +103,22 @@ public class UserService implements IUser{
 
     @Override
     public List<UserResponseDto> showAllUsers(boolean detailed) {
-        // TODO Auto-generated method stub
-        return null;
+
+        List<User> users = (List<User>) userRepository.findAll();
+
+        // Selección del DTO a usar 
+        Function<User, UserResponseDto> mapper = detailed ? userMapper::toDetailedDto : userMapper::toBasicDto;
+
+        // Retorno y mapea la lista con todos los usuarios
+        return users.stream().map(mapper).collect(Collectors.toList());
     }
 
     @Override
-    public UserResponseDto showUserById(boolean detailed) {
-        // TODO Auto-generated method stub
-        return null;
+    public UserResponseDto showUserById(Long id, boolean detailed) {
+        User user = userRepository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("The user with ID '" + id + "' was not found")
+        );
+        return detailed ? userMapper.toDetailedDto(user) : userMapper.toBasicDto(user);
     }
 
     @Override

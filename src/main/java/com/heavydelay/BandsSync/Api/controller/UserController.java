@@ -44,7 +44,7 @@ public class UserController {
 
     @GetMapping("/show-user/{id}/{detailed}")
     public ResponseEntity<MessageResponse> showUser(@PathVariable Long id, @PathVariable boolean detailed) {
-        UserResponseDto user = userService.showUserById(detailed);
+        UserResponseDto user = userService.showUserById(id, detailed);
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("User successfully obtained")
