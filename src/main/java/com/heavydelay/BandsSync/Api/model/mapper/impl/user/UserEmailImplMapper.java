@@ -1,9 +1,12 @@
 package com.heavydelay.BandsSync.Api.model.mapper.impl.user;
 
+import org.springframework.stereotype.Component;
+
 import com.heavydelay.BandsSync.Api.model.dto.user.user_email.UserEmailResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.UserEmail;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserEmailMapper;
 
+@Component
 public class UserEmailImplMapper implements IUserEmailMapper{
 
     @Override

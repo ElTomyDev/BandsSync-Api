@@ -1,9 +1,15 @@
 package com.heavydelay.BandsSync.Api.model.mapper.impl.user;
 
+import org.springframework.stereotype.Component;
+
 import com.heavydelay.BandsSync.Api.model.dto.user.UserResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.User;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserMapper;
 
+import lombok.NoArgsConstructor;
+
+
+@Component
 public class UserImplMapper implements IUserMapper{
 
     @Override
