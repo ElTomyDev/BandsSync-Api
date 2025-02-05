@@ -71,7 +71,6 @@ public class UserService implements IUser{
 
     @Override
     public UserResponseDto loginUser(UserRequestDto dto) {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -123,44 +122,121 @@ public class UserService implements IUser{
 
     @Override
     public UserResponseDto updateDescription(UserRequestDto dto, Long id, String username) {
-        // TODO Auto-generated method stub
-        return null;
+        User user;
+        if(id <= 0 || id == null || username != null){
+            user = userRepository.findByUsername(username).orElseThrow(
+                () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
+            );
+        }else{
+            user = userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("The user with ID '" + id + "' was not found")
+            );
+        }
+        user.setDescription(dto.getDescription());
+        userRepository.save(user);
+        return userMapper.toBasicDto(user);
     }
 
     @Override
     public UserResponseDto updateFindBands(UserRequestDto dto, Long id, String username) {
-        // TODO Auto-generated method stub
-        return null;
+        User user;
+        if(id <= 0 || id == null || username != null){
+            user = userRepository.findByUsername(username).orElseThrow(
+                () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
+            );
+        }else{
+            user = userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("The user with ID '" + id + "' was not found")
+            );
+        }
+        user.setFindBands(dto.getFindBands());
+        userRepository.save(user);
+        return userMapper.toBasicDto(user);
     }
 
     @Override
     public UserResponseDto updateImageURL(UserRequestDto dto, Long id, String username) {
-        // TODO Auto-generated method stub
-        return null;
+        User user;
+        if(id <= 0 || id == null || username != null){
+            user = userRepository.findByUsername(username).orElseThrow(
+                () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
+            );
+        }else{
+            user = userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("The user with ID '" + id + "' was not found")
+            );
+        }
+        user.setImageURL(dto.getImageURL());
+        userRepository.save(user);
+        return userMapper.toBasicDto(user);
     }
 
     @Override
     public UserResponseDto updateLastname(UserRequestDto dto, Long id, String username) {
-        // TODO Auto-generated method stub
-        return null;
+        User user;
+        if(id <= 0 || id == null || username != null){
+            user = userRepository.findByUsername(username).orElseThrow(
+                () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
+            );
+        }else{
+            user = userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("The user with ID '" + id + "' was not found")
+            );
+        }
+        user.setLastname(dto.getLastname());
+        userRepository.save(user);
+        return userMapper.toBasicDto(user);
     }
 
     @Override
     public UserResponseDto updateName(UserRequestDto dto, Long id, String username) {
-        // TODO Auto-generated method stub
-        return null;
+        User user;
+        if(id <= 0 || id == null || username != null){
+            user = userRepository.findByUsername(username).orElseThrow(
+                () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
+            );
+        }else{
+            user = userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("The user with ID '" + id + "' was not found")
+            );
+        }
+        user.setName(dto.getName());
+        userRepository.save(user);
+        return userMapper.toBasicDto(user);
     }
 
     @Override
     public UserResponseDto updatePhoneNumber(UserRequestDto dto, Long id, String username) {
-        // TODO Auto-generated method stub
-        return null;
+        User user;
+        if(id <= 0 || id == null || username != null){
+            user = userRepository.findByUsername(username).orElseThrow(
+                () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
+            );
+        }else{
+            user = userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("The user with ID '" + id + "' was not found")
+            );
+        }
+        user.setPhoneNumber(dto.getPhoneNumber());
+        userRepository.save(user);
+        return userMapper.toBasicDto(user);
     }
 
     @Override
     public UserResponseDto updateStatus(UserRequestDto dto, Long id, String username) {
-        // TODO Auto-generated method stub
-        return null;
+        User user;
+        if(id <= 0 || id == null || username != null){
+            user = userRepository.findByUsername(username).orElseThrow(
+                () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
+            );
+        }else{
+            user = userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("The user with ID '" + id + "' was not found")
+            );
+        }
+        user.setStatus(dto.getStatus());
+        userRepository.save(user);
+        return userMapper.toBasicDto(user);
     }
 
 }

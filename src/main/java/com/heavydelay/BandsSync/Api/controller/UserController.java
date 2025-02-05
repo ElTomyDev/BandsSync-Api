@@ -80,8 +80,9 @@ public class UserController {
     }
 
     // METODOS PUT
+    @JsonView(UserRequestDto.NameView.class)
     @PutMapping("/update-name/{id}/{username}")
-    public ResponseEntity<MessageResponse> updateName(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id, @PathVariable String username) {
+    public ResponseEntity<MessageResponse> updateName(@RequestBody @Valid UserRequestDto dto, @PathVariable(required = false) Long id, @PathVariable(required = false) String username) {
         UserResponseDto userUpdate = userService.updateName(dto, id, username);
         return new ResponseEntity<>(
             MessageResponse.builder()
@@ -92,8 +93,9 @@ public class UserController {
         );
     }
     
+    @JsonView(UserRequestDto.LastnameView.class)
     @PutMapping("/update-lastname/{id}/{username}")
-    public ResponseEntity<MessageResponse> updateLastname(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id, @PathVariable String username) {
+    public ResponseEntity<MessageResponse> updateLastname(@RequestBody @Valid UserRequestDto dto, @PathVariable(required = false) Long id, @PathVariable(required = false) String username) {
         UserResponseDto userUpdate = userService.updateLastname(dto, id, username);
         return new ResponseEntity<>(
             MessageResponse.builder()
@@ -104,8 +106,9 @@ public class UserController {
         );
     }
 
+    @JsonView(UserRequestDto.DescriptionView.class)
     @PutMapping("/update-description/{id}/{username}")
-    public ResponseEntity<MessageResponse> updateDescription(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id, @PathVariable String username) {
+    public ResponseEntity<MessageResponse> updateDescription(@RequestBody @Valid UserRequestDto dto, @PathVariable(required = false) Long id, @PathVariable(required = false) String username) {
         UserResponseDto userUpdate = userService.updateDescription(dto, id, username);
         return new ResponseEntity<>(
             MessageResponse.builder()
@@ -116,8 +119,9 @@ public class UserController {
         );
     }
 
+    @JsonView(UserRequestDto.StatusView.class)
     @PutMapping("/update-status/{id}/{username}")
-    public ResponseEntity<MessageResponse> updateStatus(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id, @PathVariable String username) {
+    public ResponseEntity<MessageResponse> updateStatus(@RequestBody @Valid UserRequestDto dto, @PathVariable(required = false) Long id, @PathVariable(required = false) String username) {
         UserResponseDto userUpdate = userService.updateStatus(dto, id, username);
         return new ResponseEntity<>(
             MessageResponse.builder()
@@ -128,8 +132,9 @@ public class UserController {
         );
     }
 
+    @JsonView(UserRequestDto.FindBandsView.class)
     @PutMapping("/update-find-bands/{id}/{username}")
-    public ResponseEntity<MessageResponse> updateFindBands(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id, @PathVariable String username) {
+    public ResponseEntity<MessageResponse> updateFindBands(@RequestBody @Valid UserRequestDto dto, @PathVariable(required = false) Long id, @PathVariable(required = false) String username) {
         UserResponseDto userUpdate = userService.updateFindBands(dto, id, username);
         return new ResponseEntity<>(
             MessageResponse.builder()
@@ -140,8 +145,9 @@ public class UserController {
         );
     }
 
+    @JsonView(UserRequestDto.ImageURLView.class)
     @PutMapping("/update-image-url/{id}/{username}")
-    public ResponseEntity<MessageResponse> updateImageURL(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id, @PathVariable String username) {
+    public ResponseEntity<MessageResponse> updateImageURL(@RequestBody @Valid UserRequestDto dto, @PathVariable(required = false) Long id, @PathVariable(required = false) String username) {
         UserResponseDto userUpdate = userService.updateImageURL(dto, id, username);
         return new ResponseEntity<>(
             MessageResponse.builder()
@@ -152,8 +158,9 @@ public class UserController {
         );
     }
 
+    @JsonView(UserRequestDto.PhoneNumberView.class)
     @PutMapping("/update-phone-number/{id}/{username}")
-    public ResponseEntity<MessageResponse> updatePhoneNumber(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id, @PathVariable String username) {
+    public ResponseEntity<MessageResponse> updatePhoneNumber(@RequestBody @Valid UserRequestDto dto, @PathVariable(required = false) Long id, @PathVariable(required = false) String username) {
         UserResponseDto userUpdate = userService.updatePhoneNumber(dto, id, username);
         return new ResponseEntity<>(
             MessageResponse.builder()
