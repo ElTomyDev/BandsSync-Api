@@ -1,9 +1,12 @@
 package com.heavydelay.BandsSync.Api.model.mapper.impl.user;
 
+import org.springframework.stereotype.Component;
+
 import com.heavydelay.BandsSync.Api.model.dto.user.user_password.UserPasswordResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.UserPassword;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserPasswordMapper;
 
+@Component
 public class UserPasswordImplMapper implements IUserPasswordMapper{
 
     @Override
