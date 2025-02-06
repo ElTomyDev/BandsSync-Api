@@ -19,7 +19,7 @@ public class SocialLinks {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "is_social")
+    @Column(name = "id_social")
     private Long idSocial;
 
     @Column(name = "instagram", nullable = true)

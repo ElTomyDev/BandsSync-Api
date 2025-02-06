@@ -37,7 +37,7 @@ public class UserService implements IUser{
     private IUserEmailMapper userEmailMapper;
     private IUserPasswordMapper userPasswordMapper;
     private IUserPreferenceMapper userPreferenceMapper;
-    
+
     //otros
     private RoleRepository roleRepository;
 
@@ -60,6 +60,7 @@ public class UserService implements IUser{
         this.roleRepository = roleRepository;
     }
 
+    ////// DELETE ////////////////////////////////////////////////////////
     @Override
     public void deleteUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
@@ -69,6 +70,18 @@ public class UserService implements IUser{
         userRepository.delete(user);
     }
 
+    @Override
+    public void deleteUserByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+            () -> new ResourceNotFoundException("The user with username '" + username + "' not found")
+        );
+
+        userRepository.delete(user);
+        
+    }
+
+
+    ////// REGISTER & LOGIN /////////////////////////////////////////////////
     @Override
     public UserResponseDto loginUser(UserRequestDto dto) {
         return null;
@@ -100,6 +113,9 @@ public class UserService implements IUser{
         return userMapper.toBasicDto(user);
     }
 
+
+    ////// SHOW USERS ////////////////////////////////////////////////////////
+
     @Override
     public List<UserResponseDto> showAllUsers(boolean detailed) {
 
@@ -121,122 +137,94 @@ public class UserService implements IUser{
     }
 
     @Override
-    public UserResponseDto updateDescription(UserRequestDto dto, Long id, String username) {
-        User user;
-        if(id <= 0 || id == null || username != null){
-            user = userRepository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
-            );
-        }else{
-            user = userRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("The user with ID '" + id + "' was not found")
-            );
-        }
+    public UserResponseDto showUserByUsername(String username, boolean detailed) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+            () -> new ResourceNotFoundException("The user with username '" + username + "' not found")
+        );
+
+        return detailed ? userMapper.toDetailedDto(user) : userMapper.toBasicDto(user);
+    }
+
+
+    ////// UPDATE VALUES BY USERNAME ////////////////////////////////////////////////////
+    @Override
+    public UserResponseDto updateDescriptionByUsername(UserRequestDto dto, String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+            () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
+        );
+
         user.setDescription(dto.getDescription());
         userRepository.save(user);
         return userMapper.toBasicDto(user);
     }
 
     @Override
-    public UserResponseDto updateFindBands(UserRequestDto dto, Long id, String username) {
-        User user;
-        if(id <= 0 || id == null || username != null){
-            user = userRepository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
-            );
-        }else{
-            user = userRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("The user with ID '" + id + "' was not found")
-            );
-        }
+    public UserResponseDto updateFindBandsByUsername(UserRequestDto dto, String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+            () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
+        );
+
         user.setFindBands(dto.getFindBands());
         userRepository.save(user);
         return userMapper.toBasicDto(user);
     }
 
     @Override
-    public UserResponseDto updateImageURL(UserRequestDto dto, Long id, String username) {
-        User user;
-        if(id <= 0 || id == null || username != null){
-            user = userRepository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
-            );
-        }else{
-            user = userRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("The user with ID '" + id + "' was not found")
-            );
-        }
+    public UserResponseDto updateImageURLByUsername(UserRequestDto dto, String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+            () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
+        );
+
         user.setImageURL(dto.getImageURL());
         userRepository.save(user);
         return userMapper.toBasicDto(user);
     }
 
     @Override
-    public UserResponseDto updateLastname(UserRequestDto dto, Long id, String username) {
-        User user;
-        if(id <= 0 || id == null || username != null){
-            user = userRepository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
-            );
-        }else{
-            user = userRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("The user with ID '" + id + "' was not found")
-            );
-        }
+    public UserResponseDto updateLastnameByUsername(UserRequestDto dto, String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+            () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
+        );
+
         user.setLastname(dto.getLastname());
         userRepository.save(user);
         return userMapper.toBasicDto(user);
     }
 
     @Override
-    public UserResponseDto updateName(UserRequestDto dto, Long id, String username) {
-        User user;
-        if(id <= 0 || id == null || username != null){
-            user = userRepository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
-            );
-        }else{
-            user = userRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("The user with ID '" + id + "' was not found")
-            );
-        }
+    public UserResponseDto updateNameByUsername(UserRequestDto dto, String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+            () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
+        );
+
         user.setName(dto.getName());
         userRepository.save(user);
         return userMapper.toBasicDto(user);
     }
 
     @Override
-    public UserResponseDto updatePhoneNumber(UserRequestDto dto, Long id, String username) {
-        User user;
-        if(id <= 0 || id == null || username != null){
-            user = userRepository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
-            );
-        }else{
-            user = userRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("The user with ID '" + id + "' was not found")
-            );
-        }
+    public UserResponseDto updatePhoneNumberByUsername(UserRequestDto dto, String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+            () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
+        );
+
         user.setPhoneNumber(dto.getPhoneNumber());
         userRepository.save(user);
         return userMapper.toBasicDto(user);
     }
 
     @Override
-    public UserResponseDto updateStatus(UserRequestDto dto, Long id, String username) {
-        User user;
-        if(id <= 0 || id == null || username != null){
-            user = userRepository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
-            );
-        }else{
-            user = userRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("The user with ID '" + id + "' was not found")
-            );
-        }
+    public UserResponseDto updateStatusByUsername(UserRequestDto dto, String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+            () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
+        );
+        
         user.setStatus(dto.getStatus());
         userRepository.save(user);
         return userMapper.toBasicDto(user);
     }
 
+
+    ////// UPDATE VALUES BY ID ////////////////////////////////////////////////////////
+    
 }

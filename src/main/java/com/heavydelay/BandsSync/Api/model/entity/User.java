@@ -39,11 +39,11 @@ public class User {
     private Role role;
     
     @ManyToOne
-    @JoinColumn(name = "id_location")
+    @JoinColumn(name = "id_location", nullable = true)
     private Location location;
     
     @ManyToOne
-    @JoinColumn(name = "id_social")
+    @JoinColumn(name = "id_social", nullable = true)
     private SocialLinks socialLinks;
     
 
