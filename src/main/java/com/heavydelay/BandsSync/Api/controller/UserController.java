@@ -105,7 +105,7 @@ public class UserController {
         UserResponseDto userUpdate = userService.updateRole(dto, username, null);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("The 'role' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .message("The 'role' field of user with username '"+ userUpdate.getUsername() + "' updated successfully.")
             .status(HttpStatus.OK.value())
             .objectResponse(userUpdate)
             .build(), HttpStatus.OK
@@ -144,7 +144,7 @@ public class UserController {
         UserResponseDto userUpdate = userService.updateName(dto, username, null);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("The 'name' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .message("The 'name' field of user with username '"+ userUpdate.getUsername() + "' updated successfully.")
             .status(HttpStatus.OK.value())
             .objectResponse(userUpdate)
             .build(), HttpStatus.OK
@@ -157,7 +157,7 @@ public class UserController {
         UserResponseDto userUpdate = userService.updateLastname(dto, username, null);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("The 'lastname' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .message("The 'lastname' field of user with username '"+ userUpdate.getUsername() + "' updated successfully.")
             .status(HttpStatus.OK.value())
             .objectResponse(userUpdate)
             .build(), HttpStatus.OK
@@ -170,7 +170,7 @@ public class UserController {
         UserResponseDto userUpdate = userService.updateDescription(dto, username, null);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("The 'description' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .message("The 'description' field of user with username '"+ userUpdate.getUsername() + "' updated successfully.")
             .status(HttpStatus.OK.value())
             .objectResponse(userUpdate)
             .build(), HttpStatus.OK
@@ -183,7 +183,7 @@ public class UserController {
         UserResponseDto userUpdate = userService.updateStatus(dto, username, null);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("The 'status' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .message("The 'status' field of user with username '"+ userUpdate.getUsername() + "' updated successfully.")
             .status(HttpStatus.OK.value())
             .objectResponse(userUpdate)
             .build(), HttpStatus.OK
@@ -196,7 +196,7 @@ public class UserController {
         UserResponseDto userUpdate = userService.updateFindBands(dto, username, null);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("The 'findBands' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .message("The 'findBands' field of user with username '"+ userUpdate.getUsername() + "' updated successfully.")
             .status(HttpStatus.OK.value())
             .objectResponse(userUpdate)
             .build(), HttpStatus.OK
@@ -209,7 +209,7 @@ public class UserController {
         UserResponseDto userUpdate = userService.updateImageURL(dto, username, null);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("The 'imageURL' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .message("The 'imageUrl' field of user with username '"+ userUpdate.getUsername() + "' updated successfully.")
             .status(HttpStatus.OK.value())
             .objectResponse(userUpdate)
             .build(), HttpStatus.OK
@@ -222,7 +222,7 @@ public class UserController {
         UserResponseDto userUpdate = userService.updatePhoneNumber(dto, username, null);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("The 'phoneNumber' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .message("The 'phoneNumber' field of user with username '"+ userUpdate.getUsername() + "' updated successfully.")
             .status(HttpStatus.OK.value())
             .objectResponse(userUpdate)
             .build(), HttpStatus.OK
