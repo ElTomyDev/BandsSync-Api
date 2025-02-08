@@ -54,7 +54,7 @@ public class UserController {
         );
     }
     
-    @JsonView(UserRequestDto.RegisterView.class)
+    @JsonView(UserRequestDto.RegisterUserView.class)
     @PostMapping("/register")
     public ResponseEntity<MessageResponse> registerUser(@RequestBody @Valid UserRequestDto dto) {
         UserResponseDto userRegister = userService.registerNewUser(dto);
@@ -83,7 +83,7 @@ public class UserController {
     @JsonView(UserRequestDto.NameView.class)
     @PutMapping("/update-name/{username}")
     public ResponseEntity<MessageResponse> updateName(@RequestBody @Valid UserRequestDto dto, @PathVariable String username) {
-        UserResponseDto userUpdate = userService.updateNameByUsername(dto, username);
+        UserResponseDto userUpdate = userService.updateName(dto, username);
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("The 'name' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
@@ -96,7 +96,7 @@ public class UserController {
     @JsonView(UserRequestDto.LastnameView.class)
     @PutMapping("/update-lastname/{username}")
     public ResponseEntity<MessageResponse> updateLastname(@RequestBody @Valid UserRequestDto dto, @PathVariable String username) {
-        UserResponseDto userUpdate = userService.updateLastnameByUsername(dto, username);
+        UserResponseDto userUpdate = userService.updateLastname(dto, username);
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("The 'lastname' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
@@ -109,7 +109,7 @@ public class UserController {
     @JsonView(UserRequestDto.DescriptionView.class)
     @PutMapping("/update-description/{username}")
     public ResponseEntity<MessageResponse> updateDescription(@RequestBody @Valid UserRequestDto dto, @PathVariable String username) {
-        UserResponseDto userUpdate = userService.updateDescriptionByUsername(dto, username);
+        UserResponseDto userUpdate = userService.updateDescription(dto, username);
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("The 'description' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
@@ -122,7 +122,7 @@ public class UserController {
     @JsonView(UserRequestDto.StatusView.class)
     @PutMapping("/update-status/{username}")
     public ResponseEntity<MessageResponse> updateStatus(@RequestBody @Valid UserRequestDto dto, @PathVariable String username) {
-        UserResponseDto userUpdate = userService.updateStatusByUsername(dto, username);
+        UserResponseDto userUpdate = userService.updateStatus(dto, username);
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("The 'status' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
@@ -135,7 +135,7 @@ public class UserController {
     @JsonView(UserRequestDto.FindBandsView.class)
     @PutMapping("/update-find-bands/{username}")
     public ResponseEntity<MessageResponse> updateFindBands(@RequestBody @Valid UserRequestDto dto, @PathVariable String username) {
-        UserResponseDto userUpdate = userService.updateFindBandsByUsername(dto, username);
+        UserResponseDto userUpdate = userService.updateFindBands(dto, username);
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("The 'findBands' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
@@ -148,7 +148,7 @@ public class UserController {
     @JsonView(UserRequestDto.ImageURLView.class)
     @PutMapping("/update-image-url/{username}")
     public ResponseEntity<MessageResponse> updateImageURL(@RequestBody @Valid UserRequestDto dto, @PathVariable String username) {
-        UserResponseDto userUpdate = userService.updateImageURLByUsername(dto, username);
+        UserResponseDto userUpdate = userService.updateImageURL(dto, username);
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("The 'imageURL' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
@@ -161,7 +161,7 @@ public class UserController {
     @JsonView(UserRequestDto.PhoneNumberView.class)
     @PutMapping("/update-phone-number/{username}")
     public ResponseEntity<MessageResponse> updatePhoneNumber(@RequestBody @Valid UserRequestDto dto, @PathVariable String username) {
-        UserResponseDto userUpdate = userService.updatePhoneNumberByUsername(dto, username);
+        UserResponseDto userUpdate = userService.updatePhoneNumber(dto, username);
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("The 'phoneNumber' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")

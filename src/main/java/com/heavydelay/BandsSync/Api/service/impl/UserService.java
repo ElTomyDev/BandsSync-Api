@@ -148,7 +148,7 @@ public class UserService implements IUser{
 
     ////// UPDATE VALUES BY USERNAME ////////////////////////////////////////////////////
     @Override
-    public UserResponseDto updateDescriptionByUsername(UserRequestDto dto, String username) {
+    public UserResponseDto updateDescription(UserRequestDto dto, String username) {
         User user = userRepository.findByUsername(username).orElseThrow(
             () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
         );
@@ -159,7 +159,7 @@ public class UserService implements IUser{
     }
 
     @Override
-    public UserResponseDto updateFindBandsByUsername(UserRequestDto dto, String username) {
+    public UserResponseDto updateFindBands(UserRequestDto dto, String username) {
         User user = userRepository.findByUsername(username).orElseThrow(
             () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
         );
@@ -170,7 +170,7 @@ public class UserService implements IUser{
     }
 
     @Override
-    public UserResponseDto updateImageURLByUsername(UserRequestDto dto, String username) {
+    public UserResponseDto updateImageURL(UserRequestDto dto, String username) {
         User user = userRepository.findByUsername(username).orElseThrow(
             () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
         );
@@ -181,7 +181,7 @@ public class UserService implements IUser{
     }
 
     @Override
-    public UserResponseDto updateLastnameByUsername(UserRequestDto dto, String username) {
+    public UserResponseDto updateLastname(UserRequestDto dto, String username) {
         User user = userRepository.findByUsername(username).orElseThrow(
             () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
         );
@@ -192,7 +192,7 @@ public class UserService implements IUser{
     }
 
     @Override
-    public UserResponseDto updateNameByUsername(UserRequestDto dto, String username) {
+    public UserResponseDto updateName(UserRequestDto dto, String username) {
         User user = userRepository.findByUsername(username).orElseThrow(
             () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
         );
@@ -203,7 +203,7 @@ public class UserService implements IUser{
     }
 
     @Override
-    public UserResponseDto updatePhoneNumberByUsername(UserRequestDto dto, String username) {
+    public UserResponseDto updatePhoneNumber(UserRequestDto dto, String username) {
         User user = userRepository.findByUsername(username).orElseThrow(
             () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
         );
@@ -214,7 +214,7 @@ public class UserService implements IUser{
     }
 
     @Override
-    public UserResponseDto updateStatusByUsername(UserRequestDto dto, String username) {
+    public UserResponseDto updateStatus(UserRequestDto dto, String username) {
         User user = userRepository.findByUsername(username).orElseThrow(
             () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
         );

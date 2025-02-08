@@ -17,13 +17,14 @@ public interface IUser {
     UserResponseDto loginUser(UserRequestDto dto);
 
     // actualizar valore por id o nombre de usuario
-    UserResponseDto updateImageURLByUsername(UserRequestDto dto, String username);
-    UserResponseDto updateNameByUsername(UserRequestDto dto, String username);
-    UserResponseDto updateLastnameByUsername(UserRequestDto dto, String username);
-    UserResponseDto updateDescriptionByUsername(UserRequestDto dto, String username);
-    UserResponseDto updateStatusByUsername(UserRequestDto dto, String username);
-    UserResponseDto updatePhoneNumberByUsername(UserRequestDto dto, String username);
-    UserResponseDto updateFindBandsByUsername(UserRequestDto dto, String username);
+    UserResponseDto updateRole(UserRequestDto dto, String username);
+    UserResponseDto updateImageURL(UserRequestDto dto, String username);
+    UserResponseDto updateName(UserRequestDto dto, String username);
+    UserResponseDto updateLastname(UserRequestDto dto, String username);
+    UserResponseDto updateDescription(UserRequestDto dto, String username);
+    UserResponseDto updateStatus(UserRequestDto dto, String username);
+    UserResponseDto updatePhoneNumber(UserRequestDto dto, String username);
+    UserResponseDto updateFindBands(UserRequestDto dto, String username);
 
 
 }
