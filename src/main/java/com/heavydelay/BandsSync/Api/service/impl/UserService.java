@@ -7,19 +7,24 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
+import com.heavydelay.BandsSync.Api.model.dto.external_data.location.LocationRequestDto;
+import com.heavydelay.BandsSync.Api.model.dto.external_data.location.LocationResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserResponseDto;
+import com.heavydelay.BandsSync.Api.model.entity.Location;
 import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
 import com.heavydelay.BandsSync.Api.model.entity.User;
 import com.heavydelay.BandsSync.Api.model.entity.UserEmail;
 import com.heavydelay.BandsSync.Api.model.entity.UserPassword;
+import com.heavydelay.BandsSync.Api.model.mapper.ILocationMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.ISocialLinksMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserEmailMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserPasswordMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserPreferenceMapper;
+import com.heavydelay.BandsSync.Api.repository.external_data.LocationRepository;
 import com.heavydelay.BandsSync.Api.repository.external_data.RoleRepository;
 import com.heavydelay.BandsSync.Api.repository.external_data.SocialLinksRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserEmailRepository;
@@ -48,6 +53,9 @@ public class UserService implements IUser{
 
     private SocialLinksRepository socialRepository;
     private ISocialLinksMapper socialMapper;
+
+    private LocationRepository locationRepository;
+    private ILocationMapper locationMapper;
 
     public UserService(UserRepository userRepository, UserEmailRepository userEmailRepository,
             UserPasswordRepository userPasswordRepository, UserPreferenceRepository userPreferenceRepository,
@@ -108,6 +116,11 @@ public class UserService implements IUser{
         SocialLinks social = new SocialLinks();
         socialRepository.save(social);
         user.setSocialLinks(social);
+
+        // Para la localidad (Crea un objeto vacio)
+        Location location = new Location();
+        locationRepository.save(location);
+        user.setLocation(location);
 
         UserPassword password = UserPassword.builder()
                                 .user(user)
@@ -193,6 +206,18 @@ public class UserService implements IUser{
         socialRepository.save(social);
         return socialMapper.toBasicDto(social);
 
+    }
+
+    @Override
+    public LocationResponseDto updateLocation(LocationRequestDto dto, String username, Long id){
+        User user = this.findUserByIdOrUsername(username, id);
+
+        Location location = locationRepository.findById(user.getLocation().getIdLocation()).orElseThrow(
+            () -> new ResourceNotFoundException("The location with ID '" + user.getLocation().getIdLocation() + "' was not found")
+        );
+
+        locationRepository.save(location);
+        return locationMapper.toBasicDto(location);
     }
 
     @Override
