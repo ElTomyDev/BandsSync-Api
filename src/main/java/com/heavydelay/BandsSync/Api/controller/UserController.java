@@ -230,5 +230,134 @@ public class UserController {
     }
 
     ////// PUT METHOD BY ID ///////////////////////////////////////////////////
+    @JsonView(UserRequestDto.RoleView.class)
+    @PutMapping("/update-role/{id}")
+    public ResponseEntity<MessageResponse> updateRoleById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
+        UserResponseDto userUpdate = userService.updateRole(dto, null, id);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("The 'role' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(userUpdate)
+            .build(), HttpStatus.OK
+        );
+    }
+
+    @JsonView(SocialLinksRequestDto.SocialLinksView.class)
+    @PutMapping("/update-social-links/{id}")
+    public ResponseEntity<MessageResponse> updateSocialLinksById(@RequestBody @Valid SocialLinksRequestDto dto, @PathVariable Long id) {
+        SocialLinksResponseDto socialUpdate = userService.updateSocialLinks(dto, null, id);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("The 'social link' field of user with ID '"+ socialUpdate.getIdSocial() + "' updated successfully.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(socialUpdate)
+            .build(), HttpStatus.OK
+        );
+    }
+
+    @JsonView(LocationRequestDto.LocationView.class)
+    @PutMapping("/update-location/{id}")
+    public ResponseEntity<MessageResponse> updateLocationById(@RequestBody @Valid LocationRequestDto dto, @PathVariable Long id) {
+        LocationResponseDto locationUpdate = userService.updateLocation(dto, null, id);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("The 'Location' field of user with ID '"+ locationUpdate.getIdLocation() + "' updated successfully.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(locationUpdate)
+            .build(), HttpStatus.OK
+        );
+    }
+
+    @JsonView(UserRequestDto.NameView.class)
+    @PutMapping("/update-name/{id}")
+    public ResponseEntity<MessageResponse> updateNameById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
+        UserResponseDto userUpdate = userService.updateName(dto, null, id);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("The 'name' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(userUpdate)
+            .build(), HttpStatus.OK
+        );
+    }
     
+    @JsonView(UserRequestDto.LastnameView.class)
+    @PutMapping("/update-lastname/{id}")
+    public ResponseEntity<MessageResponse> updateLastnameById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
+        UserResponseDto userUpdate = userService.updateLastname(dto, null, id);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("The 'lastname' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(userUpdate)
+            .build(), HttpStatus.OK
+        );
+    }
+
+    @JsonView(UserRequestDto.DescriptionView.class)
+    @PutMapping("/update-description/{id}")
+    public ResponseEntity<MessageResponse> updateDescriptionById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
+        UserResponseDto userUpdate = userService.updateDescription(dto, null, id);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("The 'description' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(userUpdate)
+            .build(), HttpStatus.OK
+        );
+    }
+
+    @JsonView(UserRequestDto.StatusView.class)
+    @PutMapping("/update-status/{id}")
+    public ResponseEntity<MessageResponse> updateStatusById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
+        UserResponseDto userUpdate = userService.updateStatus(dto, null, id);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("The 'status' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(userUpdate)
+            .build(), HttpStatus.OK
+        );
+    }
+
+    @JsonView(UserRequestDto.FindBandsView.class)
+    @PutMapping("/update-find-bands/{id}")
+    public ResponseEntity<MessageResponse> updateFindBandsById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
+        UserResponseDto userUpdate = userService.updateFindBands(dto, null, id);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("The 'findBands' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(userUpdate)
+            .build(), HttpStatus.OK
+        );
+    }
+
+    @JsonView(UserRequestDto.ImageURLView.class)
+    @PutMapping("/update-image-url/{id}")
+    public ResponseEntity<MessageResponse> updateImageURLById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
+        UserResponseDto userUpdate = userService.updateImageURL(dto, null, id);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("The 'imageURL' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(userUpdate)
+            .build(), HttpStatus.OK
+        );
+    }
+
+    @JsonView(UserRequestDto.PhoneNumberView.class)
+    @PutMapping("/update-phone-number/{id}")
+    public ResponseEntity<MessageResponse> updatePhoneNumberById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
+        UserResponseDto userUpdate = userService.updatePhoneNumber(dto, null, id);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("The 'phoneNumber' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(userUpdate)
+            .build(), HttpStatus.OK
+        );
+    }
+
 }
