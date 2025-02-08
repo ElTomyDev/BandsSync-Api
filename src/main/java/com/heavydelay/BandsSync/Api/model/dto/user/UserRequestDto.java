@@ -12,7 +12,6 @@ import lombok.ToString;
 
 /*
     Falta agregar las validaciones personalizadas para el phoneNumber, username, imageUrl y status
-    Falta agregar como se va a mostrar los datos a ingresar en el JSON de forma personalizada
 */
 
 @Data
@@ -30,8 +29,6 @@ public class UserRequestDto {
     public interface PhoneNumberView {}
     public interface FindBandsView {}
     public interface RegisterUserView {}
-
-    // aca faltan las claves foraneas roles, locations, social_links.
 
     @JsonView(RoleView.class)
     @NotBlank(groups = {RoleView.class}, message = "Role name cannot be blank")
@@ -74,6 +71,7 @@ public class UserRequestDto {
     @NotNull(groups = {FindBandsView.class}, message = "Find bands field cannot be null")
     private Boolean findBands;
 
+    //para el registro de usuario
     @JsonView(RegisterUserView.class)
     @NotBlank(groups = {RegisterUserView.class}, message = "Password cannot be blank")
     @Size(groups = {RegisterUserView.class}, min = 6, max = 255, message = "Password cannot exceed 255 characters and cannot be less than 6 characters")

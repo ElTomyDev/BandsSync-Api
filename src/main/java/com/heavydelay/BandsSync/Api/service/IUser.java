@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.heavydelay.BandsSync.Api.model.dto.user.UserRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserResponseDto;
+import com.heavydelay.BandsSync.Api.model.entity.User;
 
 public interface IUser {
     List<UserResponseDto> showAllUsers(boolean detailed);
@@ -17,14 +18,16 @@ public interface IUser {
     UserResponseDto loginUser(UserRequestDto dto);
 
     // actualizar valore por id o nombre de usuario
-    UserResponseDto updateRole(UserRequestDto dto, String username);
-    UserResponseDto updateImageURL(UserRequestDto dto, String username);
-    UserResponseDto updateName(UserRequestDto dto, String username);
-    UserResponseDto updateLastname(UserRequestDto dto, String username);
-    UserResponseDto updateDescription(UserRequestDto dto, String username);
-    UserResponseDto updateStatus(UserRequestDto dto, String username);
-    UserResponseDto updatePhoneNumber(UserRequestDto dto, String username);
-    UserResponseDto updateFindBands(UserRequestDto dto, String username);
-
+    UserResponseDto updateRole(UserRequestDto dto, String username, Long id);
+    UserResponseDto updateImageURL(UserRequestDto dto, String username, Long id);
+    UserResponseDto updateName(UserRequestDto dto, String username, Long id);
+    UserResponseDto updateLastname(UserRequestDto dto, String username, Long id);
+    UserResponseDto updateDescription(UserRequestDto dto, String username, Long id);
+    UserResponseDto updateStatus(UserRequestDto dto, String username, Long id);
+    UserResponseDto updatePhoneNumber(UserRequestDto dto, String username, Long id);
+    UserResponseDto updateFindBands(UserRequestDto dto, String username, Long id);
+    
+    // Funciones auxiliares
+    User findUserByIdOrUsername(String username, Long id);
 
 }
