@@ -3,9 +3,15 @@ package com.heavydelay.BandsSync.Api.model.dto.external_data.social;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
+import lombok.Data;
+import lombok.ToString;
 
 
 // FALTA LAS VALIDACIONES PARA LOS LINKS, osea 'https' o 'http'.
+@Builder
+@Data
+@ToString
 public class SocialLinksRequestDto {
     public interface InstagramView {}
     public interface FacebookView {}

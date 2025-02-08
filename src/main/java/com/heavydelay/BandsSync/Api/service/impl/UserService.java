@@ -7,16 +7,21 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
+import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksRequestDto;
+import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserResponseDto;
+import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
 import com.heavydelay.BandsSync.Api.model.entity.User;
 import com.heavydelay.BandsSync.Api.model.entity.UserEmail;
 import com.heavydelay.BandsSync.Api.model.entity.UserPassword;
+import com.heavydelay.BandsSync.Api.model.mapper.ISocialLinksMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserEmailMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserPasswordMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserPreferenceMapper;
 import com.heavydelay.BandsSync.Api.repository.external_data.RoleRepository;
+import com.heavydelay.BandsSync.Api.repository.external_data.SocialLinksRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserEmailRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserPasswordRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserPreferenceRepository;
@@ -41,6 +46,8 @@ public class UserService implements IUser{
     //otros
     private RoleRepository roleRepository;
 
+    private SocialLinksRepository socialRepository;
+    private ISocialLinksMapper socialMapper;
 
     public UserService(UserRepository userRepository, UserEmailRepository userEmailRepository,
             UserPasswordRepository userPasswordRepository, UserPreferenceRepository userPreferenceRepository,
@@ -97,6 +104,11 @@ public class UserService implements IUser{
                         () -> new ResourceNotFoundException("There is no role with the name 'None'")
                     )).build();
         
+        // Para las redes sociales (Crea un objeto vacio)
+        SocialLinks social = new SocialLinks();
+        socialRepository.save(social);
+        user.setSocialLinks(social);
+
         UserPassword password = UserPassword.builder()
                                 .user(user)
                                 .password(dto.getPassword()).build();
@@ -158,6 +170,29 @@ public class UserService implements IUser{
         );
         userRepository.save(user);
         return userMapper.toBasicDto(user);
+    }
+
+    @Override
+    public SocialLinksResponseDto updateSocialLinks(SocialLinksRequestDto dto, String username, Long id){
+        User user = this.findUserByIdOrUsername(username, id);
+
+        SocialLinks social = socialRepository.findById(user.getSocialLinks().getIdSocial()).orElseThrow(
+            () -> new ResourceNotFoundException("The Social links with ID '" + user.getSocialLinks().getIdSocial() + "' was not found")
+        );
+
+        social.setInstagram(dto.getInstagram());
+        social.setFacebook(dto.getFacebook());
+        social.setTwitter(dto.getTwitter());
+        social.setTiktok(dto.getTiktok());
+        social.setReddit(dto.getReddit());
+        social.setYoutube(dto.getYoutube());
+        social.setSpotify(dto.getSpotify());
+        social.setBandcamp(dto.getBandcamp());
+        social.setSoundcloud(dto.getSoundcloud());
+
+        socialRepository.save(social);
+        return socialMapper.toBasicDto(social);
+
     }
 
     @Override
@@ -243,5 +278,5 @@ public class UserService implements IUser{
 
         return user;
     }
-    
+
 }

@@ -2,6 +2,8 @@ package com.heavydelay.BandsSync.Api.service;
 
 import java.util.List;
 
+import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksRequestDto;
+import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.User;
@@ -19,6 +21,7 @@ public interface IUser {
 
     // actualizar valore por id o nombre de usuario
     UserResponseDto updateRole(UserRequestDto dto, String username, Long id);
+    SocialLinksResponseDto updateSocialLinks(SocialLinksRequestDto dto, String username, Long id);
     UserResponseDto updateImageURL(UserRequestDto dto, String username, Long id);
     UserResponseDto updateName(UserRequestDto dto, String username, Long id);
     UserResponseDto updateLastname(UserRequestDto dto, String username, Long id);
