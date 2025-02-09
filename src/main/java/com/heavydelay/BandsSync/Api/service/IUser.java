@@ -8,6 +8,7 @@ import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksRe
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserResponseDto;
+import com.heavydelay.BandsSync.Api.model.dto.user.user_password.UserPasswordRequestDto;
 import com.heavydelay.BandsSync.Api.model.entity.User;
 
 public interface IUser {
@@ -32,6 +33,7 @@ public interface IUser {
     UserResponseDto updateStatus(UserRequestDto dto, String username, Long id);
     UserResponseDto updatePhoneNumber(UserRequestDto dto, String username, Long id);
     UserResponseDto updateFindBands(UserRequestDto dto, String username, Long id);
+    UserResponseDto updatePassword(UserPasswordRequestDto dto, String username, Long id);
     
     // Funciones auxiliares
     User findUserByIdOrUsername(String username, Long id);

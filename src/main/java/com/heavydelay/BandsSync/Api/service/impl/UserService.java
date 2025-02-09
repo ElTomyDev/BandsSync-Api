@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
@@ -13,6 +14,7 @@ import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksRe
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserResponseDto;
+import com.heavydelay.BandsSync.Api.model.dto.user.user_password.UserPasswordRequestDto;
 import com.heavydelay.BandsSync.Api.model.entity.Location;
 import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
 import com.heavydelay.BandsSync.Api.model.entity.User;
@@ -37,10 +39,10 @@ import com.heavydelay.BandsSync.Api.service.IUser;
 public class UserService implements IUser{
 
     // repositorios
-    private UserRepository userRepository;
-    private UserEmailRepository userEmailRepository;
-    private UserPasswordRepository userPasswordRepository;
-    private UserPreferenceRepository userPreferenceRepository;
+    private final UserRepository userRepository;
+    private final UserEmailRepository userEmailRepository;
+    private final UserPasswordRepository userPasswordRepository;
+    private final UserPreferenceRepository userPreferenceRepository;
     
     // mappeos
     private IUserMapper userMapper;
@@ -49,18 +51,23 @@ public class UserService implements IUser{
     private IUserPreferenceMapper userPreferenceMapper;
 
     //otros
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    private SocialLinksRepository socialRepository;
+    private final SocialLinksRepository socialRepository;
     private ISocialLinksMapper socialMapper;
 
-    private LocationRepository locationRepository;
+    private final LocationRepository locationRepository;
     private ILocationMapper locationMapper;
+
+    // Auxiliares
+    private final BCryptPasswordEncoder encoder;
 
     public UserService(UserRepository userRepository, UserEmailRepository userEmailRepository,
             UserPasswordRepository userPasswordRepository, UserPreferenceRepository userPreferenceRepository,
             IUserMapper userMapper, IUserEmailMapper userEmailMapper, IUserPasswordMapper userPasswordMapper,
-            IUserPreferenceMapper userPreferenceMapper, RoleRepository roleRepository) {
+            IUserPreferenceMapper userPreferenceMapper, RoleRepository roleRepository, BCryptPasswordEncoder encoder, 
+            LocationRepository locationRepository, ILocationMapper locationMapper, SocialLinksRepository socialRepository, 
+            ISocialLinksMapper socialMapper) {
         
         this.userRepository = userRepository;
         this.userEmailRepository = userEmailRepository;
@@ -73,6 +80,14 @@ public class UserService implements IUser{
         this.userPreferenceMapper = userPreferenceMapper;
 
         this.roleRepository = roleRepository;
+
+        this.socialRepository = socialRepository;
+        this.socialMapper = socialMapper;
+
+        this.locationRepository = locationRepository;
+        this.locationMapper = locationMapper;
+
+        this.encoder = encoder;
     }
 
     ////// DELETE ////////////////////////////////////////////////////////
@@ -124,7 +139,7 @@ public class UserService implements IUser{
 
         UserPassword password = UserPassword.builder()
                                 .user(user)
-                                .password(dto.getPassword()).build();
+                                .password(encoder.encode(dto.getPassword())).build();
         
         UserEmail email = UserEmail.builder()
                           .user(user)
@@ -283,6 +298,24 @@ public class UserService implements IUser{
         return userMapper.toBasicDto(user);
     }
 
+    public UserResponseDto updatePassword(UserPasswordRequestDto dto, String username, Long id){
+        User user = this.findUserByIdOrUsername(username, id);
+
+        UserPassword userPassword = userPasswordRepository.findByIdUser(user.getIdUser()).orElseThrow(
+            () -> new ResourceNotFoundException("The user password with ID '" + user.getIdUser() + "' not found.")
+        );
+
+        if (!encoder.matches(dto.getOldPassword(), userPassword.getPassword())){
+            throw new IllegalArgumentException("The current password is not correct");
+        }
+
+        // actualizo y guardo la nueva contraseña con haseo
+        userPassword.setPassword(encoder.encode(dto.getNewPassword()));
+        userPasswordRepository.save(userPassword);
+
+        return userMapper.toBasicDto(user);
+
+    }
 
     ////// AUXILIARES ////////////////////////////////////////////////////////
     @Override
