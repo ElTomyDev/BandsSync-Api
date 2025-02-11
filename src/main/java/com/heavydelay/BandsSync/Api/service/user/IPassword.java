@@ -4,5 +4,5 @@ import com.heavydelay.BandsSync.Api.model.entity.User;
 
 public interface IPassword {
     void createPassword(User user, String password);
-    void updatePassword(String oldPassword, String newPasswor, User user);
+    void updatePassword(String oldPassword, String newPassword, User user);
 }
