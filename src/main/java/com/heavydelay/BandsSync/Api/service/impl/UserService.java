@@ -14,6 +14,7 @@ import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksRe
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserResponseDto;
+import com.heavydelay.BandsSync.Api.model.dto.user.user_email.UserEmailRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.user_password.UserPasswordRequestDto;
 import com.heavydelay.BandsSync.Api.model.entity.Location;
 import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
@@ -298,6 +299,7 @@ public class UserService implements IUser{
         return userMapper.toBasicDto(user);
     }
 
+    @Override
     public UserResponseDto updatePassword(UserPasswordRequestDto dto, String username, Long id){
         User user = this.findUserByIdOrUsername(username, id);
 
@@ -312,6 +314,25 @@ public class UserService implements IUser{
         // actualizo y guardo la nueva contraseña con haseo
         userPassword.setPassword(encoder.encode(dto.getNewPassword()));
         userPasswordRepository.save(userPassword);
+
+        return userMapper.toBasicDto(user);
+
+    }
+
+    @Override
+    public UserResponseDto updateEmail(UserEmailRequestDto dto, String username, Long id){
+        User user = this.findUserByIdOrUsername(username, id);
+
+        UserEmail userEmail = userEmailRepository.findByIdUser(user.getIdUser()).orElseThrow(
+            () -> new ResourceNotFoundException("The user password with ID '" + user.getIdUser() + "' not found.")
+        );
+
+        if(!userEmail.getEmail().equalsIgnoreCase(dto.getOldEmail())){
+            throw new IllegalArgumentException("The current email is not correct");
+        }
+
+        userEmail.setEmail(dto.getNewEmail());
+        userEmailRepository.save(userEmail);
 
         return userMapper.toBasicDto(user);
 

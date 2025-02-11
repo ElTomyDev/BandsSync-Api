@@ -10,14 +10,16 @@ import lombok.Data;
 public class UserPasswordRequestDto {
 
     public interface UpdatePasswordView {}
+    public interface OtherValuesView {}
 
-    @NotBlank(message = "Password cannot be blank")
+    @JsonView(OtherValuesView.class)
+    @NotBlank(groups = {OtherValuesView.class}, message = "Password cannot be blank")
     // falta validacion de contraseña personalizada
     private String password;
-
-    @JsonView(UpdatePasswordView.class)
-    @NotBlank(groups = {UpdatePasswordView.class}, message = "Password reset token cannot be blank")
-    @Size(min = 10, max = 255, message = "Password reset token it must have at least 10 characters and a maximum of 255 characters.")
+    
+    @JsonView(OtherValuesView.class)
+    @NotBlank(groups = {OtherValuesView.class}, message = "Password reset token cannot be blank")
+    @Size(groups = {OtherValuesView.class}, min = 10, max = 255, message = "Password reset token it must have at least 10 characters and a maximum of 255 characters.")
     private String passwordResetToken;
     
     @JsonView(UpdatePasswordView.class)
