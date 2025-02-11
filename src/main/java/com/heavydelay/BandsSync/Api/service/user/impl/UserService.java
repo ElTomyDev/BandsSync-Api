@@ -1,4 +1,4 @@
-package com.heavydelay.BandsSync.Api.service.impl;
+package com.heavydelay.BandsSync.Api.service.user.impl;
 
 import java.util.List;
 import java.util.function.Function;
@@ -34,7 +34,7 @@ import com.heavydelay.BandsSync.Api.repository.user.UserEmailRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserPasswordRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserPreferenceRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserRepository;
-import com.heavydelay.BandsSync.Api.service.IUser;
+import com.heavydelay.BandsSync.Api.service.user.IUser;
 
 @Service
 public class UserService implements IUser{

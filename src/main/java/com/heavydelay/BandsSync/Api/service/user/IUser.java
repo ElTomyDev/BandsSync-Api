@@ -1,4 +1,4 @@
-package com.heavydelay.BandsSync.Api.service;
+package com.heavydelay.BandsSync.Api.service.user;
 
 import java.util.List;
 

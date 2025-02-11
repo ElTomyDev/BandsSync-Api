@@ -22,7 +22,7 @@ import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksRe
 import com.heavydelay.BandsSync.Api.model.dto.user.UserRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserResponseDto;
 import com.heavydelay.BandsSync.Api.model.payload.MessageResponse;
-import com.heavydelay.BandsSync.Api.service.IUser;
+import com.heavydelay.BandsSync.Api.service.user.IUser;
 
 import jakarta.validation.Valid;
 
