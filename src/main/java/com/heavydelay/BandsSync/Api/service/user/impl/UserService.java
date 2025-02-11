@@ -43,14 +43,11 @@ public class UserService implements IUser{
 
     
     private final UserRepository userRepository; // repositorios
-    private final UserEmailRepository userEmailRepository;
     private final UserPasswordRepository userPasswordRepository;
-    private final UserPreferenceRepository userPreferenceRepository;
+
     private final IEmail emailService; //Servicios
+    
     private IUserMapper userMapper;// mappeos
-    private IUserEmailMapper userEmailMapper;
-    private IUserPasswordMapper userPasswordMapper;
-    private IUserPreferenceMapper userPreferenceMapper;
     private final RoleRepository roleRepository; //otros
     private final SocialLinksRepository socialRepository;
     private ISocialLinksMapper socialMapper;
