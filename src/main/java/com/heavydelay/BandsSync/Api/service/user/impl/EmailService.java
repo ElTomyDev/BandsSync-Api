@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
 import com.heavydelay.BandsSync.Api.model.entity.User;
 import com.heavydelay.BandsSync.Api.model.entity.UserEmail;
-import com.heavydelay.BandsSync.Api.model.mapper.IUserEmailMapper;
 import com.heavydelay.BandsSync.Api.repository.user.UserEmailRepository;
 import com.heavydelay.BandsSync.Api.service.user.IEmail;
 
@@ -15,8 +14,6 @@ public class EmailService implements IEmail{
 
     @Autowired
     UserEmailRepository emailRepository;
-    IUserEmailMapper emailMapper;
-
 
     @Override
     public void createEmail(User user, String email) {

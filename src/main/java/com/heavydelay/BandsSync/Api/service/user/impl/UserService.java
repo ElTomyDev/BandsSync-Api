@@ -5,7 +5,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
@@ -20,63 +19,35 @@ import com.heavydelay.BandsSync.Api.model.dto.user.user_password.UserPasswordReq
 import com.heavydelay.BandsSync.Api.model.entity.Location;
 import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
 import com.heavydelay.BandsSync.Api.model.entity.User;
-import com.heavydelay.BandsSync.Api.model.entity.UserEmail;
-import com.heavydelay.BandsSync.Api.model.entity.UserPassword;
 import com.heavydelay.BandsSync.Api.model.mapper.ILocationMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.ISocialLinksMapper;
-import com.heavydelay.BandsSync.Api.model.mapper.IUserEmailMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.IUserMapper;
-import com.heavydelay.BandsSync.Api.model.mapper.IUserPasswordMapper;
-import com.heavydelay.BandsSync.Api.model.mapper.IUserPreferenceMapper;
 import com.heavydelay.BandsSync.Api.repository.external_data.LocationRepository;
 import com.heavydelay.BandsSync.Api.repository.external_data.RoleRepository;
 import com.heavydelay.BandsSync.Api.repository.external_data.SocialLinksRepository;
-import com.heavydelay.BandsSync.Api.repository.user.UserEmailRepository;
-import com.heavydelay.BandsSync.Api.repository.user.UserPasswordRepository;
-import com.heavydelay.BandsSync.Api.repository.user.UserPreferenceRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserRepository;
 import com.heavydelay.BandsSync.Api.service.user.IEmail;
+import com.heavydelay.BandsSync.Api.service.user.IPassword;
 import com.heavydelay.BandsSync.Api.service.user.IUser;
 
 @Service
 public class UserService implements IUser{
 
+    @Autowired
+    // Repositorios
+    private UserRepository userRepository;
+    private RoleRepository roleRepository;
+    private SocialLinksRepository socialRepository;
+    private LocationRepository locationRepository;
     
-    private final UserRepository userRepository; // repositorios
-    private final UserPasswordRepository userPasswordRepository;
-
-    private final IEmail emailService; //Servicios
+    //Servicios
+    private IEmail emailService;
+    private IPassword passwordService;
     
-    private IUserMapper userMapper;// mappeos
-    private final RoleRepository roleRepository; //otros
-    private final SocialLinksRepository socialRepository;
+    // Mappeos
+    private IUserMapper userMapper;
     private ISocialLinksMapper socialMapper;
-    private final LocationRepository locationRepository;
     private ILocationMapper locationMapper;
-    private final BCryptPasswordEncoder encoder;// Auxiliares
-
-    public UserService(UserRepository userRepository, UserEmailRepository userEmailRepository,
-            UserPasswordRepository userPasswordRepository, UserPreferenceRepository userPreferenceRepository,
-            IEmail emailService, IUserMapper userMapper, IUserEmailMapper userEmailMapper,
-            IUserPasswordMapper userPasswordMapper, IUserPreferenceMapper userPreferenceMapper,
-            RoleRepository roleRepository, SocialLinksRepository socialRepository, ISocialLinksMapper socialMapper,
-            LocationRepository locationRepository, ILocationMapper locationMapper, BCryptPasswordEncoder encoder) {
-        this.userRepository = userRepository;
-        this.userEmailRepository = userEmailRepository;
-        this.userPasswordRepository = userPasswordRepository;
-        this.userPreferenceRepository = userPreferenceRepository;
-        this.emailService = emailService;
-        this.userMapper = userMapper;
-        this.userEmailMapper = userEmailMapper;
-        this.userPasswordMapper = userPasswordMapper;
-        this.userPreferenceMapper = userPreferenceMapper;
-        this.roleRepository = roleRepository;
-        this.socialRepository = socialRepository;
-        this.socialMapper = socialMapper;
-        this.locationRepository = locationRepository;
-        this.locationMapper = locationMapper;
-        this.encoder = encoder;
-    }
 
     ////// DELETE ////////////////////////////////////////////////////////
     @Override
@@ -125,16 +96,15 @@ public class UserService implements IUser{
         locationRepository.save(location);
         user.setLocation(location);
 
-        UserPassword password = UserPassword.builder()
-                                .user(user)
-                                .password(encoder.encode(dto.getPassword())).build();
+        // Se guarda el usuario
+        userRepository.save(user);
+
+        // Creacion de la contraseña
+        passwordService.createPassword(user, dto.getPassword());
         
         // Creacion de email
         emailService.createEmail(user, dto.getEmail());
         
-        userRepository.save(user);
-        userPasswordRepository.save(password);
-
         
         return userMapper.toBasicDto(user);
     }
@@ -288,17 +258,7 @@ public class UserService implements IUser{
     public UserResponseDto updatePassword(UserPasswordRequestDto dto, String username, Long id){
         User user = this.findUserByIdOrUsername(username, id);
 
-        UserPassword userPassword = userPasswordRepository.findByIdUser(user.getIdUser()).orElseThrow(
-            () -> new ResourceNotFoundException("The user password with ID '" + user.getIdUser() + "' not found.")
-        );
-
-        if (!encoder.matches(dto.getOldPassword(), userPassword.getPassword())){
-            throw new IllegalArgumentException("The current password is not correct");
-        }
-
-        // actualizo y guardo la nueva contraseña con haseo
-        userPassword.setPassword(encoder.encode(dto.getNewPassword()));
-        userPasswordRepository.save(userPassword);
+        passwordService.updatePassword(dto.getOldPassword(), dto.getNewPassword(), user);
 
         return userMapper.toBasicDto(user);
 
