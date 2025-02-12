@@ -1,13 +1,13 @@
-package com.heavydelay.BandsSync.Api.model.mapper.impl.user;
+package com.heavydelay.BandsSync.Api.model.mapper.user.impl;
 
 import org.springframework.stereotype.Component;
 
 import com.heavydelay.BandsSync.Api.model.dto.user.user_email.UserEmailResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.UserEmail;
-import com.heavydelay.BandsSync.Api.model.mapper.IUserEmailMapper;
+import com.heavydelay.BandsSync.Api.model.mapper.user.IEmailMapper;
 
 @Component
-public class UserEmailImplMapper implements IUserEmailMapper{
+public class EmailImplMapper implements IEmailMapper{
 
     @Override
     public UserEmailResponseDto toBasicDto(UserEmail userEmail) {

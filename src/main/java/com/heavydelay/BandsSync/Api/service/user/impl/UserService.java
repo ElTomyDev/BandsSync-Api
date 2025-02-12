@@ -21,7 +21,7 @@ import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
 import com.heavydelay.BandsSync.Api.model.entity.User;
 import com.heavydelay.BandsSync.Api.model.mapper.ILocationMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.ISocialLinksMapper;
-import com.heavydelay.BandsSync.Api.model.mapper.IUserMapper;
+import com.heavydelay.BandsSync.Api.model.mapper.user.IUserMapper;
 import com.heavydelay.BandsSync.Api.repository.external_data.LocationRepository;
 import com.heavydelay.BandsSync.Api.repository.external_data.RoleRepository;
 import com.heavydelay.BandsSync.Api.repository.external_data.SocialLinksRepository;

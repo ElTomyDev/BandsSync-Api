@@ -1,10 +1,10 @@
-package com.heavydelay.BandsSync.Api.model.mapper.impl.user;
+package com.heavydelay.BandsSync.Api.model.mapper.user.impl;
 
 import org.springframework.stereotype.Component;
 
 import com.heavydelay.BandsSync.Api.model.dto.user.UserResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.User;
-import com.heavydelay.BandsSync.Api.model.mapper.IUserMapper;
+import com.heavydelay.BandsSync.Api.model.mapper.user.IUserMapper;
 
 @Component
 public class UserImplMapper implements IUserMapper{
