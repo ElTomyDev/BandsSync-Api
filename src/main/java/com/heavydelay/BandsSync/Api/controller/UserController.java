@@ -21,6 +21,7 @@ import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksRe
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserResponseDto;
+import com.heavydelay.BandsSync.Api.model.dto.user.user_email.UserEmailRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.user_password.UserPasswordRequestDto;
 import com.heavydelay.BandsSync.Api.model.payload.MessageResponse;
 import com.heavydelay.BandsSync.Api.service.user.IUser;
@@ -231,12 +232,25 @@ public class UserController {
     }
 
     @JsonView(UserPasswordRequestDto.UpdatePasswordView.class)
-    @PutMapping("/update-status/{username}")
-    public ResponseEntity<MessageResponse> updateStatusByUsername(@RequestBody @Valid UserPasswordRequestDto dto, @PathVariable String username) {
+    @PutMapping("/update-password/{username}")
+    public ResponseEntity<MessageResponse> updatePasswordByUsername(@RequestBody @Valid UserPasswordRequestDto dto, @PathVariable String username) {
         UserResponseDto userUpdate = userService.updatePassword(dto, username, null);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("The 'status' field of user with username '"+ userUpdate.getUsername() + "' updated successfully.")
+            .message("The 'password' field of user with username '"+ userUpdate.getUsername() + "' updated successfully.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(userUpdate)
+            .build(), HttpStatus.OK
+        );
+    }
+
+    @JsonView(UserEmailRequestDto.UpdateEmailView.class)
+    @PutMapping("/update-email/{username}")
+    public ResponseEntity<MessageResponse> updateEmailByUsername(@RequestBody @Valid UserEmailRequestDto dto, @PathVariable String username) {
+        UserResponseDto userUpdate = userService.updateEmail(dto, username, null);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("The 'email' field of user with username '"+ userUpdate.getUsername() + "' updated successfully.")
             .status(HttpStatus.OK.value())
             .objectResponse(userUpdate)
             .build(), HttpStatus.OK
@@ -368,6 +382,32 @@ public class UserController {
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("The 'status' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(userUpdate)
+            .build(), HttpStatus.OK
+        );
+    }
+
+    @JsonView(UserPasswordRequestDto.UpdatePasswordView.class)
+    @PutMapping("/update-password/{id}")
+    public ResponseEntity<MessageResponse> updateStatusById(@RequestBody @Valid UserPasswordRequestDto dto, @PathVariable Long id) {
+        UserResponseDto userUpdate = userService.updatePassword(dto, null, id);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("The 'password' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(userUpdate)
+            .build(), HttpStatus.OK
+        );
+    }
+
+    @JsonView(UserEmailRequestDto.UpdateEmailView.class)
+    @PutMapping("/update-email/{id}")
+    public ResponseEntity<MessageResponse> updateEmailById(@RequestBody @Valid UserEmailRequestDto dto, @PathVariable Long id) {
+        UserResponseDto userUpdate = userService.updateEmail(dto, null, id);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("The 'email' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
             .status(HttpStatus.OK.value())
             .objectResponse(userUpdate)
             .build(), HttpStatus.OK
