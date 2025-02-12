@@ -36,6 +36,7 @@ public interface IUser {
     UserResponseDto updateFindBands(UserRequestDto dto, String username, Long id);
     UserResponseDto updatePassword(UserPasswordRequestDto dto, String username, Long id);
     UserResponseDto updateEmail(UserEmailRequestDto dto, String username, Long id);
+    UserResponseDto updateUsername(UserRequestDto dto, String username, Long id);
     
     // Funciones auxiliares
     User findUserByIdOrUsername(String username, Long id);

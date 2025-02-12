@@ -78,6 +78,11 @@ public class UserService implements IUser{
 
     @Override
     public UserResponseDto registerNewUser(UserRequestDto dto) {
+
+        if(userRepository.findByUsername(dto.getUsername()).orElse(null) != null){
+            throw new IllegalArgumentException("The username '" + dto.getUsername() + "' is already in use");
+        }
+
         User user = User.builder()
                     .name(dto.getName())
                     .lastname(dto.getLastname())
@@ -274,6 +279,25 @@ public class UserService implements IUser{
 
     }
 
+    @Override
+    public UserResponseDto updateUsername(UserRequestDto dto, String username, Long id){
+        User user = this.findUserByIdOrUsername(username, id);
+
+        if(user.getUsername().equalsIgnoreCase(dto.getUsername())){
+            throw new IllegalArgumentException("You are already using that username");
+        }
+
+        if(userRepository.findByUsername(dto.getUsername()).orElse(null) != null){
+            throw new IllegalArgumentException("The username '" + dto.getUsername() + "' is already in use");
+        }
+        
+        user.setUsername(dto.getUsername());
+        userRepository.save(user);
+
+        return userMapper.toBasicDto(user);
+
+    }
+
     ////// AUXILIARES ////////////////////////////////////////////////////////
     @Override
     public User findUserByIdOrUsername(String username, Long id){
@@ -293,5 +317,6 @@ public class UserService implements IUser{
 
         return user;
     }
+
 
 }
