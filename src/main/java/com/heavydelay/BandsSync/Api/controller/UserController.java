@@ -257,6 +257,19 @@ public class UserController {
         );
     }
 
+    @JsonView(UserRequestDto.UsernameView.class)
+    @PutMapping("/update-username/{username}")
+    public ResponseEntity<MessageResponse> updateUsernameByUsername(@RequestBody @Valid UserRequestDto dto, @PathVariable String username) {
+        UserResponseDto userUpdate = userService.updateUsername(dto, username, null);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("The 'username' field updated successfully.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(userUpdate)
+            .build(), HttpStatus.OK
+        );
+    }
+
     ////// PUT METHOD BY ID ///////////////////////////////////////////////////
     @JsonView(UserRequestDto.RoleView.class)
     @PutMapping("/update-role/{id}")
@@ -408,6 +421,19 @@ public class UserController {
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("The 'email' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(userUpdate)
+            .build(), HttpStatus.OK
+        );
+    }
+
+    @JsonView(UserRequestDto.UsernameView.class)
+    @PutMapping("/update-username/{id}")
+    public ResponseEntity<MessageResponse> updateUsernameById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
+        UserResponseDto userUpdate = userService.updateUsername(dto, null, id);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("The 'username' field of user with ID '"+ userUpdate.getIdUser() + "' updated successfully.")
             .status(HttpStatus.OK.value())
             .objectResponse(userUpdate)
             .build(), HttpStatus.OK
