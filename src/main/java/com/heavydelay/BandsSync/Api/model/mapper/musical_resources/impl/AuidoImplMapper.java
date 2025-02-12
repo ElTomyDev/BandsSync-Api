@@ -1,8 +1,8 @@
-package com.heavydelay.BandsSync.Api.model.mapper.impl.musical_resources;
+package com.heavydelay.BandsSync.Api.model.mapper.musical_resources.impl;
 
 import com.heavydelay.BandsSync.Api.model.dto.musical_resources.audio.AudioResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Audio;
-import com.heavydelay.BandsSync.Api.model.mapper.IAudioMapper;
+import com.heavydelay.BandsSync.Api.model.mapper.musical_resources.IAudioMapper;
 
 public class AuidoImplMapper implements IAudioMapper{
 

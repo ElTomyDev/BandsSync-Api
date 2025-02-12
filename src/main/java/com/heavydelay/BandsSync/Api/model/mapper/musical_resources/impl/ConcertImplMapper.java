@@ -1,8 +1,8 @@
-package com.heavydelay.BandsSync.Api.model.mapper.impl.musical_resources;
+package com.heavydelay.BandsSync.Api.model.mapper.musical_resources.impl;
 
 import com.heavydelay.BandsSync.Api.model.dto.musical_resources.concert.ConcertResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Concert;
-import com.heavydelay.BandsSync.Api.model.mapper.IConcertMapper;
+import com.heavydelay.BandsSync.Api.model.mapper.musical_resources.IConcertMapper;
 
 public class ConcertImplMapper implements IConcertMapper{
 

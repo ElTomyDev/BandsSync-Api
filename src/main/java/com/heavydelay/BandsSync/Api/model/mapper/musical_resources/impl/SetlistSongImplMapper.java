@@ -1,8 +1,8 @@
-package com.heavydelay.BandsSync.Api.model.mapper.impl.musical_resources;
+package com.heavydelay.BandsSync.Api.model.mapper.musical_resources.impl;
 
 import com.heavydelay.BandsSync.Api.model.dto.musical_resources.setlist.SetlistSongResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.SetlistSong;
-import com.heavydelay.BandsSync.Api.model.mapper.ISetlistSongMapper;
+import com.heavydelay.BandsSync.Api.model.mapper.musical_resources.ISetlistSongMapper;
 
 public class SetlistSongImplMapper implements ISetlistSongMapper{
 
