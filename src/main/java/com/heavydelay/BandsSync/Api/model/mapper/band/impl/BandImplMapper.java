@@ -1,8 +1,8 @@
-package com.heavydelay.BandsSync.Api.model.mapper.impl.band;
+package com.heavydelay.BandsSync.Api.model.mapper.band.impl;
 
 import com.heavydelay.BandsSync.Api.model.dto.band.BandResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Band;
-import com.heavydelay.BandsSync.Api.model.mapper.IBandMapper;
+import com.heavydelay.BandsSync.Api.model.mapper.band.IBandMapper;
 
 public class BandImplMapper implements IBandMapper{
 

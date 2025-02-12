@@ -1,4 +1,4 @@
-package com.heavydelay.BandsSync.Api.model.mapper;
+package com.heavydelay.BandsSync.Api.model.mapper.band;
 
 import com.heavydelay.BandsSync.Api.model.dto.band.band_member.BandMemberResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.BandMember;
