@@ -105,10 +105,10 @@ public class UserService implements IUser{
         userRepository.save(user);
 
         // Creacion de la contraseña
-        passwordService.createPassword(user, dto.getPassword());
+        passwordService.createPassword(user, dto.getRegisterPassword());
         
         // Creacion de email
-        emailService.createEmail(user, dto.getEmail());
+        emailService.createEmail(user, dto.getRegisterEmail());
         
         
         return userMapper.toBasicDto(user);
