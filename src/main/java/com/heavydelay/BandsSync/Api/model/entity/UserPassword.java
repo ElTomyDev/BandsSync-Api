@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Builder;
@@ -27,7 +28,7 @@ public class UserPassword {
     private Long idPassword;
 
     @ManyToOne
-    @Column(name = "id_user", nullable = false)
+    @JoinColumn(name = "id_user", nullable = false)
     private User user;
 
     @Column(name = "password", nullable = false)

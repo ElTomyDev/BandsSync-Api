@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.heavydelay.BandsSync.Api.enums.UserStatus;
+import com.heavydelay.BandsSync.Api.model.entity.Location;
+import com.heavydelay.BandsSync.Api.model.entity.Role;
+import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
 
 import lombok.Builder;
 import lombok.Data;
@@ -14,9 +17,15 @@ import lombok.ToString;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserResponseDto {
+
     private Long idUser;
 
-    // aca faltan las claves foraneas roles, locations, social_links.
+    private Role role;
+    private String roleName;
+    
+    private Location location;
+
+    private SocialLinks socialLinks;
 
     private String imageURL;
 
