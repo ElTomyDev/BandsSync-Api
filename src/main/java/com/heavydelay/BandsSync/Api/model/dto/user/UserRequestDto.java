@@ -29,6 +29,7 @@ public class UserRequestDto {
     public interface PhoneNumberView {}
     public interface FindBandsView {}
     public interface RegisterUserView {}
+    public interface LoginUserView {}
 
     @JsonView(RoleView.class)
     @NotBlank(groups = {RoleView.class}, message = "Role name cannot be blank")
@@ -71,16 +72,25 @@ public class UserRequestDto {
     @NotNull(groups = {FindBandsView.class}, message = "Find bands field cannot be null")
     private Boolean findBands;
 
-    //para el registro de usuario
+    // Para el Registro de Usuario
     @JsonView(RegisterUserView.class)
     @NotBlank(groups = {RegisterUserView.class}, message = "Password cannot be blank")
     @Size(groups = {RegisterUserView.class}, min = 6, max = 255, message = "Password cannot exceed 255 characters and cannot be less than 6 characters")
-    private String password;
+    private String registerPassword;
 
     @JsonView(RegisterUserView.class)
     @NotBlank(groups = {RegisterUserView.class}, message = "Email cannot be blank")
     @Email(groups = {RegisterUserView.class}, message = "It must be a valid email")
-    private String email;
+    private String registerEmail;
 
-
+    // Para el Login de Usuario
+    
+    @JsonView(LoginUserView.class)
+    @NotBlank(groups = {LoginUserView.class}, message = "Username cannot be blank")
+    private String loginUsername;
+    
+    @JsonView(LoginUserView.class)
+    @NotBlank(groups = {LoginUserView.class}, message = "Password cannot be blank")
+    @Size(groups = {LoginUserView.class}, min = 6, max = 255, message = "Password cannot exceed 255 characters and cannot be less than 6 characters")
+    private String loginPassword;
 }

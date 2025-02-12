@@ -19,9 +19,9 @@ import com.heavydelay.BandsSync.Api.model.dto.user.user_password.UserPasswordReq
 import com.heavydelay.BandsSync.Api.model.entity.Location;
 import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
 import com.heavydelay.BandsSync.Api.model.entity.User;
-import com.heavydelay.BandsSync.Api.model.mapper.ILocationMapper;
-import com.heavydelay.BandsSync.Api.model.mapper.ISocialLinksMapper;
-import com.heavydelay.BandsSync.Api.model.mapper.IUserMapper;
+import com.heavydelay.BandsSync.Api.model.mapper.external_data.ILocationMapper;
+import com.heavydelay.BandsSync.Api.model.mapper.external_data.ISocialLinksMapper;
+import com.heavydelay.BandsSync.Api.model.mapper.user.IUserMapper;
 import com.heavydelay.BandsSync.Api.repository.external_data.LocationRepository;
 import com.heavydelay.BandsSync.Api.repository.external_data.RoleRepository;
 import com.heavydelay.BandsSync.Api.repository.external_data.SocialLinksRepository;
@@ -78,6 +78,11 @@ public class UserService implements IUser{
 
     @Override
     public UserResponseDto registerNewUser(UserRequestDto dto) {
+
+        if(userRepository.findByUsername(dto.getUsername()).orElse(null) != null){
+            throw new IllegalArgumentException("The username '" + dto.getUsername() + "' is already in use");
+        }
+
         User user = User.builder()
                     .name(dto.getName())
                     .lastname(dto.getLastname())
@@ -100,10 +105,10 @@ public class UserService implements IUser{
         userRepository.save(user);
 
         // Creacion de la contraseña
-        passwordService.createPassword(user, dto.getPassword());
+        passwordService.createPassword(user, dto.getRegisterPassword());
         
         // Creacion de email
-        emailService.createEmail(user, dto.getEmail());
+        emailService.createEmail(user, dto.getRegisterEmail());
         
         
         return userMapper.toBasicDto(user);
@@ -274,6 +279,25 @@ public class UserService implements IUser{
 
     }
 
+    @Override
+    public UserResponseDto updateUsername(UserRequestDto dto, String username, Long id){
+        User user = this.findUserByIdOrUsername(username, id);
+
+        if(user.getUsername().equalsIgnoreCase(dto.getUsername())){
+            throw new IllegalArgumentException("You are already using that username");
+        }
+
+        if(userRepository.findByUsername(dto.getUsername()).orElse(null) != null){
+            throw new IllegalArgumentException("The username '" + dto.getUsername() + "' is already in use");
+        }
+        
+        user.setUsername(dto.getUsername());
+        userRepository.save(user);
+
+        return userMapper.toBasicDto(user);
+
+    }
+
     ////// AUXILIARES ////////////////////////////////////////////////////////
     @Override
     public User findUserByIdOrUsername(String username, Long id){
@@ -293,5 +317,6 @@ public class UserService implements IUser{
 
         return user;
     }
+
 
 }
