@@ -1,8 +1,8 @@
-package com.heavydelay.BandsSync.Api.model.mapper.impl.external_data;
+package com.heavydelay.BandsSync.Api.model.mapper.external_data.impl;
 
 import com.heavydelay.BandsSync.Api.model.dto.external_data.location.LocationResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Location;
-import com.heavydelay.BandsSync.Api.model.mapper.ILocationMapper;
+import com.heavydelay.BandsSync.Api.model.mapper.external_data.ILocationMapper;
 
 public class LocationImplMapper implements ILocationMapper{
 

@@ -1,8 +1,8 @@
-package com.heavydelay.BandsSync.Api.model.mapper.impl.external_data;
+package com.heavydelay.BandsSync.Api.model.mapper.external_data.impl;
 
 import com.heavydelay.BandsSync.Api.model.dto.external_data.role.RoleResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Role;
-import com.heavydelay.BandsSync.Api.model.mapper.IRoleMapper;
+import com.heavydelay.BandsSync.Api.model.mapper.external_data.IRoleMapper;
 
 public class RoleImplMapper implements IRoleMapper{
 

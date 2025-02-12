@@ -1,8 +1,8 @@
-package com.heavydelay.BandsSync.Api.model.mapper.impl.external_data;
+package com.heavydelay.BandsSync.Api.model.mapper.external_data.impl;
 
 import com.heavydelay.BandsSync.Api.model.dto.external_data.report.ReportResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Report;
-import com.heavydelay.BandsSync.Api.model.mapper.IReportMapper;
+import com.heavydelay.BandsSync.Api.model.mapper.external_data.IReportMapper;
 
 public class ReportImplMapper implements IReportMapper{
 
