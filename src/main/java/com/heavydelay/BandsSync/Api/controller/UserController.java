@@ -50,8 +50,20 @@ public class UserController {
     }
 
     @GetMapping("/show-user/{id}/{detailed}")
-    public ResponseEntity<MessageResponse> showUser(@PathVariable Long id, @PathVariable boolean detailed) {
-        UserResponseDto user = userService.showUserById(id, detailed);
+    public ResponseEntity<MessageResponse> showUserById(@PathVariable Long id, @PathVariable boolean detailed) {
+        UserResponseDto user = userService.showUser(null, id, detailed);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("User successfully obtained")
+            .status(HttpStatus.OK.value())
+            .objectResponse(user)
+            .build(), HttpStatus.OK
+        );
+    }
+    
+    @GetMapping("/show-user/{username}/{detailed}")
+    public ResponseEntity<MessageResponse> showUserByUsername(@PathVariable String username, @PathVariable boolean detailed) {
+        UserResponseDto user = userService.showUser(username, null, detailed);
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("User successfully obtained")

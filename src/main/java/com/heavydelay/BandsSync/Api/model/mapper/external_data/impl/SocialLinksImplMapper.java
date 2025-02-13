@@ -1,9 +1,12 @@
 package com.heavydelay.BandsSync.Api.model.mapper.external_data.impl;
 
+import org.springframework.stereotype.Component;
+
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
 import com.heavydelay.BandsSync.Api.model.mapper.external_data.ISocialLinksMapper;
 
+@Component
 public class SocialLinksImplMapper implements ISocialLinksMapper{
 
     @Override

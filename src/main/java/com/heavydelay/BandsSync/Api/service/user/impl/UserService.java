@@ -143,22 +143,11 @@ public class UserService implements IUser{
     }
 
     @Override
-    public UserResponseDto showUserById(Long id, boolean detailed) {
-        User user = userRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("The user with ID '" + id + "' was not found")
-        );
-        return detailed ? userMapper.toDetailedDto(user) : userMapper.toBasicDto(user);
-    }
-
-    @Override
-    public UserResponseDto showUserByUsername(String username, boolean detailed) {
-        User user = userRepository.findByUsername(username).orElseThrow(
-            () -> new ResourceNotFoundException("The user with username '" + username + "' not found")
-        );
+    public UserResponseDto showUser(String username, Long id, boolean detailed) {
+        User user = this.findUserByIdOrUsername(username, id);
 
         return detailed ? userMapper.toDetailedDto(user) : userMapper.toBasicDto(user);
     }
-
 
     ////// UPDATE VALUES ////////////////////////////////////////////////////
     @Override
