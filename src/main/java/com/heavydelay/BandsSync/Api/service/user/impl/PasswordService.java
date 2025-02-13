@@ -27,8 +27,8 @@ public class PasswordService implements IPassword{
     @Override
     public void updatePassword(String oldPassword, String newPassword, User user) {
 
-        UserPassword userPassword = passwordRepository.findByIdUser(user.getIdUser()).orElseThrow(
-            () -> new ResourceNotFoundException("The user password with ID '" + user.getIdUser() + "' not found.")
+        UserPassword userPassword = passwordRepository.findByUser(user).orElseThrow(
+            () -> new ResourceNotFoundException("The user not found.")
         );
 
         if (!encoder.matches(oldPassword, userPassword.getPassword())){
