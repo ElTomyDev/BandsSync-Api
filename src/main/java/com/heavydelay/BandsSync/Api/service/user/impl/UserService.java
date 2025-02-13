@@ -64,24 +64,11 @@ public class UserService implements IUser{
 
     ////// DELETE ////////////////////////////////////////////////////////
     @Override
-    public void deleteUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("The user with ID '" + id + "' not found")
-        );
+    public void deleteUser(String username, Long id) {
+        User user = this.findUserByIdOrUsername(username, id);
 
         userRepository.delete(user);
     }
-
-    @Override
-    public void deleteUserByUsername(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(
-            () -> new ResourceNotFoundException("The user with username '" + username + "' not found")
-        );
-
-        userRepository.delete(user);
-        
-    }
-
 
     ////// REGISTER & LOGIN /////////////////////////////////////////////////
     @Override

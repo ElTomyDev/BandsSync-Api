@@ -49,7 +49,7 @@ public class UserController {
         );
     }
 
-    @GetMapping("/show-user/{id}/{detailed}")
+    @GetMapping("/show-by-id/{id}/{detailed}")
     public ResponseEntity<MessageResponse> showUserById(@PathVariable Long id, @PathVariable boolean detailed) {
         UserResponseDto user = userService.showUser(null, id, detailed);
         return new ResponseEntity<>(
@@ -61,7 +61,7 @@ public class UserController {
         );
     }
     
-    @GetMapping("/show-user/{username}/{detailed}")
+    @GetMapping("/show-by-username/{username}/{detailed}")
     public ResponseEntity<MessageResponse> showUserByUsername(@PathVariable String username, @PathVariable boolean detailed) {
         UserResponseDto user = userService.showUser(username, null, detailed);
         return new ResponseEntity<>(
@@ -88,9 +88,9 @@ public class UserController {
     }
 
     ////// DELETE METHOD ///////////////////////////////////////////////////
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/{id}/delete-by-id")
     public ResponseEntity<MessageResponse> deleteUser(@PathVariable Long id) {
-        userService.deleteUserById(id);
+        userService.deleteUser(null, id);
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("User with ID '" + id + "' deleted successfully")
@@ -100,9 +100,9 @@ public class UserController {
         );
     }
 
-    @DeleteMapping("/{username}/delete")
+    @DeleteMapping("/{username}/delete-by-username")
     public ResponseEntity<MessageResponse> deleteUser(@PathVariable String username) {
-        userService.deleteUserByUsername(username);
+        userService.deleteUser(username, null);
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("User with username '" + username + "' deleted successfully")

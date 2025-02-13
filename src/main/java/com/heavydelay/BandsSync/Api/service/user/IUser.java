@@ -16,8 +16,7 @@ public interface IUser {
     List<UserResponseDto> showAllUsers(boolean detailed);
     UserResponseDto showUser(String username, Long id, boolean detailed);
     
-    void deleteUserById(Long id);
-    void deleteUserByUsername(String username);
+    void deleteUser(String username, Long id);
 
     UserResponseDto registerNewUser(UserRequestDto dto);
     UserResponseDto loginUser(UserRequestDto dto);
