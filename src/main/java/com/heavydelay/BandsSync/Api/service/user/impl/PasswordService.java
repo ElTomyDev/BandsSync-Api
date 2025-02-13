@@ -2,6 +2,7 @@ package com.heavydelay.BandsSync.Api.service.user.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
 import com.heavydelay.BandsSync.Api.model.entity.User;
@@ -9,6 +10,7 @@ import com.heavydelay.BandsSync.Api.model.entity.UserPassword;
 import com.heavydelay.BandsSync.Api.repository.user.UserPasswordRepository;
 import com.heavydelay.BandsSync.Api.service.user.IPassword;
 
+@Service
 public class PasswordService implements IPassword{
 
     @Autowired
