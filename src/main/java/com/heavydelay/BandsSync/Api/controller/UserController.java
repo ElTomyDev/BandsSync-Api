@@ -114,7 +114,7 @@ public class UserController {
 
     ////// PUT METHOD BY USERNAME///////////////////////////////////////////////////
     @JsonView(UserRequestDto.RoleView.class)
-    @PutMapping("/update-role/{username}")
+    @PutMapping("/update-role-by-username/{username}")
     public ResponseEntity<MessageResponse> updateRoleByUsername(@RequestBody @Valid UserRequestDto dto, @PathVariable String username) {
         UserResponseDto userUpdate = userService.updateRole(dto, username, null);
         return new ResponseEntity<>(
@@ -127,7 +127,7 @@ public class UserController {
     }
 
     @JsonView(SocialLinksRequestDto.SocialLinksView.class)
-    @PutMapping("/update-social-links/{username}")
+    @PutMapping("/update-social-links-by-username/{username}")
     public ResponseEntity<MessageResponse> updateSocialLinksByUsername(@RequestBody @Valid SocialLinksRequestDto dto, @PathVariable String username) {
         SocialLinksResponseDto socialUpdate = userService.updateSocialLinks(dto, username, null);
         return new ResponseEntity<>(
@@ -140,7 +140,7 @@ public class UserController {
     }
 
     @JsonView(LocationRequestDto.LocationView.class)
-    @PutMapping("/update-location/{username}")
+    @PutMapping("/update-location-by-username/{username}")
     public ResponseEntity<MessageResponse> updateLocationByUsername(@RequestBody @Valid LocationRequestDto dto, @PathVariable String username) {
         LocationResponseDto locationUpdate = userService.updateLocation(dto, username, null);
         return new ResponseEntity<>(
@@ -153,7 +153,7 @@ public class UserController {
     }
     
     @JsonView(UserRequestDto.DescriptionView.class)
-    @PutMapping("/update-description/{username}")
+    @PutMapping("/update-description-by-username/{username}")
     public ResponseEntity<MessageResponse> updateDescriptionByUsername(@RequestBody @Valid UserRequestDto dto, @PathVariable String username) {
         UserResponseDto userUpdate = userService.updateDescription(dto, username, null);
         return new ResponseEntity<>(
@@ -166,7 +166,7 @@ public class UserController {
     }
     
     @JsonView(UserRequestDto.FindBandsView.class)
-    @PutMapping("/update-find-bands/{username}")
+    @PutMapping("/update-find-bands-by-username/{username}")
     public ResponseEntity<MessageResponse> updateFindBandsByUsername(@RequestBody @Valid UserRequestDto dto, @PathVariable String username) {
         UserResponseDto userUpdate = userService.updateFindBands(dto, username, null);
         return new ResponseEntity<>(
@@ -179,7 +179,7 @@ public class UserController {
     }
 
     @JsonView(UserRequestDto.ImageURLView.class)
-    @PutMapping("/update-image-url/{username}")
+    @PutMapping("/update-image-url-by-username/{username}")
     public ResponseEntity<MessageResponse> updateImageURLByUsername(@RequestBody @Valid UserRequestDto dto, @PathVariable String username) {
         UserResponseDto userUpdate = userService.updateImageURL(dto, username, null);
         return new ResponseEntity<>(
@@ -192,7 +192,7 @@ public class UserController {
     }
 
     @JsonView(UserRequestDto.LastnameView.class)
-    @PutMapping("/update-lastname/{username}")
+    @PutMapping("/update-lastname-by-username/{username}")
     public ResponseEntity<MessageResponse> updateLastnameByUsername(@RequestBody @Valid UserRequestDto dto, @PathVariable String username) {
         UserResponseDto userUpdate = userService.updateLastname(dto, username, null);
         return new ResponseEntity<>(
@@ -205,7 +205,7 @@ public class UserController {
     }
 
     @JsonView(UserRequestDto.NameView.class)
-    @PutMapping("/update-name/{username}")
+    @PutMapping("/update-name-by-username/{username}")
     public ResponseEntity<MessageResponse> updateNameByUsername(@RequestBody @Valid UserRequestDto dto, @PathVariable String username) {
         UserResponseDto userUpdate = userService.updateName(dto, username, null);
         return new ResponseEntity<>(
@@ -218,7 +218,7 @@ public class UserController {
     }
     
     @JsonView(UserRequestDto.PhoneNumberView.class)
-    @PutMapping("/update-phone-number/{username}")
+    @PutMapping("/update-phone-number-by-username/{username}")
     public ResponseEntity<MessageResponse> updatePhoneNumberByUsername(@RequestBody @Valid UserRequestDto dto, @PathVariable String username) {
         UserResponseDto userUpdate = userService.updatePhoneNumber(dto, username, null);
         return new ResponseEntity<>(
@@ -231,7 +231,7 @@ public class UserController {
     }
 
     @JsonView(UserRequestDto.StatusView.class)
-    @PutMapping("/update-status/{username}")
+    @PutMapping("/update-status-by-username/{username}")
     public ResponseEntity<MessageResponse> updateStatusByUsername(@RequestBody @Valid UserRequestDto dto, @PathVariable String username) {
         UserResponseDto userUpdate = userService.updateStatus(dto, username, null);
         return new ResponseEntity<>(
@@ -244,7 +244,7 @@ public class UserController {
     }
 
     @JsonView(UserPasswordRequestDto.UpdatePasswordView.class)
-    @PutMapping("/update-password/{username}")
+    @PutMapping("/update-password-by-username/{username}")
     public ResponseEntity<MessageResponse> updatePasswordByUsername(@RequestBody @Valid UserPasswordRequestDto dto, @PathVariable String username) {
         UserResponseDto userUpdate = userService.updatePassword(dto, username, null);
         return new ResponseEntity<>(
@@ -257,7 +257,7 @@ public class UserController {
     }
 
     @JsonView(UserEmailRequestDto.UpdateEmailView.class)
-    @PutMapping("/update-email/{username}")
+    @PutMapping("/update-email-by-username/{username}")
     public ResponseEntity<MessageResponse> updateEmailByUsername(@RequestBody @Valid UserEmailRequestDto dto, @PathVariable String username) {
         UserResponseDto userUpdate = userService.updateEmail(dto, username, null);
         return new ResponseEntity<>(
@@ -270,7 +270,7 @@ public class UserController {
     }
 
     @JsonView(UserRequestDto.UsernameView.class)
-    @PutMapping("/update-username/{username}")
+    @PutMapping("/update-username-by-username/{username}")
     public ResponseEntity<MessageResponse> updateUsernameByUsername(@RequestBody @Valid UserRequestDto dto, @PathVariable String username) {
         UserResponseDto userUpdate = userService.updateUsername(dto, username, null);
         return new ResponseEntity<>(
@@ -284,7 +284,7 @@ public class UserController {
 
     ////// PUT METHOD BY ID ///////////////////////////////////////////////////
     @JsonView(UserRequestDto.RoleView.class)
-    @PutMapping("/update-role/{id}")
+    @PutMapping("/update-role-by-id/{id}")
     public ResponseEntity<MessageResponse> updateRoleById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
         UserResponseDto userUpdate = userService.updateRole(dto, null, id);
         return new ResponseEntity<>(
@@ -297,7 +297,7 @@ public class UserController {
     }
 
     @JsonView(SocialLinksRequestDto.SocialLinksView.class)
-    @PutMapping("/update-social-links/{id}")
+    @PutMapping("/update-social-links-by-id/{id}")
     public ResponseEntity<MessageResponse> updateSocialLinksById(@RequestBody @Valid SocialLinksRequestDto dto, @PathVariable Long id) {
         SocialLinksResponseDto socialUpdate = userService.updateSocialLinks(dto, null, id);
         return new ResponseEntity<>(
@@ -310,7 +310,7 @@ public class UserController {
     }
 
     @JsonView(LocationRequestDto.LocationView.class)
-    @PutMapping("/update-location/{id}")
+    @PutMapping("/update-location-by-id/{id}")
     public ResponseEntity<MessageResponse> updateLocationById(@RequestBody @Valid LocationRequestDto dto, @PathVariable Long id) {
         LocationResponseDto locationUpdate = userService.updateLocation(dto, null, id);
         return new ResponseEntity<>(
@@ -323,7 +323,7 @@ public class UserController {
     }
 
     @JsonView(UserRequestDto.DescriptionView.class)
-    @PutMapping("/update-description/{id}")
+    @PutMapping("/update-description-by-id/{id}")
     public ResponseEntity<MessageResponse> updateDescriptionById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
         UserResponseDto userUpdate = userService.updateDescription(dto, null, id);
         return new ResponseEntity<>(
@@ -336,7 +336,7 @@ public class UserController {
     }
 
     @JsonView(UserRequestDto.FindBandsView.class)
-    @PutMapping("/update-find-bands/{id}")
+    @PutMapping("/update-find-bands-by-id/{id}")
     public ResponseEntity<MessageResponse> updateFindBandsById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
         UserResponseDto userUpdate = userService.updateFindBands(dto, null, id);
         return new ResponseEntity<>(
@@ -349,7 +349,7 @@ public class UserController {
     }
 
     @JsonView(UserRequestDto.ImageURLView.class)
-    @PutMapping("/update-image-url/{id}")
+    @PutMapping("/update-image-url-by-id/{id}")
     public ResponseEntity<MessageResponse> updateImageURLById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
         UserResponseDto userUpdate = userService.updateImageURL(dto, null, id);
         return new ResponseEntity<>(
@@ -362,7 +362,7 @@ public class UserController {
     }
 
     @JsonView(UserRequestDto.LastnameView.class)
-    @PutMapping("/update-lastname/{id}")
+    @PutMapping("/update-lastname-by-id/{id}")
     public ResponseEntity<MessageResponse> updateLastnameById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
         UserResponseDto userUpdate = userService.updateLastname(dto, null, id);
         return new ResponseEntity<>(
@@ -375,7 +375,7 @@ public class UserController {
     }
 
     @JsonView(UserRequestDto.NameView.class)
-    @PutMapping("/update-name/{id}")
+    @PutMapping("/update-name-by-id/{id}")
     public ResponseEntity<MessageResponse> updateNameById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
         UserResponseDto userUpdate = userService.updateName(dto, null, id);
         return new ResponseEntity<>(
@@ -388,7 +388,7 @@ public class UserController {
     }
 
     @JsonView(UserRequestDto.PhoneNumberView.class)
-    @PutMapping("/update-phone-number/{id}")
+    @PutMapping("/update-phone-number-by-id/{id}")
     public ResponseEntity<MessageResponse> updatePhoneNumberById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
         UserResponseDto userUpdate = userService.updatePhoneNumber(dto, null, id);
         return new ResponseEntity<>(
@@ -401,7 +401,7 @@ public class UserController {
     }
 
     @JsonView(UserRequestDto.StatusView.class)
-    @PutMapping("/update-status/{id}")
+    @PutMapping("/update-status-by-id/{id}")
     public ResponseEntity<MessageResponse> updateStatusById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
         UserResponseDto userUpdate = userService.updateStatus(dto, null, id);
         return new ResponseEntity<>(
@@ -414,7 +414,7 @@ public class UserController {
     }
 
     @JsonView(UserPasswordRequestDto.UpdatePasswordView.class)
-    @PutMapping("/update-password/{id}")
+    @PutMapping("/update-password-by-id/{id}")
     public ResponseEntity<MessageResponse> updateStatusById(@RequestBody @Valid UserPasswordRequestDto dto, @PathVariable Long id) {
         UserResponseDto userUpdate = userService.updatePassword(dto, null, id);
         return new ResponseEntity<>(
@@ -427,7 +427,7 @@ public class UserController {
     }
 
     @JsonView(UserEmailRequestDto.UpdateEmailView.class)
-    @PutMapping("/update-email/{id}")
+    @PutMapping("/update-email-by-id/{id}")
     public ResponseEntity<MessageResponse> updateEmailById(@RequestBody @Valid UserEmailRequestDto dto, @PathVariable Long id) {
         UserResponseDto userUpdate = userService.updateEmail(dto, null, id);
         return new ResponseEntity<>(
@@ -440,7 +440,7 @@ public class UserController {
     }
 
     @JsonView(UserRequestDto.UsernameView.class)
-    @PutMapping("/update-username/{id}")
+    @PutMapping("/update-username-by-id/{id}")
     public ResponseEntity<MessageResponse> updateUsernameById(@RequestBody @Valid UserRequestDto dto, @PathVariable Long id) {
         UserResponseDto userUpdate = userService.updateUsername(dto, null, id);
         return new ResponseEntity<>(
