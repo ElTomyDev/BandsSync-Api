@@ -55,8 +55,9 @@ public class BandImplService implements IBand{
     /////////// DELETE BAND ///////////////////////////////////////////////////////////
     @Override
     public void deleteBand(String bandName, Long id) {
-        // TODO Auto-generated method stub
-        
+        Band bandDelete = this.findBandByIdOrBandname(bandName, id);
+
+        bandRepository.delete(bandDelete);
     }
 
     
