@@ -13,7 +13,6 @@ import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksRe
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Band;
 import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
-import com.heavydelay.BandsSync.Api.model.entity.User;
 import com.heavydelay.BandsSync.Api.model.mapper.band.IBandMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.external_data.ISocialLinksMapper;
 import com.heavydelay.BandsSync.Api.repository.band.BandRepository;
