@@ -46,7 +46,7 @@ public class Band {
     @Column(name = "band_name", nullable = false, unique = true)
     private String bandName;
 
-    @Column(name = "access_code", nullable = false, unique = true, updatable = false)
+    @Column(name = "access_code", nullable = false, unique = true)
     private String accessCode;
 
     @Column(name = "is_solist")

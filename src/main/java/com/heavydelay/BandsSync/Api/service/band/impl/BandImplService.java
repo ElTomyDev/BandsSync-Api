@@ -9,9 +9,13 @@ import org.springframework.stereotype.Service;
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
 import com.heavydelay.BandsSync.Api.model.dto.band.BandRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.band.BandResponseDto;
+import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksRequestDto;
+import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Band;
 import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
+import com.heavydelay.BandsSync.Api.model.entity.User;
 import com.heavydelay.BandsSync.Api.model.mapper.band.IBandMapper;
+import com.heavydelay.BandsSync.Api.model.mapper.external_data.ISocialLinksMapper;
 import com.heavydelay.BandsSync.Api.repository.band.BandRepository;
 import com.heavydelay.BandsSync.Api.repository.external_data.GenderRepository;
 import com.heavydelay.BandsSync.Api.repository.external_data.SocialLinksRepository;
@@ -28,15 +32,18 @@ public class BandImplService implements IBand{
 
     // Mapeos
     private IBandMapper bandMapper;
+    private ISocialLinksMapper socialMapper;
 
 
     public BandImplService(BandRepository bandRepository, GenderRepository genderRepository, 
-                            SocialLinksRepository socialRepository, IBandMapper bandMapper) {
+                            SocialLinksRepository socialRepository, IBandMapper bandMapper, 
+                            ISocialLinksMapper socialMapper) {
         this.bandRepository = bandRepository;
         this.genderRepository = genderRepository;
         this.socialRepository = socialRepository;
-
+        
         this.bandMapper = bandMapper;
+        this.socialMapper = socialMapper;
     }
 
     /////////// SHOW BAND ///////////////////////////////////////////////////////////
@@ -97,51 +104,100 @@ public class BandImplService implements IBand{
     
     /////////// UPDATE METHODS ///////////////////////////////////////////////////////////
     @Override
-    public BandResponseDto updateAccessCode(String bandName, Long id, BandRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+    public BandResponseDto updateAccessCode(String bandName, Long id) {
+        Band bandUpdate = this.findBandByIdOrBandname(bandName, id);
+
+        String generatedCode = AccessCodeGenerator.generateAccessCode(6);
+        
+        bandUpdate.setAccessCode(generatedCode);
+        bandRepository.save(bandUpdate);
+
+        return bandMapper.toBasicDto(bandUpdate);
     }
 
     @Override
     public BandResponseDto updateBandName(String bandName, Long id, BandRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+        Band bandUpdate = this.findBandByIdOrBandname(bandName, id);
+        
+        bandUpdate.setBandName(dto.getBandName());
+        bandRepository.save(bandUpdate);
+
+        return bandMapper.toBasicDto(bandUpdate);
     }
 
     @Override
     public BandResponseDto updateBiography(String bandName, Long id, BandRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+        Band bandUpdate = this.findBandByIdOrBandname(bandName, id);
+        
+        bandUpdate.setBiography(dto.getBiography());
+        bandRepository.save(bandUpdate);
+
+        return bandMapper.toBasicDto(bandUpdate);
     }
 
     @Override
     public BandResponseDto updateFindMembers(String bandName, Long id, BandRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+        Band bandUpdate = this.findBandByIdOrBandname(bandName, id);
+        
+        bandUpdate.setFindMembers(dto.getFindMembers());
+        bandRepository.save(bandUpdate);
+
+        return bandMapper.toBasicDto(bandUpdate);
     }
 
     @Override
     public BandResponseDto updateGender(String bandName, Long id, BandRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+        Band bandUpdate = this.findBandByIdOrBandname(bandName, id);
+        
+        bandUpdate.setGender(genderRepository.findByGenderName(dto.getGenderName()).orElseThrow(
+            () -> new ResourceNotFoundException("The gender with gender name '" + dto.getGenderName() + "' not found")
+        ));
+        bandRepository.save(bandUpdate);
+
+        return bandMapper.toBasicDto(bandUpdate);
     }
 
     @Override
     public BandResponseDto updateImageUrl(String bandName, Long id, BandRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+        Band bandUpdate = this.findBandByIdOrBandname(bandName, id);
+        
+        bandUpdate.setImageURL(dto.getImageURL());
+        bandRepository.save(bandUpdate);
+
+        return bandMapper.toBasicDto(bandUpdate);
     }
 
     @Override
     public BandResponseDto updateIsSolist(String bandName, Long id, BandRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+        Band bandUpdate = this.findBandByIdOrBandname(bandName, id);
+        
+        bandUpdate.setIsSolist(dto.getIsSolist());
+        bandRepository.save(bandUpdate);
+
+        return bandMapper.toBasicDto(bandUpdate);
     }
 
     @Override
-    public BandResponseDto updateSocialLinks(String bandName, Long id, BandRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+    public SocialLinksResponseDto updateSocialLinks(String bandName, Long id, SocialLinksRequestDto dto) {
+        Band bandUpdate = this.findBandByIdOrBandname(bandName, id);
+
+        SocialLinks social = socialRepository.findById(bandUpdate.getSocialLinks().getIdSocial()).orElseThrow(
+            () -> new ResourceNotFoundException("The Social links with ID '" + bandUpdate.getSocialLinks().getIdSocial() + "' was not found")
+        );
+
+        social.setInstagram(dto.getInstagram());
+        social.setFacebook(dto.getFacebook());
+        social.setTwitter(dto.getTwitter());
+        social.setTiktok(dto.getTiktok());
+        social.setReddit(dto.getReddit());
+        social.setYoutube(dto.getYoutube());
+        social.setSpotify(dto.getSpotify());
+        social.setBandcamp(dto.getBandcamp());
+        social.setSoundcloud(dto.getSoundcloud());
+
+        socialRepository.save(social);
+
+        return socialMapper.toBasicDto(social);
     }
 
     /////////// AUXILIAR ///////////////////////////////////////////////////////////

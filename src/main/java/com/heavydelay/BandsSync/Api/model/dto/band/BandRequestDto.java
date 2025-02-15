@@ -10,31 +10,40 @@ import lombok.Data;
 @Data
 public class BandRequestDto {
     
-    public interface CreateBand {}
+    public interface GenderNameView {}
+    public interface ImageURLView {}
+    public interface IsSolistView {}
+    public interface FindMembersView {}
+    public interface BiographyView {}
+    public interface BandNameView {}
+    public interface CreateBandView {}
 
-    @JsonView({CreateBand.class})
-    @NotBlank(message = "Gender name cannot be blank")
-    @Size(max = 60, message = "Gender name cannot exceed 60 characters")
+    @JsonView({CreateBandView.class, GenderNameView.class})
+    @NotBlank(groups = {CreateBandView.class, GenderNameView.class}, message = "Gender name cannot be blank")
+    @Size(groups = {CreateBandView.class, GenderNameView.class}, max = 60, message = "Gender name cannot exceed 60 characters")
     private String genderName;
     
-    @NotBlank(message = "Image URL cannot be blank")
-    @Size(max = 250, message = "Image URL cannot exceed 250 characters")
+    @JsonView({ImageURLView.class})
+    @NotBlank(groups = {ImageURLView.class}, message = "Image URL cannot be blank")
+    @Size(groups = {ImageURLView.class}, max = 250, message = "Image URL cannot exceed 250 characters")
     private String imageURL;
     
-    @JsonView({CreateBand.class})
-    @NotBlank(message = "Band name cannot be blank")
-    @Size(max = 100, message = "Band name cannot exceed 100 characters")
+    @JsonView({CreateBandView.class, BandNameView.class})
+    @NotBlank(groups = {CreateBandView.class, BandNameView.class}, message = "Band name cannot be blank")
+    @Size(groups = {CreateBandView.class, BandNameView.class}, max = 100, message = "Band name cannot exceed 100 characters")
     private String bandName;
     
-    @JsonView({CreateBand.class})
-    @NotNull(message = "Is solist field cannot be null")
+    @JsonView({CreateBandView.class, IsSolistView.class})
+    @NotNull(groups = {CreateBandView.class, IsSolistView.class}, message = "Is solist field cannot be null")
     private Boolean isSolist;
     
-    @NotNull(message = "Find members field cannot be null")
+    @JsonView({FindMembersView.class})
+    @NotNull(groups = {FindMembersView.class}, message = "Find members field cannot be null")
     private Boolean findMembers;
     
-    @NotBlank(message = "Biography cannot be blank")
-    @Size(max = 500, message = "Biography cannot exceed 500 characters")
+    @JsonView({BiographyView.class})
+    @NotBlank(groups = {BiographyView.class}, message = "Biography cannot be blank")
+    @Size(groups = {BiographyView.class}, max = 500, message = "Biography cannot exceed 500 characters")
     private String biography;
 
 }
