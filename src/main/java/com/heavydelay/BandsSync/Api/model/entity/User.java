@@ -11,21 +11,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-/*
-    Esta es la entidad del usuario que pertenece a la tabla 'users'
-
-    
-    que falta:
-        - vincular las claves foraneas de roles, locations, social_links
-          (estas tablas todavia no estan listas por eso no se agregaron).
-*/
-
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @Builder
 @Entity
@@ -37,9 +34,18 @@ public class User {
     @Column(name = "id_user")
     private Long idUser;
 
-    // crear clave foranea vinculada a 'role'
-    // crear clave foranea vinculada a 'location'
-    // crear clave foranea vinculada a 'social'
+    @ManyToOne
+    @JoinColumn(name = "id_role")
+    private Role role;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_location", nullable = true)
+    private Location location;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_social", nullable = true)
+    private SocialLinks socialLinks;
+    
 
     @Column(name = "image_url", nullable = true)
     private String imageURL;
