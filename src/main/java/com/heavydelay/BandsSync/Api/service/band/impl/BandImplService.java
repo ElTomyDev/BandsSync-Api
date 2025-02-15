@@ -10,18 +10,32 @@ import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
 import com.heavydelay.BandsSync.Api.model.dto.band.BandRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.band.BandResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Band;
+import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
 import com.heavydelay.BandsSync.Api.model.mapper.band.IBandMapper;
 import com.heavydelay.BandsSync.Api.repository.band.BandRepository;
+import com.heavydelay.BandsSync.Api.repository.external_data.GenderRepository;
+import com.heavydelay.BandsSync.Api.repository.external_data.SocialLinksRepository;
 import com.heavydelay.BandsSync.Api.service.band.IBand;
+import com.heavydelay.BandsSync.Api.util.AccessCodeGenerator;
 
 @Service
 public class BandImplService implements IBand{
     
+    // Repositorios
     private BandRepository bandRepository;
+    private GenderRepository genderRepository;
+    private SocialLinksRepository socialRepository;
+
+    // Mapeos
     private IBandMapper bandMapper;
 
-    public BandImplService(BandRepository bandRepository, IBandMapper bandMapper) {
+
+    public BandImplService(BandRepository bandRepository, GenderRepository genderRepository, 
+                            SocialLinksRepository socialRepository, IBandMapper bandMapper) {
         this.bandRepository = bandRepository;
+        this.genderRepository = genderRepository;
+        this.socialRepository = socialRepository;
+
         this.bandMapper = bandMapper;
     }
 
@@ -48,8 +62,28 @@ public class BandImplService implements IBand{
     /////////// CREATE BAND ///////////////////////////////////////////////////////////
     @Override
     public BandResponseDto createBand(BandRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+
+        if(bandRepository.findByBandName(dto.getBandName()).orElse(null) != null){
+            throw new IllegalArgumentException("The band name '" + dto.getBandName() + "' is already in use");
+        }
+
+        Band newBand = Band.builder()
+                       .bandName(dto.getBandName())
+                       .gender(genderRepository.findByGenderName(dto.getGenderName()).orElseThrow(
+                            () -> new ResourceNotFoundException("The gender with gender name '" + dto.getGenderName() + "' not found")
+                       ))
+                       .accessCode(AccessCodeGenerator.generateAccessCode(6))
+                       .build();
+        
+        // Crear las redes sociales
+        SocialLinks socialLinks = new SocialLinks();
+        socialRepository.save(socialLinks);
+
+        newBand.setSocialLinks(socialLinks);
+
+        bandRepository.save(newBand);
+
+        return bandMapper.toBasicDto(newBand);
     }
 
     /////////// DELETE BAND ///////////////////////////////////////////////////////////
