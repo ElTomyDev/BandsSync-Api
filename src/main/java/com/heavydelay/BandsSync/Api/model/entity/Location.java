@@ -26,21 +26,19 @@ public class Location {
     @Column(name = "id_location")
     private Long idLocation;
 
-    @Column(name = "country", nullable = false)
+    @Column(name = "country", nullable = true)
     private String country;
 
-    @Column(name = "state", nullable = false)
+    @Column(name = "state", nullable = true)
     private String state;
 
-    @Column(name = "city", nullable = false)
+    @Column(name = "city", nullable = true)
     private String city;
 
     @Column(name = "postal_code", nullable = true)
-    @Builder.Default
-    private String postalCode = null;
+    private String postalCode;
     
     @Column(name = "address", nullable = true)
-    @Builder.Default
-    private String address = null;
+    private String address;
 
 }

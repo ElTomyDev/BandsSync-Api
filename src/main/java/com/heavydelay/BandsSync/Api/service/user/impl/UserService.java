@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
@@ -33,7 +32,6 @@ import com.heavydelay.BandsSync.Api.service.user.IUser;
 @Service
 public class UserService implements IUser{
 
-    @Autowired
     // Repositorios
     private UserRepository userRepository;
     private RoleRepository roleRepository;
@@ -49,26 +47,28 @@ public class UserService implements IUser{
     private ISocialLinksMapper socialMapper;
     private ILocationMapper locationMapper;
 
+    public UserService(UserRepository userRepository, RoleRepository roleRepository,
+            SocialLinksRepository socialRepository, LocationRepository locationRepository, IEmail emailService,
+            IPassword passwordService, IUserMapper userMapper, ISocialLinksMapper socialMapper,
+            ILocationMapper locationMapper) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.socialRepository = socialRepository;
+        this.locationRepository = locationRepository;
+        this.emailService = emailService;
+        this.passwordService = passwordService;
+        this.userMapper = userMapper;
+        this.socialMapper = socialMapper;
+        this.locationMapper = locationMapper;
+    }
+
     ////// DELETE ////////////////////////////////////////////////////////
     @Override
-    public void deleteUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("The user with ID '" + id + "' not found")
-        );
+    public void deleteUser(String username, Long id) {
+        User user = this.findUserByIdOrUsername(username, id);
 
         userRepository.delete(user);
     }
-
-    @Override
-    public void deleteUserByUsername(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(
-            () -> new ResourceNotFoundException("The user with username '" + username + "' not found")
-        );
-
-        userRepository.delete(user);
-        
-    }
-
 
     ////// REGISTER & LOGIN /////////////////////////////////////////////////
     @Override
@@ -130,22 +130,11 @@ public class UserService implements IUser{
     }
 
     @Override
-    public UserResponseDto showUserById(Long id, boolean detailed) {
-        User user = userRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("The user with ID '" + id + "' was not found")
-        );
-        return detailed ? userMapper.toDetailedDto(user) : userMapper.toBasicDto(user);
-    }
-
-    @Override
-    public UserResponseDto showUserByUsername(String username, boolean detailed) {
-        User user = userRepository.findByUsername(username).orElseThrow(
-            () -> new ResourceNotFoundException("The user with username '" + username + "' not found")
-        );
+    public UserResponseDto showUser(String username, Long id, boolean detailed) {
+        User user = this.findUserByIdOrUsername(username, id);
 
         return detailed ? userMapper.toDetailedDto(user) : userMapper.toBasicDto(user);
     }
-
 
     ////// UPDATE VALUES ////////////////////////////////////////////////////
     @Override

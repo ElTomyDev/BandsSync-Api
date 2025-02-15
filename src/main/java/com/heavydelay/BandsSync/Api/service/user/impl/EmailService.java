@@ -28,8 +28,8 @@ public class EmailService implements IEmail{
     @Override
     public void updateEmail(String oldEmail, String newEmail, User user) {
 
-        UserEmail userEmail = emailRepository.findByIdUser(user.getIdUser()).orElseThrow(
-            () -> new ResourceNotFoundException("The user password with ID '" + user.getIdUser() + "' not found.")
+        UserEmail userEmail = emailRepository.findByUser(user).orElseThrow(
+            () -> new ResourceNotFoundException("The user not found.")
         );
 
         if(!userEmail.getEmail().equalsIgnoreCase(oldEmail)){

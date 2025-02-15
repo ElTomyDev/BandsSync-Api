@@ -1,9 +1,12 @@
 package com.heavydelay.BandsSync.Api.model.mapper.band.impl;
 
+import org.springframework.stereotype.Component;
+
 import com.heavydelay.BandsSync.Api.model.dto.band.band_member.BandMemberResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.BandMember;
 import com.heavydelay.BandsSync.Api.model.mapper.band.IBandMemberMapper;
 
+@Component
 public class BandMemberImplMapper implements IBandMemberMapper{
 
     @Override

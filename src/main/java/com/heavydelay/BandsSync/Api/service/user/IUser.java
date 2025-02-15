@@ -14,11 +14,9 @@ import com.heavydelay.BandsSync.Api.model.entity.User;
 
 public interface IUser {
     List<UserResponseDto> showAllUsers(boolean detailed);
-    UserResponseDto showUserById(Long id, boolean detailed);
-    UserResponseDto showUserByUsername(String username, boolean detailed);
+    UserResponseDto showUser(String username, Long id, boolean detailed);
     
-    void deleteUserById(Long id);
-    void deleteUserByUsername(String username);
+    void deleteUser(String username, Long id);
 
     UserResponseDto registerNewUser(UserRequestDto dto);
     UserResponseDto loginUser(UserRequestDto dto);

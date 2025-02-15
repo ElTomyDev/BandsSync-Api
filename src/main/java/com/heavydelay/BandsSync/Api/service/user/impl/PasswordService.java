@@ -1,7 +1,7 @@
 package com.heavydelay.BandsSync.Api.service.user.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
 import com.heavydelay.BandsSync.Api.model.entity.User;
@@ -9,11 +9,18 @@ import com.heavydelay.BandsSync.Api.model.entity.UserPassword;
 import com.heavydelay.BandsSync.Api.repository.user.UserPasswordRepository;
 import com.heavydelay.BandsSync.Api.service.user.IPassword;
 
+@Service
 public class PasswordService implements IPassword{
 
-    @Autowired
     private UserPasswordRepository passwordRepository;
     private BCryptPasswordEncoder encoder;
+
+    
+
+    public PasswordService(UserPasswordRepository passwordRepository, BCryptPasswordEncoder encoder) {
+        this.passwordRepository = passwordRepository;
+        this.encoder = encoder;
+    }
 
     @Override
     public void createPassword(User user, String password) {
@@ -27,8 +34,8 @@ public class PasswordService implements IPassword{
     @Override
     public void updatePassword(String oldPassword, String newPassword, User user) {
 
-        UserPassword userPassword = passwordRepository.findByIdUser(user.getIdUser()).orElseThrow(
-            () -> new ResourceNotFoundException("The user password with ID '" + user.getIdUser() + "' not found.")
+        UserPassword userPassword = passwordRepository.findByUser(user).orElseThrow(
+            () -> new ResourceNotFoundException("The user not found.")
         );
 
         if (!encoder.matches(oldPassword, userPassword.getPassword())){
