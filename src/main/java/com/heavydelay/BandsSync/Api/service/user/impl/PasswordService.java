@@ -1,6 +1,5 @@
 package com.heavydelay.BandsSync.Api.service.user.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +12,15 @@ import com.heavydelay.BandsSync.Api.service.user.IPassword;
 @Service
 public class PasswordService implements IPassword{
 
-    @Autowired
     private UserPasswordRepository passwordRepository;
     private BCryptPasswordEncoder encoder;
+
+    
+
+    public PasswordService(UserPasswordRepository passwordRepository, BCryptPasswordEncoder encoder) {
+        this.passwordRepository = passwordRepository;
+        this.encoder = encoder;
+    }
 
     @Override
     public void createPassword(User user, String password) {
