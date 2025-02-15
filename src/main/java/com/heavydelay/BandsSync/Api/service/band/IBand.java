@@ -1,10 +1,16 @@
 package com.heavydelay.BandsSync.Api.service.band;
 
+import java.util.List;
+
 import com.heavydelay.BandsSync.Api.model.dto.band.BandRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.band.BandResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Band;
 
 public interface IBand {
+
+    // VER BANDAS
+    List<BandResponseDto> showAllBands(boolean detailed);
+    BandResponseDto showBand(String bandName, Long id, boolean detailed);
 
     // CREAR UNA BANDA
     BandResponseDto createBand(BandRequestDto dto);
