@@ -12,11 +12,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @Builder
 @Entity
@@ -42,7 +46,7 @@ public class Band {
     @Column(name = "band_name", nullable = false, unique = true)
     private String bandName;
 
-    @Column(name = "access_code", nullable = false, unique = true, updatable = false)
+    @Column(name = "access_code", nullable = false, unique = true)
     private String accessCode;
 
     @Column(name = "is_solist")
