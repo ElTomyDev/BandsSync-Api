@@ -8,19 +8,20 @@ import com.heavydelay.BandsSync.Api.model.entity.BandMember;
 
 public interface IBandMember {
     // VER MIEMBROS
-    List<BandMemberResponseDto> showAllMembers(String username, String bandName, Long id, boolean detailed);
-    BandMemberResponseDto showMember(String username, String bandName, Long id, boolean detailed);
+    List<BandMemberResponseDto> showAllMembers(boolean detailed);
+    List<BandMemberResponseDto> showAllMembersByBand(String bandName, Long idBand, boolean detailed);
+    BandMemberResponseDto showMember(String username, String bandName, Long idBand, Long idUser, Long idMember, boolean detailed);
 
     // AUTH AND REGISTER
     BandMemberResponseDto joinBand(BandMemberRequestDto dto);
-    BandMemberResponseDto leaveBand(String username, String bandName, Long idBand, Long idMember);
+    BandMemberResponseDto leaveBand(String username, String bandName, Long idUser, Long idBand, Long idMember);
 
     // ELIMINAR BANDA
-    BandMemberResponseDto deleteMember(String username, String bandName, Long idBand, Long idMember);
+    void deleteMember(String username, String bandName, Long idBand, Long idUser, Long idMember);
     
 
     // METODOS UPDATE
-    BandMemberResponseDto updateGender(String username, String bandName, Long id, BandMemberRequestDto dto);
+    BandMemberResponseDto updateGender(String username, String bandName, Long idUser, Long idBand, Long idMember, BandMemberRequestDto dto);
     
 
     // AUXILIARES

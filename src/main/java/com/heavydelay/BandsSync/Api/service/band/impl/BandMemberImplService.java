@@ -1,8 +1,11 @@
 package com.heavydelay.BandsSync.Api.service.band.impl;
 
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
+import com.heavydelay.BandsSync.Api.model.dto.band.BandResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.band.band_member.BandMemberRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.band.band_member.BandMemberResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Band;
@@ -38,22 +41,52 @@ public class BandMemberImplService implements IBandMember{
 
     ///////// SHOW MEMBERS /////////////////////////////////////////////////////////
     @Override
-    public List<BandMemberResponseDto> showAllMembers(String username, String bandName, Long id, boolean detailed) {
-        // TODO Auto-generated method stub
-        return null;
+    public List<BandMemberResponseDto> showAllMembers(boolean detailed) {
+        List<BandMember> members = (List<BandMember>) bandMemberRepository.findAll();
+        
+        // Selección del DTO a usar 
+        Function<BandMember, BandMemberResponseDto> mapper = detailed ? bandMemberMapper::toDetailedDto : bandMemberMapper::toBasicDto;
+        
+        // Retorno y mapea la lista con todas las bandas
+        return members.stream().map(mapper).collect(Collectors.toList());
     }
     
     @Override
-    public BandMemberResponseDto showMember(String username, String bandName, Long id, boolean detailed) {
-        // TODO Auto-generated method stub
-        return null;
+    public List<BandMemberResponseDto> showAllMembersByBand(String bandName, Long idBand, boolean detailed){
+        List<BandMember> members;
+        
+        if (bandName != null){
+            Band band = bandRepository.findByBandName(bandName).orElseThrow(
+                () -> new ResourceNotFoundException("The band with band name '" + bandName + "' was not found")
+            );
+            members = (List<BandMember>) bandMemberRepository.findAllByBand(band);
+        }else if (idBand != null){
+            Band band = bandRepository.findById(idBand).orElseThrow(
+                () -> new ResourceNotFoundException("The band with ID '" + idBand + "' was not found")
+                );
+                members = (List<BandMember>) bandMemberRepository.findAllByBand(band);
+            }else{ // si todos los parametros son null
+                throw new IllegalArgumentException("Parameters cannot be null");
+            }
+            
+        Function<BandMember, BandMemberResponseDto> mapper = detailed ? bandMemberMapper::toDetailedDto : bandMemberMapper::toBasicDto;
+        return members.stream().map(mapper).collect(Collectors.toList());
+    }
+
+    @Override
+    public BandMemberResponseDto showMember(String username, String bandName, Long idBand, Long idUser, Long idMember, boolean detailed) {
+        BandMember member = this.findMemberByBandOrUserOrId(username, bandName, idBand, idUser, idMember);
+        
+        return detailed ? bandMemberMapper.toDetailedDto(member) : bandMemberMapper.toBasicDto(member);
     }
     
     ///////// DELETE MEMBERS /////////////////////////////////////////////////////////
     @Override
-    public BandMemberResponseDto deleteMember(String username, String bandName, Long idBand, Long idMember) {
-        // TODO Auto-generated method stub
-        return null;
+    public void deleteMember(String username, String bandName, Long idBand, Long idUser, Long idMember) {
+        BandMember member = this.findMemberByBandOrUserOrId(username, bandName, idBand, idUser, idMember);
+        
+        bandMemberRepository.delete(member);
+
     }
 
     ///////// AUTH AND REGISTER /////////////////////////////////////////////////////////
@@ -64,14 +97,14 @@ public class BandMemberImplService implements IBandMember{
     }
 
     @Override
-    public BandMemberResponseDto leaveBand(String username, String bandName, Long idBand, Long idMember) {
+    public BandMemberResponseDto leaveBand(String username, String bandName, Long idUser, Long idBand, Long idMember) {
         // TODO Auto-generated method stub
         return null;
     }
 
     ///////// UPDATE /////////////////////////////////////////////////////////
     @Override
-    public BandMemberResponseDto updateGender(String username, String bandName, Long id, BandMemberRequestDto dto) {
+    public BandMemberResponseDto updateGender(String username, String bandName, Long idUser, Long idBand, Long idMember, BandMemberRequestDto dto) {
         // TODO Auto-generated method stub
         return null;
     }

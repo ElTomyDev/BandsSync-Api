@@ -1,5 +1,6 @@
 package com.heavydelay.BandsSync.Api.repository.band;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
@@ -10,5 +11,8 @@ import com.heavydelay.BandsSync.Api.model.entity.User;
 
 public interface BandMemberRepository extends CrudRepository<BandMember, Long>{
     Optional<BandMember> findByBand(Band band);
+    List<BandMember> findAllByBand(Band band);
+
+
     Optional<BandMember> findByUser(User user);
 }
