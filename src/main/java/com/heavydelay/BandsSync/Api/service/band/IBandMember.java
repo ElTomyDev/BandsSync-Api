@@ -13,15 +13,15 @@ public interface IBandMember {
     BandMemberResponseDto showMember(String username, String bandName, Long idBand, Long idUser, Long idMember, boolean detailed);
 
     // AUTH AND REGISTER
-    BandMemberResponseDto joinBand(BandMemberRequestDto dto);
-    BandMemberResponseDto leaveBand(String username, String bandName, Long idUser, Long idBand, Long idMember);
+    BandMemberResponseDto joinBand(String username, Long idUser, BandMemberRequestDto dto);
+    BandMemberResponseDto leaveBand(String username, Long idUser, Long idMember);
 
     // ELIMINAR BANDA
     void deleteMember(String username, String bandName, Long idBand, Long idUser, Long idMember);
     
 
     // METODOS UPDATE
-    BandMemberResponseDto updateGender(String username, String bandName, Long idUser, Long idBand, Long idMember, BandMemberRequestDto dto);
+    BandMemberResponseDto updateGender(String username, String bandName, Long idBand, Long idUser, Long idMember, BandMemberRequestDto dto);
     
 
     // AUXILIARES

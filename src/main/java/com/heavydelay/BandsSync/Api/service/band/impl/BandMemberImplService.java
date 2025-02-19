@@ -1,11 +1,11 @@
 package com.heavydelay.BandsSync.Api.service.band.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
-import com.heavydelay.BandsSync.Api.model.dto.band.BandResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.band.band_member.BandMemberRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.band.band_member.BandMemberResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Band;
@@ -86,27 +86,66 @@ public class BandMemberImplService implements IBandMember{
         BandMember member = this.findMemberByBandOrUserOrId(username, bandName, idBand, idUser, idMember);
         
         bandMemberRepository.delete(member);
-
     }
 
     ///////// AUTH AND REGISTER /////////////////////////////////////////////////////////
     @Override
-    public BandMemberResponseDto joinBand(BandMemberRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+    public BandMemberResponseDto joinBand(String username, Long idUser, BandMemberRequestDto dto) {
+        User user;
+        Band band = bandRepository.findById(dto.getIdBand()).orElseThrow(
+            () -> new ResourceNotFoundException("The band with band name '" + dto.getIdBand() + "' was not found")
+        );
+
+        if (!dto.getAccessCode().equals(band.getAccessCode())){
+            throw new IllegalArgumentException("The access code is incorrect");
+        }  
+
+        if(username != null){
+            user = userRepository.findByUsername(username).orElseThrow(
+                () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
+            );
+        }else if (idUser != null){
+            user = userRepository.findById(idUser).orElseThrow(
+                () -> new ResourceNotFoundException("The user with ID '" + idUser + "' was not found")
+            );
+        }else{ // si todos los parametros son null
+            throw new IllegalArgumentException("Parameters cannot be null");
+        }
+
+        BandMember newMember = BandMember.builder()
+                               .band(band)
+                               .user(user)
+                               .isAdmin(this.selectAdminIfIsFirstAdmin(band))
+                               .role(roleRepository.findByRoleName(dto.getRoleName()).orElseThrow(
+                                    () -> new ResourceNotFoundException("The role with name '" + dto.getRoleName() + "' was not found")
+                               ))
+                               .leaveDate(null)
+                               .build();
+
+        bandMemberRepository.save(newMember);
+
+        return bandMemberMapper.toBasicDto(newMember);
     }
 
     @Override
-    public BandMemberResponseDto leaveBand(String username, String bandName, Long idUser, Long idBand, Long idMember) {
-        // TODO Auto-generated method stub
-        return null;
+    public BandMemberResponseDto leaveBand(String username, Long idUser, Long idMember) {
+        BandMember member = this.findMemberByBandOrUserOrId(username, null, null, idUser, idMember);
+        member.setLeaveDate(LocalDateTime.now());
+        bandMemberRepository.save(member);
+        return bandMemberMapper.toBasicDto(member);
     }
-
+    
     ///////// UPDATE /////////////////////////////////////////////////////////
     @Override
-    public BandMemberResponseDto updateGender(String username, String bandName, Long idUser, Long idBand, Long idMember, BandMemberRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+    public BandMemberResponseDto updateGender(String username, String bandName, Long idBand, Long idUser, Long idMember, BandMemberRequestDto dto) {
+        BandMember member = this.findMemberByBandOrUserOrId(username, bandName, idBand, idUser, idMember);
+        
+        member.setRole(roleRepository.findByRoleName(dto.getRoleName()).orElseThrow(
+            () -> new ResourceNotFoundException("The role with name '" + dto.getRoleName() + "' was not found")
+        ));
+        
+        bandMemberRepository.save(member);
+        return bandMemberMapper.toBasicDto(member);
     }
 
     ///////// AUXILIARES /////////////////////////////////////////////////////
@@ -156,5 +195,12 @@ public class BandMemberImplService implements IBandMember{
         }
 
         return bandMember;
+    }
+
+    private boolean selectAdminIfIsFirstAdmin(Band band){
+        if(bandMemberRepository.findAllByBand(band).isEmpty()){
+            return true;
+        }
+        return false;
     }
 }
