@@ -130,6 +130,7 @@ public class BandMemberImplService implements IBandMember{
     @Override
     public BandMemberResponseDto leaveBand(String username, Long idUser, Long idMember) {
         BandMember member = this.findMemberByBandOrUserOrId(username, null, null, idUser, idMember);
+        member.setIsAdmin(false);
         member.setLeaveDate(LocalDateTime.now());
         bandMemberRepository.save(member);
         return bandMemberMapper.toBasicDto(member);
