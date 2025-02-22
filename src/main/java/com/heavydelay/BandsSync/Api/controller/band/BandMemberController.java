@@ -24,37 +24,101 @@ public class BandMemberController {
     ///// GET ENDPOINTS //////////////////////////////////////////////////////
     @GetMapping("/members/{detailed}")
     public ResponseEntity<MessageResponse> showAllMembers(@PathVariable boolean detailed){
-        List<BandMemberResponseDto> bands = memberService.showAllMembers(detailed);
+        List<BandMemberResponseDto> members = memberService.showAllMembers(detailed);
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("Members successfully obtained")
             .status(HttpStatus.OK.value())
-            .objectResponse(bands)
+            .objectResponse(members)
             .build(), HttpStatus.OK
         );
     }
 
     @GetMapping("/members-by-band-id/{id}/{detailed}")
     public ResponseEntity<MessageResponse> showAllMembersByBandId(@PathVariable Long id, @PathVariable boolean detailed){
-        List<BandMemberResponseDto> bands = memberService.showAllMembersByBand(null, id, detailed);
+        List<BandMemberResponseDto> members = memberService.showAllMembersByBand(null, id, detailed);
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("All band members with the ID '"+ id +"' obtained")
             .status(HttpStatus.OK.value())
-            .objectResponse(bands)
+            .objectResponse(members)
             .build(), HttpStatus.OK
         );
     }
 
-    @GetMapping("/members-by-band-name/{id}/{detailed}")
+    @GetMapping("/members-by-band-name/{bandName}/{detailed}")
     public ResponseEntity<MessageResponse> showAllMembersByBandName(@PathVariable String bandName, @PathVariable boolean detailed){
-        List<BandMemberResponseDto> bands = memberService.showAllMembersByBand(bandName, null, detailed);
+        List<BandMemberResponseDto> members = memberService.showAllMembersByBand(bandName, null, detailed);
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("All band members with the name '"+ bandName +"' obtained")
             .status(HttpStatus.OK.value())
-            .objectResponse(bands)
+            .objectResponse(members)
             .build(), HttpStatus.OK
         );
     }
+
+    @GetMapping("/show-member-by-id/{id}/{detailed}")
+    public ResponseEntity<MessageResponse> showMemberById(@PathVariable Long id, @PathVariable boolean detailed){
+        BandMemberResponseDto member = memberService.showMember(null, null, null, null, id, detailed);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Member with ID '"+ id +"' successfully obtained.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(member)
+            .build(), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/show-member-by-user-id/{idUser}/{detailed}")
+    public ResponseEntity<MessageResponse> showMemberByUserId(@PathVariable Long idUser, @PathVariable boolean detailed){
+        BandMemberResponseDto member = memberService.showMember(null, null, null, idUser, null, detailed);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Member with user ID '"+ idUser +"' successfully obtained.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(member)
+            .build(), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/show-member-by-band-id/{idBand}/{detailed}")
+    public ResponseEntity<MessageResponse> showMemberByBandId(@PathVariable Long idBand, @PathVariable boolean detailed){
+        BandMemberResponseDto member = memberService.showMember(null, null, idBand, null, null, detailed);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Member with band ID '"+ idBand +"' successfully obtained.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(member)
+            .build(), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/show-member-by-band-name/{bandName}/{detailed}")
+    public ResponseEntity<MessageResponse> showMemberByBandName(@PathVariable String bandName, @PathVariable boolean detailed){
+        BandMemberResponseDto member = memberService.showMember(null, bandName, null, null, null, detailed);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Member with band name '"+ bandName +"' successfully obtained.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(member)
+            .build(), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/show-member-by-username/{username}/{detailed}")
+    public ResponseEntity<MessageResponse> showMemberByUsername(@PathVariable String username, @PathVariable boolean detailed){
+        BandMemberResponseDto member = memberService.showMember(username, null, null, null, null, detailed);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Member with username '"+ username +"' successfully obtained.")
+            .status(HttpStatus.OK.value())
+            .objectResponse(member)
+            .build(), HttpStatus.OK
+        );
+    }
+    
+    ////// DELETE ENDPOINTS ///////////////////////////////////////////////
+    
+    
 }
