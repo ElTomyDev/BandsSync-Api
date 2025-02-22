@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
 import com.heavydelay.BandsSync.Api.model.dto.band.BandRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.band.BandResponseDto;
-import com.heavydelay.BandsSync.Api.model.dto.band.band_member.BandMemberResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Band;

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
+
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
 import com.heavydelay.BandsSync.Api.model.dto.band.band_member.BandMemberRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.band.band_member.BandMemberResponseDto;
@@ -18,6 +20,7 @@ import com.heavydelay.BandsSync.Api.repository.external_data.RoleRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserRepository;
 import com.heavydelay.BandsSync.Api.service.band.IBandMember;
 
+@Service
 public class BandMemberImplService implements IBandMember{
 
     // Repositorios
