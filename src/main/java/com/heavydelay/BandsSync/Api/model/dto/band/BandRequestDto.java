@@ -36,7 +36,15 @@ public class BandRequestDto {
     @JsonView({CreateBandView.class, IsSolistView.class})
     @NotNull(groups = {CreateBandView.class, IsSolistView.class}, message = "Is solist field cannot be null")
     private Boolean isSolist;
-    
+
+    @JsonView({CreateBandView.class})
+    @NotBlank(groups = {CreateBandView.class}, message = "Username field cannot be blank")
+    private String username;
+
+    @JsonView({CreateBandView.class})
+    @NotBlank(groups = {CreateBandView.class}, message = "Role name field cannot be blank")
+    private String roleName;
+
     @JsonView({FindMembersView.class})
     @NotNull(groups = {FindMembersView.class}, message = "Find members field cannot be null")
     private Boolean findMembers;

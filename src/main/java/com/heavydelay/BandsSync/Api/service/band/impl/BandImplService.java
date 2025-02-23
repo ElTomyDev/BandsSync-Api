@@ -12,12 +12,16 @@ import com.heavydelay.BandsSync.Api.model.dto.band.BandResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Band;
+import com.heavydelay.BandsSync.Api.model.entity.BandMember;
 import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
 import com.heavydelay.BandsSync.Api.model.mapper.band.IBandMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.external_data.ISocialLinksMapper;
+import com.heavydelay.BandsSync.Api.repository.band.BandMemberRepository;
 import com.heavydelay.BandsSync.Api.repository.band.BandRepository;
 import com.heavydelay.BandsSync.Api.repository.external_data.GenderRepository;
+import com.heavydelay.BandsSync.Api.repository.external_data.RoleRepository;
 import com.heavydelay.BandsSync.Api.repository.external_data.SocialLinksRepository;
+import com.heavydelay.BandsSync.Api.repository.user.UserRepository;
 import com.heavydelay.BandsSync.Api.service.band.IBand;
 import com.heavydelay.BandsSync.Api.util.AccessCodeGenerator;
 
@@ -28,19 +32,27 @@ public class BandImplService implements IBand{
     private BandRepository bandRepository;
     private GenderRepository genderRepository;
     private SocialLinksRepository socialRepository;
+    private BandMemberRepository memberRepository;
+    private UserRepository userRepository;
+    private RoleRepository roleRepository;
 
     // Mapeos
     private IBandMapper bandMapper;
     private ISocialLinksMapper socialMapper;
 
+    
 
-    public BandImplService(BandRepository bandRepository, GenderRepository genderRepository, 
-                            SocialLinksRepository socialRepository, IBandMapper bandMapper, 
-                            ISocialLinksMapper socialMapper) {
+    public BandImplService(BandRepository bandRepository, GenderRepository genderRepository,
+            SocialLinksRepository socialRepository, BandMemberRepository memberRepository,
+            UserRepository userRepository, RoleRepository roleRepository, IBandMapper bandMapper,
+            ISocialLinksMapper socialMapper) {
         this.bandRepository = bandRepository;
         this.genderRepository = genderRepository;
         this.socialRepository = socialRepository;
-        
+        this.memberRepository = memberRepository;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+
         this.bandMapper = bandMapper;
         this.socialMapper = socialMapper;
     }
@@ -88,6 +100,19 @@ public class BandImplService implements IBand{
         newBand.setSocialLinks(socialLinks);
 
         bandRepository.save(newBand);
+
+        BandMember newMember = BandMember.builder()
+                               .band(newBand)
+                               .isAdmin(true)
+                               .user(userRepository.findByUsername(dto.getUsername()).orElseThrow(
+                                    () -> new ResourceNotFoundException("The user with username '"+ dto.getUsername() + "' not found")
+                                ))
+                               .role(roleRepository.findByRoleName(dto.getRoleName()).orElseThrow(
+                                    () -> new ResourceNotFoundException("The role with name '"+ dto.getRoleName() + "' not found")
+                                ))
+                               .build();
+        
+        memberRepository.save(newMember);
 
         return bandMapper.toBasicDto(newBand);
     }
