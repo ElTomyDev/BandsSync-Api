@@ -131,8 +131,10 @@ public class BandMemberImplService implements IBandMember{
     }
 
     @Override
-    public BandMemberResponseDto leaveBand(String username, Long idUser, Long idMember) {
-        BandMember member = this.findMemberByBandOrUserOrId(username, null, null, idUser, idMember);
+    public BandMemberResponseDto leaveBand(BandMemberRequestDto dto) {
+        BandMember member = this.findMemberByBandAndUser(dto.getUsername(), dto.getBandName());
+        
+        
         member.setIsAdmin(false);
         member.setLeaveDate(LocalDateTime.now());
         bandMemberRepository.save(member);
@@ -141,14 +143,24 @@ public class BandMemberImplService implements IBandMember{
     
     ///////// UPDATE /////////////////////////////////////////////////////////
     @Override
-    public BandMemberResponseDto updateGender(String username, String bandName, Long idBand, Long idUser, Long idMember, BandMemberRequestDto dto) {
-        BandMember member = this.findMemberByBandOrUserOrId(username, bandName, idBand, idUser, idMember);
+    public BandMemberResponseDto updateRole(BandMemberRequestDto dto) {
+        BandMember member = this.findMemberByBandAndUser(dto.getUsername(), dto.getBandName());
         
         member.setRole(roleRepository.findByRoleName(dto.getRoleName()).orElseThrow(
             () -> new ResourceNotFoundException("The role with name '" + dto.getRoleName() + "' was not found")
         ));
-        
+            
         bandMemberRepository.save(member);
+        return bandMemberMapper.toBasicDto(member);
+    }
+        
+    @Override
+    public BandMemberResponseDto updateAdmin(String username, String bandName, Boolean isAdmin){
+        BandMember member = this.findMemberByBandAndUser(username, bandName);
+        
+        member.setIsAdmin(isAdmin);
+        bandMemberRepository.save(member);
+
         return bandMemberMapper.toBasicDto(member);
     }
 
@@ -199,6 +211,28 @@ public class BandMemberImplService implements IBandMember{
         }
 
         return bandMember;
+    }
+
+    @Override 
+    public BandMember findMemberByBandAndUser(String username, String bandName){
+        
+        if(username == null || bandName == null){
+            throw new IllegalArgumentException("Parameters cannot be null");
+        }
+
+        Band band = bandRepository.findByBandName(bandName).orElseThrow(
+            () -> new ResourceNotFoundException("The band with band name '" + bandName + "' was not found")
+        );
+
+        User user = userRepository.findByUsername(username).orElseThrow(
+            () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
+            );
+            
+        BandMember member = bandMemberRepository.findByUserAndBand(user, band).orElseThrow(
+            () -> new ResourceNotFoundException("member was not found")
+        );
+
+        return member;
     }
 
     private boolean selectAdminIfIsFirstAdmin(Band band){

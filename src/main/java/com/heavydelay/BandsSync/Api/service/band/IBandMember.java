@@ -14,16 +14,19 @@ public interface IBandMember {
 
     // AUTH AND REGISTER
     BandMemberResponseDto joinBand(String username, Long idUser, BandMemberRequestDto dto);
-    BandMemberResponseDto leaveBand(String username, Long idUser, Long idMember);
+    BandMemberResponseDto leaveBand(BandMemberRequestDto dto);
 
     // ELIMINAR BANDA
     void deleteMember(String username, String bandName, Long idBand, Long idUser, Long idMember);
     
 
     // METODOS UPDATE
-    BandMemberResponseDto updateGender(String username, String bandName, Long idBand, Long idUser, Long idMember, BandMemberRequestDto dto);
+    BandMemberResponseDto updateRole(BandMemberRequestDto dto);
+    BandMemberResponseDto updateAdmin(String username, String bandName, Boolean isAdmin);
+
     
 
     // AUXILIARES
     BandMember findMemberByBandOrUserOrId(String username, String bandName, Long idBand, Long idUser, Long idMember);
+    BandMember findMemberByBandAndUser(String username, String bandName);
 }

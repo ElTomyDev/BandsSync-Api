@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -208,6 +209,46 @@ public class BandMemberController {
             .status(HttpStatus.CREATED.value())
             .objectResponse(newMember)
             .build(), HttpStatus.CREATED
+            );
+    }
+        
+    //////// PUT ENDPOINTS ///////////////////////////////////////////
+    @JsonView(BandMemberRequestDto.FindByUserAndBandView.class)
+    @PutMapping("/leave-band")
+    public ResponseEntity<MessageResponse> leaveBand(@RequestBody BandMemberRequestDto dto){
+        BandMemberResponseDto member = memberService.leaveBand(dto);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Member '"+ dto.getUsername() +"' of band '"+ dto.getBandName() + "' has left the group.")
+            .status(HttpStatus.NO_CONTENT.value())
+            .objectResponse(member)
+            .build(), HttpStatus.NO_CONTENT
+        );
+    }
+
+    @JsonView({BandMemberRequestDto.FindByUserAndBandView.class, BandMemberRequestDto.RoleNameView.class})
+    @PutMapping("/update-member-role")
+    public ResponseEntity<MessageResponse> updateRole(@RequestBody BandMemberRequestDto dto){
+        BandMemberResponseDto member = memberService.updateRole(dto);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Member role '"+ dto.getUsername() +"' updated successfully")
+            .status(HttpStatus.NO_CONTENT.value())
+            .objectResponse(member)
+            .build(), HttpStatus.NO_CONTENT
+        );
+    }
+
+    @JsonView({BandMemberRequestDto.FindByUserAndBandView.class, BandMemberRequestDto.RoleNameView.class})
+    @PutMapping("/update-admin/{username}/{bandName}/{isAdmin}")
+    public ResponseEntity<MessageResponse> updateAdmin(@PathVariable String username, @PathVariable String bandName, @PathVariable Boolean isAdmin){
+        BandMemberResponseDto member = memberService.updateAdmin(username, bandName, isAdmin);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Member '"+ username +"' is admin updated successfully")
+            .status(HttpStatus.NO_CONTENT.value())
+            .objectResponse(member)
+            .build(), HttpStatus.NO_CONTENT
         );
     }
 
