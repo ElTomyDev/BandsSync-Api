@@ -8,9 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.heavydelay.BandsSync.Api.model.dto.band.band_member.BandMemberRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.band.band_member.BandMemberResponseDto;
 import com.heavydelay.BandsSync.Api.model.payload.MessageResponse;
 import com.heavydelay.BandsSync.Api.service.band.IBandMember;
@@ -180,4 +184,31 @@ public class BandMemberController {
         );
     }
     
+    ///// POST ENDPOINTS ////////////////////////////////////////////
+    @JsonView(BandMemberRequestDto.JoinBandView.class)
+    @PostMapping("/join-by-username/{username}")
+    public ResponseEntity<MessageResponse> joinBandByUsername(@PathVariable String username, @RequestBody BandMemberRequestDto dto){
+        BandMemberResponseDto newMember = memberService.joinBand(username, null, dto);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Member with username '"+ username +"' successfully created and joined the band with ID '"+ dto.getIdBand() + "'.")
+            .status(HttpStatus.CREATED.value())
+            .objectResponse(newMember)
+            .build(), HttpStatus.CREATED
+        );
+    }
+
+    @JsonView(BandMemberRequestDto.JoinBandView.class)
+    @PostMapping("/join-by-id/{id}")
+    public ResponseEntity<MessageResponse> joinBandByUsername(@PathVariable Long id, @RequestBody BandMemberRequestDto dto){
+        BandMemberResponseDto newMember = memberService.joinBand(null, id, dto);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Member with USER ID '"+ id +"' successfully created and joined the band with ID '"+ dto.getIdBand() + "'.")
+            .status(HttpStatus.CREATED.value())
+            .objectResponse(newMember)
+            .build(), HttpStatus.CREATED
+        );
+    }
+
 }
