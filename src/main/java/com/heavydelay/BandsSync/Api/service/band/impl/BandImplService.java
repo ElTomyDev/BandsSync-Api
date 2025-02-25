@@ -122,7 +122,12 @@ public class BandImplService implements IBand{
     public void deleteBand(String bandName, Long id) {
         Band bandDelete = this.findBandByIdOrBandname(bandName, id);
 
+        SocialLinks socialDelete = socialRepository.findById(bandDelete.getSocialLinks().getIdSocial()).orElseThrow(
+            () -> new ResourceNotFoundException("The social links not found")
+        );
+
         bandRepository.delete(bandDelete);
+        socialRepository.delete(socialDelete);
     }
 
     

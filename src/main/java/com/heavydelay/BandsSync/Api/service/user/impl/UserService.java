@@ -18,12 +18,16 @@ import com.heavydelay.BandsSync.Api.model.dto.user.user_password.UserPasswordReq
 import com.heavydelay.BandsSync.Api.model.entity.Location;
 import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
 import com.heavydelay.BandsSync.Api.model.entity.User;
+import com.heavydelay.BandsSync.Api.model.entity.UserEmail;
+import com.heavydelay.BandsSync.Api.model.entity.UserPassword;
 import com.heavydelay.BandsSync.Api.model.mapper.external_data.ILocationMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.external_data.ISocialLinksMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.user.IUserMapper;
 import com.heavydelay.BandsSync.Api.repository.external_data.LocationRepository;
 import com.heavydelay.BandsSync.Api.repository.external_data.RoleRepository;
 import com.heavydelay.BandsSync.Api.repository.external_data.SocialLinksRepository;
+import com.heavydelay.BandsSync.Api.repository.user.UserEmailRepository;
+import com.heavydelay.BandsSync.Api.repository.user.UserPasswordRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserRepository;
 import com.heavydelay.BandsSync.Api.service.user.IEmail;
 import com.heavydelay.BandsSync.Api.service.user.IPassword;
@@ -34,6 +38,8 @@ public class UserService implements IUser{
 
     // Repositorios
     private UserRepository userRepository;
+    private UserEmailRepository emailRepository;
+    private UserPasswordRepository passwordRepository;
     private RoleRepository roleRepository;
     private SocialLinksRepository socialRepository;
     private LocationRepository locationRepository;
@@ -47,11 +53,16 @@ public class UserService implements IUser{
     private ISocialLinksMapper socialMapper;
     private ILocationMapper locationMapper;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository,
+    
+
+    public UserService(UserRepository userRepository, UserEmailRepository emailRepository,
+            UserPasswordRepository passwordRepository, RoleRepository roleRepository,
             SocialLinksRepository socialRepository, LocationRepository locationRepository, IEmail emailService,
             IPassword passwordService, IUserMapper userMapper, ISocialLinksMapper socialMapper,
             ILocationMapper locationMapper) {
         this.userRepository = userRepository;
+        this.emailRepository = emailRepository;
+        this.passwordRepository = passwordRepository;
         this.roleRepository = roleRepository;
         this.socialRepository = socialRepository;
         this.locationRepository = locationRepository;
@@ -67,7 +78,28 @@ public class UserService implements IUser{
     public void deleteUser(String username, Long id) {
         User user = this.findUserByIdOrUsername(username, id);
 
+        UserPassword passwordDelete = passwordRepository.findByUser(user).orElseThrow(
+            () -> new ResourceNotFoundException("The user password not found")
+        );
+
+        UserEmail emailDelete = emailRepository.findByUser(user).orElseThrow(
+            () -> new ResourceNotFoundException("The user email not found")
+        );
+
+        SocialLinks socialDelete = socialRepository.findById(user.getSocialLinks().getIdSocial()).orElseThrow(
+            () -> new ResourceNotFoundException("The Social links not found")
+        );
+
+        Location locationDelete = locationRepository.findById(user.getLocation().getIdLocation()).orElseThrow(
+            () -> new ResourceNotFoundException("The Location not found")
+        );
+
         userRepository.delete(user);
+        emailRepository.delete(emailDelete);
+        passwordRepository.delete(passwordDelete);
+        socialRepository.delete(socialDelete);
+        locationRepository.delete(locationDelete);
+        // Falta eliminar el user preferences
     }
 
     ////// REGISTER & LOGIN /////////////////////////////////////////////////
