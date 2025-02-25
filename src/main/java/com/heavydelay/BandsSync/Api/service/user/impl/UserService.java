@@ -94,11 +94,11 @@ public class UserService implements IUser{
             () -> new ResourceNotFoundException("The Location not found")
         );
 
-        userRepository.delete(user);
         emailRepository.delete(emailDelete);
         passwordRepository.delete(passwordDelete);
-        socialRepository.delete(socialDelete);
         locationRepository.delete(locationDelete);
+        userRepository.delete(user);
+        socialRepository.delete(socialDelete);
         // Falta eliminar el user preferences
     }
 
