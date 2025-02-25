@@ -29,6 +29,7 @@ import com.heavydelay.BandsSync.Api.repository.external_data.SocialLinksReposito
 import com.heavydelay.BandsSync.Api.repository.user.UserEmailRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserPasswordRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserRepository;
+import com.heavydelay.BandsSync.Api.service.external_data.ILocation;
 import com.heavydelay.BandsSync.Api.service.user.IEmail;
 import com.heavydelay.BandsSync.Api.service.user.IPassword;
 import com.heavydelay.BandsSync.Api.service.user.IUser;
@@ -47,19 +48,19 @@ public class UserService implements IUser{
     //Servicios
     private IEmail emailService;
     private IPassword passwordService;
+    private ILocation locationService;
     
     // Mappeos
     private IUserMapper userMapper;
     private ISocialLinksMapper socialMapper;
     private ILocationMapper locationMapper;
 
-    
 
     public UserService(UserRepository userRepository, UserEmailRepository emailRepository,
             UserPasswordRepository passwordRepository, RoleRepository roleRepository,
             SocialLinksRepository socialRepository, LocationRepository locationRepository, IEmail emailService,
-            IPassword passwordService, IUserMapper userMapper, ISocialLinksMapper socialMapper,
-            ILocationMapper locationMapper) {
+            IPassword passwordService, ILocation locationService, IUserMapper userMapper,
+            ISocialLinksMapper socialMapper, ILocationMapper locationMapper) {
         this.userRepository = userRepository;
         this.emailRepository = emailRepository;
         this.passwordRepository = passwordRepository;
@@ -68,6 +69,7 @@ public class UserService implements IUser{
         this.locationRepository = locationRepository;
         this.emailService = emailService;
         this.passwordService = passwordService;
+        this.locationService = locationService;
         this.userMapper = userMapper;
         this.socialMapper = socialMapper;
         this.locationMapper = locationMapper;
@@ -93,11 +95,11 @@ public class UserService implements IUser{
         Location locationDelete = locationRepository.findById(user.getLocation().getIdLocation()).orElseThrow(
             () -> new ResourceNotFoundException("The Location not found")
         );
-
+        
         emailRepository.delete(emailDelete);
         passwordRepository.delete(passwordDelete);
-        locationRepository.delete(locationDelete);
         userRepository.delete(user);
+        locationRepository.delete(locationDelete);
         socialRepository.delete(socialDelete);
         // Falta eliminar el user preferences
     }
@@ -128,13 +130,12 @@ public class UserService implements IUser{
         socialRepository.save(social);
         user.setSocialLinks(social);
 
-        // Para la localidad (Crea un objeto vacio)
-        Location location = new Location();
-        locationRepository.save(location);
-        user.setLocation(location);
-
+        
         // Se guarda el usuario
         userRepository.save(user);
+        
+        // Para la localidad (Crea un objeto vacio)
+        locationService.createEmptyLocationForUser(user);
 
         // Creacion de la contraseña
         passwordService.createPassword(user, dto.getRegisterPassword());
