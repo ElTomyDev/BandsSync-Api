@@ -18,7 +18,7 @@ public class SocialLinksImplService implements ISocialLinks{
     ISocialLinksMapper socialMapper;
 
     @Override
-    public SocialLinks createSocialLinksForUser() {
+    public SocialLinks createEmptySocialLinks() {
         SocialLinks social = SocialLinks.builder()
                              .instagram("")
                              .facebook("")

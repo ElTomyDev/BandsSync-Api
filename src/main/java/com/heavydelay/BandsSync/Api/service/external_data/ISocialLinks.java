@@ -7,6 +7,6 @@ import com.heavydelay.BandsSync.Api.model.entity.User;
 
 public interface ISocialLinks {
     void deleteSocialLinksByUser(User user);
-    SocialLinks createSocialLinksForUser();
+    SocialLinks createEmptySocialLinks();
     SocialLinksResponseDto updateSocialLinksForUser(User user, SocialLinksRequestDto dto);
 }

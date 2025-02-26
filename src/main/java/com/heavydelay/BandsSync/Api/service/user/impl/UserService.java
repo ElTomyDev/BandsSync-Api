@@ -112,15 +112,10 @@ public class UserService implements IUser{
                     .name(dto.getName())
                     .lastname(dto.getLastname())
                     .username(dto.getUsername())
-                    .socialLinks(socialService.createSocialLinksForUser())
+                    .socialLinks(socialService.createEmptySocialLinks())
                     .role(roleRepository.findByRoleName("None").orElseThrow(
                         () -> new ResourceNotFoundException("There is no role with the name 'None'")
                     )).build();
-        
-        // Para las redes sociales (Crea un objeto vacio)
-        SocialLinks social = new SocialLinks();
-        socialRepository.save(social);
-        user.setSocialLinks(social);
 
         
         // Se guarda el usuario
