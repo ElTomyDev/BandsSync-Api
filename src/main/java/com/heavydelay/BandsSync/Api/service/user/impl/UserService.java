@@ -27,6 +27,7 @@ import com.heavydelay.BandsSync.Api.repository.user.UserEmailRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserPasswordRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserRepository;
 import com.heavydelay.BandsSync.Api.service.external_data.ILocation;
+import com.heavydelay.BandsSync.Api.service.external_data.ISocialLinks;
 import com.heavydelay.BandsSync.Api.service.user.IEmail;
 import com.heavydelay.BandsSync.Api.service.user.IPassword;
 import com.heavydelay.BandsSync.Api.service.user.IUser;
@@ -45,7 +46,7 @@ public class UserService implements IUser{
     private IEmail emailService;
     private IPassword passwordService;
     private ILocation locationService;
-    
+    private ISocialLinks socialService;
     // Mappeos
     private IUserMapper userMapper;
     private ISocialLinksMapper socialMapper;
@@ -89,8 +90,8 @@ public class UserService implements IUser{
         emailRepository.delete(emailDelete);
         passwordRepository.delete(passwordDelete);
         locationService.deleteLocationByUser(user);
-        userRepository.delete(user);
         socialRepository.delete(socialDelete);
+        userRepository.delete(user);
         // Falta eliminar el user preferences
     }
 
@@ -111,6 +112,7 @@ public class UserService implements IUser{
                     .name(dto.getName())
                     .lastname(dto.getLastname())
                     .username(dto.getUsername())
+                    .socialLinks(socialService.createSocialLinksForUser())
                     .role(roleRepository.findByRoleName("None").orElseThrow(
                         () -> new ResourceNotFoundException("There is no role with the name 'None'")
                     )).build();
