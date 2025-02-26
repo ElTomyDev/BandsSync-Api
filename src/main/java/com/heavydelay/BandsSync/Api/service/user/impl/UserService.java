@@ -53,14 +53,14 @@ public class UserService implements IUser{
     // Mappeos
     private IUserMapper userMapper;
     private ISocialLinksMapper socialMapper;
-    private ILocationMapper locationMapper;
+    
 
 
     public UserService(UserRepository userRepository, UserEmailRepository emailRepository,
             UserPasswordRepository passwordRepository, RoleRepository roleRepository,
             SocialLinksRepository socialRepository, LocationRepository locationRepository, IEmail emailService,
             IPassword passwordService, ILocation locationService, IUserMapper userMapper,
-            ISocialLinksMapper socialMapper, ILocationMapper locationMapper) {
+            ISocialLinksMapper socialMapper) {
         this.userRepository = userRepository;
         this.emailRepository = emailRepository;
         this.passwordRepository = passwordRepository;
@@ -72,7 +72,6 @@ public class UserService implements IUser{
         this.locationService = locationService;
         this.userMapper = userMapper;
         this.socialMapper = socialMapper;
-        this.locationMapper = locationMapper;
     }
 
     ////// DELETE ////////////////////////////////////////////////////////
@@ -98,8 +97,8 @@ public class UserService implements IUser{
         
         emailRepository.delete(emailDelete);
         passwordRepository.delete(passwordDelete);
+        locationService.deleteLocationByUser(user);
         userRepository.delete(user);
-        locationRepository.delete(locationDelete);
         socialRepository.delete(socialDelete);
         // Falta eliminar el user preferences
     }
@@ -210,12 +209,9 @@ public class UserService implements IUser{
     public LocationResponseDto updateLocation(LocationRequestDto dto, String username, Long id){
         User user = this.findUserByIdOrUsername(username, id);
 
-        Location location = locationRepository.findById(user.getLocation().getIdLocation()).orElseThrow(
-            () -> new ResourceNotFoundException("The location with ID '" + user.getLocation().getIdLocation() + "' was not found")
-        );
-
-        locationRepository.save(location);
-        return locationMapper.toBasicDto(location);
+        LocationResponseDto locationUpdateDto = locationService.updateLocationForUser(user, dto);
+        
+        return locationUpdateDto;
     }
 
     @Override
