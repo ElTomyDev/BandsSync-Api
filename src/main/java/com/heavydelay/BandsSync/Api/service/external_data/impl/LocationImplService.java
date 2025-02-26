@@ -21,7 +21,7 @@ public class LocationImplService implements ILocation{
 
 
     @Override
-    public Location createEmptyLocationForUser(User user) {
+    public Location createEmptyLocation() {
         Location location = Location.builder()
                             .country("")
                             .state("")
@@ -29,8 +29,6 @@ public class LocationImplService implements ILocation{
                             .postalCode("")
                             .address("")
                             .build();
-        
-        user.setLocation(location);
         locationRepository.save(location);
         return location;
     }

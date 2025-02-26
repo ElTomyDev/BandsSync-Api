@@ -40,4 +40,11 @@ public class EmailService implements IEmail{
         emailRepository.save(userEmail);
     }
 
+    @Override
+    public void deleteEmailByUser(User user){
+        UserEmail emailDelete = emailRepository.findByUser(user).orElseThrow(
+            () -> new ResourceNotFoundException("The user email not found")
+        );
+        emailRepository.delete(emailDelete);
+    }
 }

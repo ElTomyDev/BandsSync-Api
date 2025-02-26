@@ -47,4 +47,13 @@ public class PasswordService implements IPassword{
         passwordRepository.save(userPassword);
     }
 
+    @Override
+    public void deletePasswordByUser(User user){
+        UserPassword passwordDelete = passwordRepository.findByUser(user).orElseThrow(
+            () -> new ResourceNotFoundException("The user password not found")
+        );
+
+        passwordRepository.delete(passwordDelete);
+    }
+
 }

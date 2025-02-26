@@ -1,6 +1,7 @@
 package com.heavydelay.BandsSync.Api.service.external_data.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksRequestDto;
@@ -11,6 +12,7 @@ import com.heavydelay.BandsSync.Api.model.mapper.external_data.ISocialLinksMappe
 import com.heavydelay.BandsSync.Api.repository.external_data.SocialLinksRepository;
 import com.heavydelay.BandsSync.Api.service.external_data.ISocialLinks;
 
+@Service
 public class SocialLinksImplService implements ISocialLinks{
 
     @Autowired
