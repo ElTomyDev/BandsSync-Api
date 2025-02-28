@@ -17,9 +17,9 @@ import com.heavydelay.BandsSync.Api.model.dto.user.user_email.UserEmailRequestDt
 import com.heavydelay.BandsSync.Api.model.dto.user.user_password.UserPasswordRequestDto;
 import com.heavydelay.BandsSync.Api.model.entity.User;
 import com.heavydelay.BandsSync.Api.model.mapper.user.IUserMapper;
-import com.heavydelay.BandsSync.Api.repository.external_data.RoleRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserRepository;
 import com.heavydelay.BandsSync.Api.service.external_data.ILocation;
+import com.heavydelay.BandsSync.Api.service.external_data.IRole;
 import com.heavydelay.BandsSync.Api.service.external_data.ISocialLinks;
 import com.heavydelay.BandsSync.Api.service.user.IEmail;
 import com.heavydelay.BandsSync.Api.service.user.IPassword;
@@ -30,26 +30,26 @@ public class UserService implements IUser{
 
     // Repositorios
     private UserRepository userRepository;
-    private RoleRepository roleRepository;
     
     //Servicios
     private IEmail emailService;
     private IPassword passwordService;
     private ILocation locationService;
     private ISocialLinks socialService;
+    private IRole roleService;
+
     // Mappeos
     private IUserMapper userMapper;
     
-
-
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, IEmail emailService,
-            IPassword passwordService, ILocation locationService, ISocialLinks socialService, IUserMapper userMapper) {
+    public UserService(UserRepository userRepository, IEmail emailService,
+            IPassword passwordService, ILocation locationService, ISocialLinks socialService, IRole roleService,
+            IUserMapper userMapper) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
         this.emailService = emailService;
         this.passwordService = passwordService;
         this.locationService = locationService;
         this.socialService = socialService;
+        this.roleService = roleService;
         this.userMapper = userMapper;
     }
 
@@ -85,9 +85,8 @@ public class UserService implements IUser{
                     .username(dto.getUsername())
                     .socialLinks(socialService.createEmptySocialLinks())
                     .location(locationService.createEmptyLocation())
-                    .role(roleRepository.findByRoleName("None").orElseThrow(
-                        () -> new ResourceNotFoundException("There is no role with the name 'None'")
-                    )).build();
+                    .role(roleService.getNoneRole())
+                    .build();
 
         
         // Se guarda el usuario
@@ -130,11 +129,7 @@ public class UserService implements IUser{
     public UserResponseDto updateRole(UserRequestDto dto, String username, Long id) {
         User user = this.findUserByIdOrUsername(username, id);
 
-        user.setRole(
-            roleRepository.findByRoleName(dto.getRoleName()).orElseThrow(
-                () -> new ResourceNotFoundException("The role with name '" + dto.getRoleName() + "' was not found")
-            )
-        );
+        user.setRole(roleService.getRoleByName(dto.getRoleName()));
         userRepository.save(user);
         return userMapper.toBasicDto(user);
     }
