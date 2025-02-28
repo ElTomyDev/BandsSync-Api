@@ -27,7 +27,8 @@ import com.heavydelay.BandsSync.Api.service.user.IUser;
 
 @Service
 public class UserService implements IUser{
-
+    // FALTA LAS PREFERENCIAS DEL USUARIO Y LA AUTENTICACION PARA EMAIL Y EL LOGIN Y ALGUNAS VALIDACIONES PARA LA CONTRASEÑA
+    
     // Repositorios
     private UserRepository userRepository;
     
