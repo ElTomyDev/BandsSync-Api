@@ -1,6 +1,6 @@
 package com.heavydelay.BandsSync.Api.service.external_data.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksRequestDto;
@@ -11,12 +11,16 @@ import com.heavydelay.BandsSync.Api.model.mapper.external_data.ISocialLinksMappe
 import com.heavydelay.BandsSync.Api.repository.external_data.SocialLinksRepository;
 import com.heavydelay.BandsSync.Api.service.external_data.ISocialLinks;
 
+@Service
 public class SocialLinksImplService implements ISocialLinks{
 
-    @Autowired
     SocialLinksRepository socialRepository;
     ISocialLinksMapper socialMapper;
 
+    public SocialLinksImplService(SocialLinksRepository socialRepository, ISocialLinksMapper socialMapper) {
+        this.socialRepository = socialRepository;
+        this.socialMapper = socialMapper;
+    }
     @Override
     public SocialLinks createEmptySocialLinks() {
         SocialLinks social = SocialLinks.builder()
@@ -33,6 +37,7 @@ public class SocialLinksImplService implements ISocialLinks{
         socialRepository.save(social);
         return social;
     }
+    
     @Override
     public void deleteSocialLinksByUser(User user) {
         SocialLinks socialDelete = socialRepository.findById(user.getSocialLinks().getIdSocial()).orElseThrow(
@@ -40,6 +45,7 @@ public class SocialLinksImplService implements ISocialLinks{
         );
         socialRepository.delete(socialDelete);
     }
+
     @Override
     public SocialLinksResponseDto updateSocialLinksForUser(User user, SocialLinksRequestDto dto) {
         SocialLinks socialUpdate = socialRepository.findById(user.getSocialLinks().getIdSocial()).orElseThrow(
@@ -54,6 +60,9 @@ public class SocialLinksImplService implements ISocialLinks{
         }
         if (!dto.getTwitter().isEmpty()) {
             socialUpdate.setTwitter(dto.getTwitter());
+        }
+        if (!dto.getTiktok().isEmpty()) {
+            socialUpdate.setTiktok(dto.getTiktok());
         }
         if (!dto.getReddit().isEmpty()) {
             socialUpdate.setReddit(dto.getReddit());

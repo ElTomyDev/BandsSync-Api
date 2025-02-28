@@ -15,18 +15,11 @@ import com.heavydelay.BandsSync.Api.model.dto.user.UserRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.user_email.UserEmailRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.user_password.UserPasswordRequestDto;
-import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
 import com.heavydelay.BandsSync.Api.model.entity.User;
-import com.heavydelay.BandsSync.Api.model.entity.UserEmail;
-import com.heavydelay.BandsSync.Api.model.entity.UserPassword;
-import com.heavydelay.BandsSync.Api.model.mapper.external_data.ISocialLinksMapper;
 import com.heavydelay.BandsSync.Api.model.mapper.user.IUserMapper;
-import com.heavydelay.BandsSync.Api.repository.external_data.RoleRepository;
-import com.heavydelay.BandsSync.Api.repository.external_data.SocialLinksRepository;
-import com.heavydelay.BandsSync.Api.repository.user.UserEmailRepository;
-import com.heavydelay.BandsSync.Api.repository.user.UserPasswordRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserRepository;
 import com.heavydelay.BandsSync.Api.service.external_data.ILocation;
+import com.heavydelay.BandsSync.Api.service.external_data.IRole;
 import com.heavydelay.BandsSync.Api.service.external_data.ISocialLinks;
 import com.heavydelay.BandsSync.Api.service.user.IEmail;
 import com.heavydelay.BandsSync.Api.service.user.IPassword;
@@ -34,64 +27,43 @@ import com.heavydelay.BandsSync.Api.service.user.IUser;
 
 @Service
 public class UserService implements IUser{
-
+    // FALTA LAS PREFERENCIAS DEL USUARIO Y LA AUTENTICACION PARA EMAIL Y EL LOGIN Y ALGUNAS VALIDACIONES PARA LA CONTRASEÑA
+    
     // Repositorios
     private UserRepository userRepository;
-    private UserEmailRepository emailRepository;
-    private UserPasswordRepository passwordRepository;
-    private RoleRepository roleRepository;
-    private SocialLinksRepository socialRepository;
     
     //Servicios
     private IEmail emailService;
     private IPassword passwordService;
     private ILocation locationService;
     private ISocialLinks socialService;
+    private IRole roleService;
+
     // Mappeos
     private IUserMapper userMapper;
-    private ISocialLinksMapper socialMapper;
     
-
-
-    public UserService(UserRepository userRepository, UserEmailRepository emailRepository,
-            UserPasswordRepository passwordRepository, RoleRepository roleRepository,
-            SocialLinksRepository socialRepository, IEmail emailService,
-            IPassword passwordService, ILocation locationService, IUserMapper userMapper,
-            ISocialLinksMapper socialMapper) {
+    public UserService(UserRepository userRepository, IEmail emailService,
+            IPassword passwordService, ILocation locationService, ISocialLinks socialService, IRole roleService,
+            IUserMapper userMapper) {
         this.userRepository = userRepository;
-        this.emailRepository = emailRepository;
-        this.passwordRepository = passwordRepository;
-        this.roleRepository = roleRepository;
-        this.socialRepository = socialRepository;
         this.emailService = emailService;
         this.passwordService = passwordService;
         this.locationService = locationService;
+        this.socialService = socialService;
+        this.roleService = roleService;
         this.userMapper = userMapper;
-        this.socialMapper = socialMapper;
     }
 
     ////// DELETE ////////////////////////////////////////////////////////
     @Override
     public void deleteUser(String username, Long id) {
         User user = this.findUserByIdOrUsername(username, id);
-
-        UserPassword passwordDelete = passwordRepository.findByUser(user).orElseThrow(
-            () -> new ResourceNotFoundException("The user password not found")
-        );
-
-        UserEmail emailDelete = emailRepository.findByUser(user).orElseThrow(
-            () -> new ResourceNotFoundException("The user email not found")
-        );
-
-        SocialLinks socialDelete = socialRepository.findById(user.getSocialLinks().getIdSocial()).orElseThrow(
-            () -> new ResourceNotFoundException("The Social links not found")
-        );
         
-        emailRepository.delete(emailDelete);
-        passwordRepository.delete(passwordDelete);
-        locationService.deleteLocationByUser(user);
-        socialRepository.delete(socialDelete);
+        emailService.deleteEmailByUser(user);
+        passwordService.deletePasswordByUser(user);
         userRepository.delete(user);
+        locationService.deleteLocationByUser(user);
+        socialService.deleteSocialLinksByUser(user);
         // Falta eliminar el user preferences
     }
 
@@ -113,16 +85,13 @@ public class UserService implements IUser{
                     .lastname(dto.getLastname())
                     .username(dto.getUsername())
                     .socialLinks(socialService.createEmptySocialLinks())
-                    .role(roleRepository.findByRoleName("None").orElseThrow(
-                        () -> new ResourceNotFoundException("There is no role with the name 'None'")
-                    )).build();
+                    .location(locationService.createEmptyLocation())
+                    .role(roleService.getNoneRole())
+                    .build();
 
         
         // Se guarda el usuario
         userRepository.save(user);
-        
-        // Para la localidad (Crea un objeto vacio)
-        locationService.createEmptyLocationForUser(user);
 
         // Creacion de la contraseña
         passwordService.createPassword(user, dto.getRegisterPassword());
@@ -161,11 +130,7 @@ public class UserService implements IUser{
     public UserResponseDto updateRole(UserRequestDto dto, String username, Long id) {
         User user = this.findUserByIdOrUsername(username, id);
 
-        user.setRole(
-            roleRepository.findByRoleName(dto.getRoleName()).orElseThrow(
-                () -> new ResourceNotFoundException("The role with name '" + dto.getRoleName() + "' was not found")
-            )
-        );
+        user.setRole(roleService.getRoleByName(dto.getRoleName()));
         userRepository.save(user);
         return userMapper.toBasicDto(user);
     }
@@ -174,22 +139,9 @@ public class UserService implements IUser{
     public SocialLinksResponseDto updateSocialLinks(SocialLinksRequestDto dto, String username, Long id){
         User user = this.findUserByIdOrUsername(username, id);
 
-        SocialLinks social = socialRepository.findById(user.getSocialLinks().getIdSocial()).orElseThrow(
-            () -> new ResourceNotFoundException("The Social links with ID '" + user.getSocialLinks().getIdSocial() + "' was not found")
-        );
+        SocialLinksResponseDto socialUpdate = socialService.updateSocialLinksForUser(user, dto);
 
-        social.setInstagram(dto.getInstagram());
-        social.setFacebook(dto.getFacebook());
-        social.setTwitter(dto.getTwitter());
-        social.setTiktok(dto.getTiktok());
-        social.setReddit(dto.getReddit());
-        social.setYoutube(dto.getYoutube());
-        social.setSpotify(dto.getSpotify());
-        social.setBandcamp(dto.getBandcamp());
-        social.setSoundcloud(dto.getSoundcloud());
-
-        socialRepository.save(social);
-        return socialMapper.toBasicDto(social);
+        return socialUpdate;
 
     }
 

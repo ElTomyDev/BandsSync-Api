@@ -1,6 +1,5 @@
 package com.heavydelay.BandsSync.Api.service.external_data.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
@@ -15,13 +14,17 @@ import com.heavydelay.BandsSync.Api.service.external_data.ILocation;
 @Service
 public class LocationImplService implements ILocation{
 
-    @Autowired
     LocationRepository locationRepository;
     ILocationMapper locationMapper;
 
 
+    public LocationImplService(LocationRepository locationRepository, ILocationMapper locationMapper) {
+        this.locationRepository = locationRepository;
+        this.locationMapper = locationMapper;
+    }
+
     @Override
-    public Location createEmptyLocationForUser(User user) {
+    public Location createEmptyLocation() {
         Location location = Location.builder()
                             .country("")
                             .state("")
@@ -29,8 +32,6 @@ public class LocationImplService implements ILocation{
                             .postalCode("")
                             .address("")
                             .build();
-        
-        user.setLocation(location);
         locationRepository.save(location);
         return location;
     }
