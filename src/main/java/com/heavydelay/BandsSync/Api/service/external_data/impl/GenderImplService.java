@@ -1,6 +1,7 @@
 package com.heavydelay.BandsSync.Api.service.external_data.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -8,7 +9,6 @@ import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
 import com.heavydelay.BandsSync.Api.model.dto.external_data.gender.GenderRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.external_data.gender.GenderResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Gender;
-import com.heavydelay.BandsSync.Api.model.entity.Role;
 import com.heavydelay.BandsSync.Api.model.mapper.external_data.IGenderMapper;
 import com.heavydelay.BandsSync.Api.repository.external_data.GenderRepository;
 import com.heavydelay.BandsSync.Api.service.external_data.IGender;
@@ -26,44 +26,53 @@ public class GenderImplService implements IGender{
 
     @Override
     public GenderResponseDto createNewGender(GenderRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+        Gender newGender = Gender.builder().genderName(dto.getGenderName()).build();
+
+        genderRepository.save(newGender);
+
+        return genderMapper.toBasicDto(newGender);
     }
 
     @Override
     public void deleteGender(String genderName, Integer idGender) {
-        // TODO Auto-generated method stub
-        
+        Gender genderDelete = this.findGenderByNameOrId(genderName, idGender);
+
+        genderRepository.delete(genderDelete);
     }
 
     @Override
     public Gender getGenderByName(String genderName) {
-        // TODO Auto-generated method stub
-        return null;
+        return this.findGenderByNameOrId(genderName, null);
     }
 
     @Override
     public Gender getNoneGender() {
-        // TODO Auto-generated method stub
-        return null;
+        
+        return this.findGenderByNameOrId("None", null);
     }
 
     @Override
     public List<GenderResponseDto> showAllGender() {
-        // TODO Auto-generated method stub
-        return null;
+        List<Gender> genders = (List<Gender>) genderRepository.findAll();
+
+        return genders.stream().map(genderMapper::toBasicDto).collect(Collectors.toList());
     }
 
     @Override
     public GenderResponseDto showGender(String genderName, Integer idGender) {
-        // TODO Auto-generated method stub
-        return null;
+        Gender gender = this.findGenderByNameOrId(genderName, idGender);
+        
+        return genderMapper.toBasicDto(gender);
     }
 
     @Override
     public GenderResponseDto updateGenderName(String genderName, Integer idGender, GenderRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+        Gender genderUpdate = this.findGenderByNameOrId(genderName, idGender);
+
+        genderUpdate.setGenderName(dto.getGenderName());
+
+        genderRepository.save(genderUpdate);
+        return genderMapper.toBasicDto(genderUpdate);
     }
 
     @Override

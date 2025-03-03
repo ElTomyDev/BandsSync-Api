@@ -64,7 +64,6 @@ public class RoleImplService implements IRole{
     public List<RoleResponseDto> showAllRoles(){
         List<Role> roles = (List<Role>) roleRepository.findAll();
 
-        // Retorno y mapea la lista con todos los usuarios
         return roles.stream().map(roleMapper::toBasicDto).collect(Collectors.toList());
     }
 
