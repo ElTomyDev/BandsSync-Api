@@ -67,27 +67,27 @@ public class BandMemberImplService implements IBandMember{
         }else if (idBand != null){
             Band band = bandRepository.findById(idBand).orElseThrow(
                 () -> new ResourceNotFoundException("The band with ID '" + idBand + "' was not found")
-                );
-                members = (List<BandMember>) bandMemberRepository.findAllByBand(band);
-            }else{ // si todos los parametros son null
-                throw new IllegalArgumentException("Parameters cannot be null");
-            }
+            );
+            members = (List<BandMember>) bandMemberRepository.findAllByBand(band);
+        }else{ // si todos los parametros son null
+            throw new IllegalArgumentException("Parameters cannot be null");
+        }
             
         Function<BandMember, BandMemberResponseDto> mapper = detailed ? bandMemberMapper::toDetailedDto : bandMemberMapper::toBasicDto;
         return members.stream().map(mapper).collect(Collectors.toList());
     }
 
     @Override
-    public BandMemberResponseDto showMember(String username, String bandName, Long idBand, Long idUser, Long idMember, boolean detailed) {
-        BandMember member = this.findMemberByBandOrUserOrId(username, bandName, idBand, idUser, idMember);
+    public BandMemberResponseDto showMember(String username, Long idUser, String bandName, Long idBand, Long idMember, boolean detailed) {
+        BandMember member = this.findMemberByBandAndUserOrId(username, idUser, bandName, idBand, idMember);
         
         return detailed ? bandMemberMapper.toDetailedDto(member) : bandMemberMapper.toBasicDto(member);
     }
     
     ///////// DELETE MEMBERS /////////////////////////////////////////////////////////
     @Override
-    public void deleteMember(String username, String bandName, Long idBand, Long idUser, Long idMember) {
-        BandMember member = this.findMemberByBandOrUserOrId(username, bandName, idBand, idUser, idMember);
+    public void deleteMember(String username, Long idUser, String bandName, Long idBand, Long idMember) {
+        BandMember member = this.findMemberByBandAndUserOrId(username, idUser, bandName, idBand, idMember);
         
         bandMemberRepository.delete(member);
     }
@@ -140,8 +140,8 @@ public class BandMemberImplService implements IBandMember{
     }
 
     @Override
-    public BandMemberResponseDto leaveBand(BandMemberRequestDto dto) {
-        BandMember member = this.findMemberByBandAndUser(dto.getUsername(), dto.getBandName());
+    public BandMemberResponseDto leaveBand(String username, Long idUser, String bandName, Long idBand) {
+        BandMember member = this.findMemberByBandAndUserOrId(username, idUser, bandName, idBand, null);
         
         
         member.setIsAdmin(false);
@@ -163,8 +163,8 @@ public class BandMemberImplService implements IBandMember{
 
     ///////// UPDATE /////////////////////////////////////////////////////////
     @Override
-    public BandMemberResponseDto updateRole(BandMemberRequestDto dto) {
-        BandMember member = this.findMemberByBandAndUser(dto.getUsername(), dto.getBandName());
+    public BandMemberResponseDto updateRole(String username, Long idUser, String bandName, Long idBand, Long idMember, BandMemberRequestDto dto) {
+        BandMember member = this.findMemberByBandAndUserOrId(username, idUser, bandName, idBand, idMember);
         
         member.setRole(roleService.getRoleByName(dto.getRoleName()));
             
@@ -173,8 +173,12 @@ public class BandMemberImplService implements IBandMember{
     }
         
     @Override
-    public BandMemberResponseDto updateAdmin(String username, String bandName, Boolean isAdmin){
-        BandMember member = this.findMemberByBandAndUser(username, bandName);
+    public BandMemberResponseDto updateAdmin(String username, Long idUser, String bandName, Long idBand, Long idMember, Boolean isAdmin){
+        if(isAdmin == null){
+            throw new IllegalArgumentException("isAdmin cannot be null");
+        }
+        
+        BandMember member = this.findMemberByBandAndUserOrId(username, idUser, bandName, idBand, idMember);
         
         member.setIsAdmin(isAdmin);
         bandMemberRepository.save(member);
@@ -183,68 +187,41 @@ public class BandMemberImplService implements IBandMember{
     }
 
     ///////// AUXILIARES /////////////////////////////////////////////////////
-    @Override
-    public BandMember findMemberByBandOrUserOrId(String username, String bandName, Long idBand, Long idUser, Long idMember) {
-        BandMember bandMember;
+    @Override 
+    public BandMember findMemberByBandAndUserOrId(String username, Long idUser, String bandName, Long idBand, Long idMember){
+        if (idMember != null){
+            BandMember member = bandMemberRepository.findById(idMember).orElseThrow(
+                () -> new ResourceNotFoundException("The member with ID '" + idMember + "' was not found")
+            ); 
+            return member;
+        }
+        
+        User user;
+        Band band;
 
-        if (bandName != null){ // si el band name no es null
-            Band band = bandRepository.findByBandName(bandName).orElseThrow(
+        if (bandName != null){
+            band = bandRepository.findByBandName(bandName).orElseThrow(
                 () -> new ResourceNotFoundException("The band with band name '" + bandName + "' was not found")
             );
+        } else if (idBand != null){
+            band = bandRepository.findById(idBand).orElseThrow(
+                () -> new ResourceNotFoundException("The band with band ID '" + idBand + "' was not found")
+            );
+        }else{
+            throw new IllegalArgumentException("bandName or idBand cannot be null");
+        }
 
-            bandMember = bandMemberRepository.findByBand(band).orElseThrow(
-                () -> new ResourceNotFoundException("Member is not a member of the band with name '" + bandName + "' ")
-            );
-        }else if (idBand != null){ // si el idBand no es null
-            Band band = bandRepository.findById(idBand).orElseThrow(
-                () -> new ResourceNotFoundException("The band with ID '" + idBand + "' was not found")
-            );
-            
-            bandMember = bandMemberRepository.findByBand(band).orElseThrow(
-                () -> new ResourceNotFoundException("Member is not a member of the band with ID '" + idBand + "' ")
-            );
-        }else if (username != null){ // si el username no es null
-            User user = userRepository.findByUsername(username).orElseThrow(
+        if (username != null){
+            user = userRepository.findByUsername(username).orElseThrow(
                 () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
             );
-            
-            bandMember = bandMemberRepository.findByUser(user).orElseThrow(
-                () -> new ResourceNotFoundException("User '"+ username +"' is not a member of any band")
-            );
-        
-        }else if (idUser != null){ // si el idUser no el null
-            User user = userRepository.findById(idUser).orElseThrow(
+        }else if (idUser != null){
+            user = userRepository.findById(idUser).orElseThrow(
                 () -> new ResourceNotFoundException("The user with ID '" + idUser + "' was not found")
             );
-            
-            bandMember = bandMemberRepository.findByUser(user).orElseThrow(
-                () -> new ResourceNotFoundException("User with ID '"+ idUser +"' is not a member of any band")
-            );
-        }else if (idMember != null){ // si idMember no es null
-            bandMember = bandMemberRepository.findById(idMember).orElseThrow(
-                () -> new ResourceNotFoundException("The member with ID '" + idMember + "' was not found")
-            );
-        }else{ // si todos los parametros son null
-            throw new IllegalArgumentException("Parameters cannot be null");
+        }else{
+            throw new IllegalArgumentException("username or idUser cannot be null");
         }
-
-        return bandMember;
-    }
-
-    @Override 
-    public BandMember findMemberByBandAndUser(String username, String bandName){
-        
-        if(username == null || bandName == null){
-            throw new IllegalArgumentException("Parameters cannot be null");
-        }
-
-        Band band = bandRepository.findByBandName(bandName).orElseThrow(
-            () -> new ResourceNotFoundException("The band with band name '" + bandName + "' was not found")
-        );
-
-        User user = userRepository.findByUsername(username).orElseThrow(
-            () -> new ResourceNotFoundException("The user with username '" + username + "' was not found")
-            );
             
         BandMember member = bandMemberRepository.findByUserAndBand(user, band).orElseThrow(
             () -> new ResourceNotFoundException("member was not found")

@@ -12,24 +12,23 @@ public interface IBandMember {
     // VER MIEMBROS
     List<BandMemberResponseDto> showAllMembers(boolean detailed);
     List<BandMemberResponseDto> showAllMembersByBand(String bandName, Long idBand, boolean detailed);
-    BandMemberResponseDto showMember(String username, String bandName, Long idBand, Long idUser, Long idMember, boolean detailed);
+    BandMemberResponseDto showMember(String username, Long idUser, String bandName, Long idBand, Long idMember, boolean detailed);
 
     // AUTH AND REGISTER
     BandMemberResponseDto joinBand(String username, Long idUser, BandMemberRequestDto dto);
-    BandMemberResponseDto leaveBand(BandMemberRequestDto dto);
+    BandMemberResponseDto leaveBand(String username, Long idUser, String bandName, Long idBand);
     void createFirstMember(User user, Band band);
 
     // ELIMINAR BANDA
-    void deleteMember(String username, String bandName, Long idBand, Long idUser, Long idMember);
+    void deleteMember(String username, Long idUser, String bandName, Long idBand, Long idMember);
     void deleteAllMembersByBand(Band band);
 
     // METODOS UPDATE
-    BandMemberResponseDto updateRole(BandMemberRequestDto dto);
-    BandMemberResponseDto updateAdmin(String username, String bandName, Boolean isAdmin);
+    BandMemberResponseDto updateRole(String username, Long idUser, String bandName, Long idBand, Long idMember, BandMemberRequestDto dto);
+    BandMemberResponseDto updateAdmin(String username, Long idUser, String bandName, Long idBand, Long idMember, Boolean isAdmin);
 
     
 
     // AUXILIARES
-    BandMember findMemberByBandOrUserOrId(String username, String bandName, Long idBand, Long idUser, Long idMember);
-    BandMember findMemberByBandAndUser(String username, String bandName);
+    BandMember findMemberByBandAndUserOrId(String username, Long idUser, String bandName, Long idBand, Long idMember);
 }

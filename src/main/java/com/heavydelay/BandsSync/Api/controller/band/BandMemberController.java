@@ -28,6 +28,7 @@ public class BandMemberController {
     private IBandMember memberService;
 
     ///// GET ENDPOINTS //////////////////////////////////////////////////////
+    // Show more then one
     @GetMapping("/members/{detailed}")
     public ResponseEntity<MessageResponse> showAllMembers(@PathVariable boolean detailed){
         List<BandMemberResponseDto> members = memberService.showAllMembers(detailed);
@@ -64,8 +65,9 @@ public class BandMemberController {
         );
     }
 
-    @GetMapping("/show-by-id/{id}/{detailed}")
-    public ResponseEntity<MessageResponse> showMemberById(@PathVariable Long id, @PathVariable boolean detailed){
+    // show one
+    @GetMapping("/show-by-member-id/{id}/{detailed}")
+    public ResponseEntity<MessageResponse> showMemberByMemberId(@PathVariable Long id, @PathVariable boolean detailed){
         BandMemberResponseDto member = memberService.showMember(null, null, null, null, id, detailed);
         return new ResponseEntity<>(
             MessageResponse.builder()
@@ -76,115 +78,67 @@ public class BandMemberController {
         );
     }
 
-    @GetMapping("/show-by-user-id/{idUser}/{detailed}")
-    public ResponseEntity<MessageResponse> showMemberByUserId(@PathVariable Long idUser, @PathVariable boolean detailed){
-        BandMemberResponseDto member = memberService.showMember(null, null, null, idUser, null, detailed);
+    @GetMapping("/show-by-ids/{idUser}/{idBand}/{detailed}")
+    public ResponseEntity<MessageResponse> showMemberById(@PathVariable Long idUser, @PathVariable Long idBand, @PathVariable boolean detailed){
+        BandMemberResponseDto member = memberService.showMember(null, idUser, null, idBand, null, detailed);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("Member with user ID '"+ idUser +"' successfully obtained.")
+            .message("Member successfully obtained.")
             .status(HttpStatus.OK.value())
             .objectResponse(member)
             .build(), HttpStatus.OK
         );
     }
 
-    @GetMapping("/show-by-band-id/{idBand}/{detailed}")
-    public ResponseEntity<MessageResponse> showMemberByBandId(@PathVariable Long idBand, @PathVariable boolean detailed){
-        BandMemberResponseDto member = memberService.showMember(null, null, idBand, null, null, detailed);
+    @GetMapping("/show-by-names/{username}/{bandName}/{detailed}")
+    public ResponseEntity<MessageResponse> showMemberByNames(@PathVariable String username, @PathVariable String bandName, @PathVariable boolean detailed){
+        BandMemberResponseDto member = memberService.showMember(username, null, bandName, null, null, detailed);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("Member with band ID '"+ idBand +"' successfully obtained.")
+            .message("Member successfully obtained.")
             .status(HttpStatus.OK.value())
             .objectResponse(member)
             .build(), HttpStatus.OK
         );
     }
 
-    @GetMapping("/show-by-band-name/{bandName}/{detailed}")
-    public ResponseEntity<MessageResponse> showMemberByBandName(@PathVariable String bandName, @PathVariable boolean detailed){
-        BandMemberResponseDto member = memberService.showMember(null, bandName, null, null, null, detailed);
-        return new ResponseEntity<>(
-            MessageResponse.builder()
-            .message("Member with band name '"+ bandName +"' successfully obtained.")
-            .status(HttpStatus.OK.value())
-            .objectResponse(member)
-            .build(), HttpStatus.OK
-        );
-    }
-
-    @GetMapping("/show-by-username/{username}/{detailed}")
-    public ResponseEntity<MessageResponse> showMemberByUsername(@PathVariable String username, @PathVariable boolean detailed){
-        BandMemberResponseDto member = memberService.showMember(username, null, null, null, null, detailed);
-        return new ResponseEntity<>(
-            MessageResponse.builder()
-            .message("Member with username '"+ username +"' successfully obtained.")
-            .status(HttpStatus.OK.value())
-            .objectResponse(member)
-            .build(), HttpStatus.OK
-        );
-    }
-    
     ////// DELETE ENDPOINTS ///////////////////////////////////////////////
-    @DeleteMapping("/delete-by/{id}")
-    public ResponseEntity<MessageResponse> deleteMemberById(@PathVariable Long id){
-        memberService.deleteMember(null, null, null, null, id);
+    @DeleteMapping("/delete-by-member-id/{idMember}")
+    public ResponseEntity<MessageResponse> deleteMemberByIdMember(@PathVariable Long idMember){
+        memberService.deleteMember(null, null, null, null, idMember);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("Member with ID '"+ id +"' successfully deleted.")
+            .message("Member with ID '"+ idMember +"' successfully deleted.")
             .status(HttpStatus.OK.value())
-            .objectResponse("ID MEMBER: " + id)
+            .objectResponse("ID MEMBER: " + idMember)
             .build(), HttpStatus.OK
         );
     }
 
-    @DeleteMapping("/delete-by/{idUser}")
-    public ResponseEntity<MessageResponse> deleteMemberByUserId(@PathVariable Long idUser){
-        memberService.deleteMember(null, null, null, idUser, null);
+    @DeleteMapping("/delete-by-ids/{idUser}/{idBand}")
+    public ResponseEntity<MessageResponse> deleteMemberByIds(@PathVariable Long idUser, @PathVariable Long idBand){
+        memberService.deleteMember(null, idUser, null, idBand, null);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("Member with user ID '"+ idUser +"' successfully deleted.")
+            .message("Member successfully deleted.")
             .status(HttpStatus.OK.value())
-            .objectResponse("ID USER: " + idUser)
+            .objectResponse("ID USER: " + idUser + "\n" + "ID BAND: "+ idBand)
             .build(), HttpStatus.OK
         );
     }
 
-    @DeleteMapping("/delete-by/{idBand}")
-    public ResponseEntity<MessageResponse> deleteMemberByBandId(@PathVariable Long idBand){
-        memberService.deleteMember(null, null, idBand, null, null);
-        return new ResponseEntity<>(
-            MessageResponse.builder()
-            .message("Member with band ID '"+ idBand +"' successfully deleted.")
-            .status(HttpStatus.OK.value())
-            .objectResponse("ID BAND: " + idBand)
-            .build(), HttpStatus.OK
-        );
-    }
-
-    @DeleteMapping("/delete-by/{bandName}")
-    public ResponseEntity<MessageResponse> deleteMemberByBandName(@PathVariable String bandName){
-        memberService.deleteMember(null, bandName, null, null, null);
+    @DeleteMapping("/delete-by-names/{username}/{bandName}")
+    public ResponseEntity<MessageResponse> deleteMemberByNames(@PathVariable String username, @PathVariable String bandName){
+        memberService.deleteMember(username, null, bandName, null, null);
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("Member with band name '"+ bandName +"' successfully deleted.")
             .status(HttpStatus.OK.value())
-            .objectResponse("BAND NAME: " + bandName)
+            .objectResponse("BAND NAME: " + bandName + "\n" + "USERNAME: " + username)
             .build(), HttpStatus.OK
         );
     }
 
-    @DeleteMapping("/delete-by/{username}")
-    public ResponseEntity<MessageResponse> deleteMemberByUsername(@PathVariable String username){
-        memberService.deleteMember(username, null, null, null, null);
-        return new ResponseEntity<>(
-            MessageResponse.builder()
-            .message("Member with username '"+ username +"' successfully deleted.")
-            .status(HttpStatus.OK.value())
-            .objectResponse("USERNAME: " + username)
-            .build(), HttpStatus.OK
-        );
-    }
-    
     ///// POST ENDPOINTS ////////////////////////////////////////////
     @JsonView(BandMemberRequestDto.JoinBandView.class)
     @PostMapping("/join-by-username/{username}")
@@ -201,7 +155,7 @@ public class BandMemberController {
 
     @JsonView(BandMemberRequestDto.JoinBandView.class)
     @PostMapping("/join-by-id/{id}")
-    public ResponseEntity<MessageResponse> joinBandByUsername(@PathVariable Long id, @RequestBody BandMemberRequestDto dto){
+    public ResponseEntity<MessageResponse> joinBandById(@PathVariable Long id, @RequestBody BandMemberRequestDto dto){
         BandMemberResponseDto newMember = memberService.joinBand(null, id, dto);
         return new ResponseEntity<>(
             MessageResponse.builder()
@@ -213,13 +167,24 @@ public class BandMemberController {
     }
         
     //////// PUT ENDPOINTS ///////////////////////////////////////////
-    @JsonView(BandMemberRequestDto.FindByUserAndBandView.class)
-    @PutMapping("/leave-band")
-    public ResponseEntity<MessageResponse> leaveBand(@RequestBody BandMemberRequestDto dto){
-        BandMemberResponseDto member = memberService.leaveBand(dto);
+    @PutMapping("/leave-band-by-ids/{idUser}/{idBand}")
+    public ResponseEntity<MessageResponse> leaveBandByIds(@PathVariable Long idUser, @PathVariable Long idBand){
+        BandMemberResponseDto member = memberService.leaveBand(null, idUser, null, idBand);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("Member '"+ dto.getUsername() +"' of band '"+ dto.getBandName() + "' has left the group.")
+            .message("Member with user ID '"+ idUser +"' of band with ID '"+ idBand + "' has left the group.")
+            .status(HttpStatus.NO_CONTENT.value())
+            .objectResponse(member)
+            .build(), HttpStatus.NO_CONTENT
+        );
+    }
+
+    @PutMapping("/leave-band-by-names/{username}/{bandName}")
+    public ResponseEntity<MessageResponse> leaveBandByNames(@PathVariable String username, @PathVariable String bandName){
+        BandMemberResponseDto member = memberService.leaveBand(username, null, bandName, null);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Member with user name '"+ username +"' of band with name '"+ bandName + "' has left the group.")
             .status(HttpStatus.NO_CONTENT.value())
             .objectResponse(member)
             .build(), HttpStatus.NO_CONTENT
@@ -227,12 +192,12 @@ public class BandMemberController {
     }
 
     @JsonView({BandMemberRequestDto.FindByUserAndBandView.class, BandMemberRequestDto.RoleNameView.class})
-    @PutMapping("/update-member-role")
-    public ResponseEntity<MessageResponse> updateRole(@RequestBody BandMemberRequestDto dto){
-        BandMemberResponseDto member = memberService.updateRole(dto);
+    @PutMapping("/update-member-role-by-member-id/{idMember}")
+    public ResponseEntity<MessageResponse> updateRoleByMemberId(@PathVariable Long idMember, @RequestBody BandMemberRequestDto dto){
+        BandMemberResponseDto member = memberService.updateRole(null, null, null, null, idMember, dto);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("Member role '"+ dto.getUsername() +"' updated successfully")
+            .message("Member role updated successfully")
             .status(HttpStatus.NO_CONTENT.value())
             .objectResponse(member)
             .build(), HttpStatus.NO_CONTENT
@@ -240,12 +205,61 @@ public class BandMemberController {
     }
 
     @JsonView({BandMemberRequestDto.FindByUserAndBandView.class, BandMemberRequestDto.RoleNameView.class})
-    @PutMapping("/update-admin/{username}/{bandName}/{isAdmin}")
-    public ResponseEntity<MessageResponse> updateAdmin(@PathVariable String username, @PathVariable String bandName, @PathVariable Boolean isAdmin){
-        BandMemberResponseDto member = memberService.updateAdmin(username, bandName, isAdmin);
+    @PutMapping("/update-member-role-by-ids/{idUser}/{idBand}")
+    public ResponseEntity<MessageResponse> updateRoleByIds(@PathVariable Long idUser, @PathVariable Long idBand, @RequestBody BandMemberRequestDto dto){
+        BandMemberResponseDto member = memberService.updateRole(null, idUser, null, idBand, null, dto);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Member role updated successfully")
+            .status(HttpStatus.NO_CONTENT.value())
+            .objectResponse(member)
+            .build(), HttpStatus.NO_CONTENT
+        );
+    }
+
+    @JsonView({BandMemberRequestDto.FindByUserAndBandView.class, BandMemberRequestDto.RoleNameView.class})
+    @PutMapping("/update-member-role-by-names/{username}/{bandName}")
+    public ResponseEntity<MessageResponse> updateRoleByNames(@PathVariable String username, @PathVariable String bandName, @RequestBody BandMemberRequestDto dto){
+        BandMemberResponseDto member = memberService.updateRole(username, null, bandName, null, null, dto);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Member role updated successfully")
+            .status(HttpStatus.NO_CONTENT.value())
+            .objectResponse(member)
+            .build(), HttpStatus.NO_CONTENT
+        );
+    }
+
+    @PutMapping("/update-admin-by-member-id/{idMember}/{isAdmin}")
+    public ResponseEntity<MessageResponse> updateAdminByMemberId(@PathVariable Long idMember, @PathVariable Boolean isAdmin){
+        BandMemberResponseDto member = memberService.updateAdmin(null, null, null, null, idMember, isAdmin);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Member with ID '"+ idMember +"' is admin updated successfully")
+            .status(HttpStatus.NO_CONTENT.value())
+            .objectResponse(member)
+            .build(), HttpStatus.NO_CONTENT
+        );
+    }
+
+    @PutMapping("/update-admin-by-names/{username}/{bandName}/{isAdmin}")
+    public ResponseEntity<MessageResponse> updateAdminByNames(@PathVariable String username, @PathVariable String bandName, @PathVariable Boolean isAdmin){
+        BandMemberResponseDto member = memberService.updateAdmin(username, null, bandName, null, null, isAdmin);
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("Member '"+ username +"' is admin updated successfully")
+            .status(HttpStatus.NO_CONTENT.value())
+            .objectResponse(member)
+            .build(), HttpStatus.NO_CONTENT
+        );
+    }
+
+    @PutMapping("/update-admin-by-ids/{idUser}/{idBand}/{isAdmin}")
+    public ResponseEntity<MessageResponse> updateAdminByIds(@PathVariable Long idUser, @PathVariable Long idBand, @PathVariable Boolean isAdmin){
+        BandMemberResponseDto member = memberService.updateAdmin(null, idUser, null, idBand, null, isAdmin);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Member with user ID '"+ idUser +"' is admin updated successfully")
             .status(HttpStatus.NO_CONTENT.value())
             .objectResponse(member)
             .build(), HttpStatus.NO_CONTENT
