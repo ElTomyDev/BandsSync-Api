@@ -177,9 +177,7 @@ public class BandImplService implements IBand{
     public BandResponseDto updateGender(String bandName, Long id, BandRequestDto dto) {
         Band bandUpdate = this.findBandByIdOrBandname(bandName, id);
         
-        bandUpdate.setGender(genderRepository.findByGenderName(dto.getGenderName()).orElseThrow(
-            () -> new ResourceNotFoundException("The gender with gender name '" + dto.getGenderName() + "' not found")
-        ));
+        bandUpdate.setGender(genderService.getGenderByName(dto.getGenderName()));
         bandRepository.save(bandUpdate);
 
         return bandMapper.toBasicDto(bandUpdate);
