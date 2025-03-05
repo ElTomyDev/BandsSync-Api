@@ -96,6 +96,7 @@ public class BandImplService implements IBand{
     public void deleteBand(String bandName, Long id) {
         Band bandDelete = this.findBandByIdOrBandname(bandName, id);
 
+        memberService.deleteAllMembersByBand(bandDelete);
         bandRepository.delete(bandDelete);
         socialService.deleteSocialLinksByBand(bandDelete);
     }

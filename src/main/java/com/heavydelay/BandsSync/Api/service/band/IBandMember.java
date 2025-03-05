@@ -21,7 +21,7 @@ public interface IBandMember {
 
     // ELIMINAR BANDA
     void deleteMember(String username, String bandName, Long idBand, Long idUser, Long idMember);
-    
+    void deleteAllMembersByBand(Band band);
 
     // METODOS UPDATE
     BandMemberResponseDto updateRole(BandMemberRequestDto dto);

@@ -16,7 +16,6 @@ import com.heavydelay.BandsSync.Api.model.entity.User;
 import com.heavydelay.BandsSync.Api.model.mapper.band.IBandMemberMapper;
 import com.heavydelay.BandsSync.Api.repository.band.BandMemberRepository;
 import com.heavydelay.BandsSync.Api.repository.band.BandRepository;
-import com.heavydelay.BandsSync.Api.repository.external_data.RoleRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserRepository;
 import com.heavydelay.BandsSync.Api.service.band.IBandMember;
 import com.heavydelay.BandsSync.Api.service.external_data.IRole;
@@ -28,7 +27,6 @@ public class BandMemberImplService implements IBandMember{
     private BandMemberRepository bandMemberRepository;
     private BandRepository bandRepository;
     private UserRepository userRepository;
-    private RoleRepository roleRepository;
 
     // Servicios
     private IRole roleService;
@@ -37,11 +35,10 @@ public class BandMemberImplService implements IBandMember{
     private IBandMemberMapper bandMemberMapper;
 
     public BandMemberImplService(BandMemberRepository bandMemberRepository, BandRepository bandRepository,
-            UserRepository userRepository, RoleRepository roleRepository, IBandMemberMapper bandMemberMapper) {
+            UserRepository userRepository, IBandMemberMapper bandMemberMapper) {
         this.bandMemberRepository = bandMemberRepository;
         this.bandRepository = bandRepository;
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
 
         this.bandMemberMapper = bandMemberMapper;
     }
@@ -95,6 +92,16 @@ public class BandMemberImplService implements IBandMember{
         bandMemberRepository.delete(member);
     }
 
+    @Override
+    public void deleteAllMembersByBand(Band band){
+        if (band == null){
+            throw new IllegalArgumentException("Band cannot be null");
+        }
+
+        List<BandMember> members = (List<BandMember>) bandMemberRepository.findAllByBand(band);
+        bandMemberRepository.deleteAll(members);
+    }
+
     ///////// AUTH AND REGISTER /////////////////////////////////////////////////////////
     @Override
     public BandMemberResponseDto joinBand(String username, Long idUser, BandMemberRequestDto dto) {
@@ -105,7 +112,7 @@ public class BandMemberImplService implements IBandMember{
 
         if (!dto.getAccessCode().equals(band.getAccessCode())){
             throw new IllegalArgumentException("The access code is incorrect");
-        }  
+        }
 
         if(username != null){
             user = userRepository.findByUsername(username).orElseThrow(
@@ -122,10 +129,8 @@ public class BandMemberImplService implements IBandMember{
         BandMember newMember = BandMember.builder()
                                .band(band)
                                .user(user)
-                               .isAdmin(this.selectAdminIfIsFirstAdmin(band))
-                               .role(roleRepository.findByRoleName(dto.getRoleName()).orElseThrow(
-                                    () -> new ResourceNotFoundException("The role with name '" + dto.getRoleName() + "' was not found")
-                               ))
+                               .isAdmin(false)
+                               .role(roleService.getRoleByName(dto.getRoleName()))
                                .leaveDate(null)
                                .build();
 
@@ -161,9 +166,7 @@ public class BandMemberImplService implements IBandMember{
     public BandMemberResponseDto updateRole(BandMemberRequestDto dto) {
         BandMember member = this.findMemberByBandAndUser(dto.getUsername(), dto.getBandName());
         
-        member.setRole(roleRepository.findByRoleName(dto.getRoleName()).orElseThrow(
-            () -> new ResourceNotFoundException("The role with name '" + dto.getRoleName() + "' was not found")
-        ));
+        member.setRole(roleService.getRoleByName(dto.getRoleName()));
             
         bandMemberRepository.save(member);
         return bandMemberMapper.toBasicDto(member);
@@ -250,10 +253,4 @@ public class BandMemberImplService implements IBandMember{
         return member;
     }
 
-    private boolean selectAdminIfIsFirstAdmin(Band band){
-        if(bandMemberRepository.findAllByBand(band).isEmpty()){
-            return true;
-        }
-        return false;
-    }
 }
