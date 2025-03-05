@@ -16,4 +16,5 @@ public interface BandMemberRepository extends CrudRepository<BandMember, Long>{
 
     Optional<BandMember> findByUser(User user);
     Optional<BandMember> findByUserAndBand(User user, Band band);
+
 }

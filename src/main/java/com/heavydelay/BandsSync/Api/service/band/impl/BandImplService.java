@@ -12,17 +12,13 @@ import com.heavydelay.BandsSync.Api.model.dto.band.BandResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Band;
-import com.heavydelay.BandsSync.Api.model.entity.BandMember;
-import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
 import com.heavydelay.BandsSync.Api.model.mapper.band.IBandMapper;
-import com.heavydelay.BandsSync.Api.model.mapper.external_data.ISocialLinksMapper;
-import com.heavydelay.BandsSync.Api.repository.band.BandMemberRepository;
 import com.heavydelay.BandsSync.Api.repository.band.BandRepository;
-import com.heavydelay.BandsSync.Api.repository.external_data.GenderRepository;
-import com.heavydelay.BandsSync.Api.repository.external_data.RoleRepository;
-import com.heavydelay.BandsSync.Api.repository.external_data.SocialLinksRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserRepository;
 import com.heavydelay.BandsSync.Api.service.band.IBand;
+import com.heavydelay.BandsSync.Api.service.band.IBandMember;
+import com.heavydelay.BandsSync.Api.service.external_data.IGender;
+import com.heavydelay.BandsSync.Api.service.external_data.ISocialLinks;
 import com.heavydelay.BandsSync.Api.util.AccessCodeGenerator;
 
 @Service
@@ -30,31 +26,24 @@ public class BandImplService implements IBand{
     
     // Repositorios
     private BandRepository bandRepository;
-    private GenderRepository genderRepository;
-    private SocialLinksRepository socialRepository;
-    private BandMemberRepository memberRepository;
     private UserRepository userRepository;
-    private RoleRepository roleRepository;
+
+    // Servicios
+    private IGender genderService;
+    private ISocialLinks socialService;
+    private IBandMember memberService;
 
     // Mapeos
     private IBandMapper bandMapper;
-    private ISocialLinksMapper socialMapper;
 
-    
-
-    public BandImplService(BandRepository bandRepository, GenderRepository genderRepository,
-            SocialLinksRepository socialRepository, BandMemberRepository memberRepository,
-            UserRepository userRepository, RoleRepository roleRepository, IBandMapper bandMapper,
-            ISocialLinksMapper socialMapper) {
+    public BandImplService(BandRepository bandRepository, UserRepository userRepository, IGender genderService,
+            ISocialLinks socialService, IBandMember memberService, IBandMapper bandMapper) {
         this.bandRepository = bandRepository;
-        this.genderRepository = genderRepository;
-        this.socialRepository = socialRepository;
-        this.memberRepository = memberRepository;
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-
+        this.genderService = genderService;
+        this.socialService = socialService;
+        this.memberService = memberService;
         this.bandMapper = bandMapper;
-        this.socialMapper = socialMapper;
     }
 
     /////////// SHOW BAND ///////////////////////////////////////////////////////////
@@ -87,32 +76,17 @@ public class BandImplService implements IBand{
 
         Band newBand = Band.builder()
                        .bandName(dto.getBandName())
-                       .gender(genderRepository.findByGenderName(dto.getGenderName()).orElseThrow(
-                            () -> new ResourceNotFoundException("The gender with gender name '" + dto.getGenderName() + "' not found")
-                       ))
+                       .gender(genderService.getNoneGender())
+                       .socialLinks(socialService.createEmptySocialLinks())
                        .accessCode(AccessCodeGenerator.generateAccessCode(6))
                        .build();
-        
-        // Crear las redes sociales
-        SocialLinks socialLinks = new SocialLinks();
-        socialRepository.save(socialLinks);
-
-        newBand.setSocialLinks(socialLinks);
 
         bandRepository.save(newBand);
 
-        BandMember newMember = BandMember.builder()
-                               .band(newBand)
-                               .isAdmin(true)
-                               .user(userRepository.findByUsername(dto.getUsername()).orElseThrow(
-                                    () -> new ResourceNotFoundException("The user with username '"+ dto.getUsername() + "' not found")
-                                ))
-                               .role(roleRepository.findByRoleName(dto.getRoleName()).orElseThrow(
-                                    () -> new ResourceNotFoundException("The role with name '"+ dto.getRoleName() + "' not found")
-                                ))
-                               .build();
-        
-        memberRepository.save(newMember);
+        // Aca se crea el primer miembro de la banda (El que creo la banda basicamente)
+        memberService.createFirstMember(userRepository.findByUsername(dto.getUsername()).orElseThrow(
+            () -> new ResourceNotFoundException("The user with username '"+ dto.getUsername() + "' not found")
+        ), newBand);
 
         return bandMapper.toBasicDto(newBand);
     }
@@ -122,12 +96,9 @@ public class BandImplService implements IBand{
     public void deleteBand(String bandName, Long id) {
         Band bandDelete = this.findBandByIdOrBandname(bandName, id);
 
-        SocialLinks socialDelete = socialRepository.findById(bandDelete.getSocialLinks().getIdSocial()).orElseThrow(
-            () -> new ResourceNotFoundException("The social links not found")
-        );
-
+        memberService.deleteAllMembersByBand(bandDelete);
         bandRepository.delete(bandDelete);
-        socialRepository.delete(socialDelete);
+        socialService.deleteSocialLinksByBand(bandDelete);
     }
 
     
@@ -178,9 +149,7 @@ public class BandImplService implements IBand{
     public BandResponseDto updateGender(String bandName, Long id, BandRequestDto dto) {
         Band bandUpdate = this.findBandByIdOrBandname(bandName, id);
         
-        bandUpdate.setGender(genderRepository.findByGenderName(dto.getGenderName()).orElseThrow(
-            () -> new ResourceNotFoundException("The gender with gender name '" + dto.getGenderName() + "' not found")
-        ));
+        bandUpdate.setGender(genderService.getGenderByName(dto.getGenderName()));
         bandRepository.save(bandUpdate);
 
         return bandMapper.toBasicDto(bandUpdate);
@@ -210,23 +179,9 @@ public class BandImplService implements IBand{
     public SocialLinksResponseDto updateSocialLinks(String bandName, Long id, SocialLinksRequestDto dto) {
         Band bandUpdate = this.findBandByIdOrBandname(bandName, id);
 
-        SocialLinks social = socialRepository.findById(bandUpdate.getSocialLinks().getIdSocial()).orElseThrow(
-            () -> new ResourceNotFoundException("The Social links with ID '" + bandUpdate.getSocialLinks().getIdSocial() + "' was not found")
-        );
+        SocialLinksResponseDto socialUpdate = socialService.updateSocialLinksForBand(bandUpdate, dto);
 
-        social.setInstagram(dto.getInstagram());
-        social.setFacebook(dto.getFacebook());
-        social.setTwitter(dto.getTwitter());
-        social.setTiktok(dto.getTiktok());
-        social.setReddit(dto.getReddit());
-        social.setYoutube(dto.getYoutube());
-        social.setSpotify(dto.getSpotify());
-        social.setBandcamp(dto.getBandcamp());
-        social.setSoundcloud(dto.getSoundcloud());
-
-        socialRepository.save(social);
-
-        return socialMapper.toBasicDto(social);
+        return socialUpdate;
     }
 
     /////////// AUXILIAR ///////////////////////////////////////////////////////////
