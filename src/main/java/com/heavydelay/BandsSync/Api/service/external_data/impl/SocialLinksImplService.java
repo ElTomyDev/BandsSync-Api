@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksResponseDto;
+import com.heavydelay.BandsSync.Api.model.entity.Band;
 import com.heavydelay.BandsSync.Api.model.entity.SocialLinks;
 import com.heavydelay.BandsSync.Api.model.entity.User;
 import com.heavydelay.BandsSync.Api.model.mapper.external_data.ISocialLinksMapper;
@@ -41,6 +42,14 @@ public class SocialLinksImplService implements ISocialLinks{
     @Override
     public void deleteSocialLinksByUser(User user) {
         SocialLinks socialDelete = socialRepository.findById(user.getSocialLinks().getIdSocial()).orElseThrow(
+            () -> new ResourceNotFoundException("The Social links not found")
+        );
+        socialRepository.delete(socialDelete);
+    }
+
+    @Override
+    public void deleteSocialLinksByBand(Band band) {
+        SocialLinks socialDelete = socialRepository.findById(band.getSocialLinks().getIdSocial()).orElseThrow(
             () -> new ResourceNotFoundException("The Social links not found")
         );
         socialRepository.delete(socialDelete);
