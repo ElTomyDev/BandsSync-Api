@@ -19,6 +19,7 @@ import com.heavydelay.BandsSync.Api.repository.band.BandRepository;
 import com.heavydelay.BandsSync.Api.repository.external_data.RoleRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserRepository;
 import com.heavydelay.BandsSync.Api.service.band.IBandMember;
+import com.heavydelay.BandsSync.Api.service.external_data.IRole;
 
 @Service
 public class BandMemberImplService implements IBandMember{
@@ -28,6 +29,9 @@ public class BandMemberImplService implements IBandMember{
     private BandRepository bandRepository;
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+
+    // Servicios
+    private IRole roleService;
 
     // Mapeos
     private IBandMemberMapper bandMemberMapper;
@@ -141,6 +145,17 @@ public class BandMemberImplService implements IBandMember{
         return bandMemberMapper.toBasicDto(member);
     }
     
+    @Override
+    public void createFirstMember(User user, Band band){
+        BandMember firstMember = BandMember.builder()
+                                 .band(band)
+                                 .user(user)
+                                 .role(roleService.getNoneRole())
+                                 .isAdmin(true)
+                                 .build();
+        bandMemberRepository.save(firstMember);
+    }
+
     ///////// UPDATE /////////////////////////////////////////////////////////
     @Override
     public BandMemberResponseDto updateRole(BandMemberRequestDto dto) {
