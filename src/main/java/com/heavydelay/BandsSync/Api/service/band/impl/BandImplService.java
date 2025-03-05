@@ -207,23 +207,9 @@ public class BandImplService implements IBand{
     public SocialLinksResponseDto updateSocialLinks(String bandName, Long id, SocialLinksRequestDto dto) {
         Band bandUpdate = this.findBandByIdOrBandname(bandName, id);
 
-        SocialLinks social = socialRepository.findById(bandUpdate.getSocialLinks().getIdSocial()).orElseThrow(
-            () -> new ResourceNotFoundException("The Social links with ID '" + bandUpdate.getSocialLinks().getIdSocial() + "' was not found")
-        );
+        SocialLinksResponseDto socialUpdate = socialService.updateSocialLinksForBand(bandUpdate, dto);
 
-        social.setInstagram(dto.getInstagram());
-        social.setFacebook(dto.getFacebook());
-        social.setTwitter(dto.getTwitter());
-        social.setTiktok(dto.getTiktok());
-        social.setReddit(dto.getReddit());
-        social.setYoutube(dto.getYoutube());
-        social.setSpotify(dto.getSpotify());
-        social.setBandcamp(dto.getBandcamp());
-        social.setSoundcloud(dto.getSoundcloud());
-
-        socialRepository.save(social);
-
-        return socialMapper.toBasicDto(social);
+        return socialUpdate;
     }
 
     /////////// AUXILIAR ///////////////////////////////////////////////////////////

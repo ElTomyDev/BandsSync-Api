@@ -11,4 +11,5 @@ public interface ISocialLinks {
     void deleteSocialLinksByBand(Band band);
     SocialLinks createEmptySocialLinks();
     SocialLinksResponseDto updateSocialLinksForUser(User user, SocialLinksRequestDto dto);
+    SocialLinksResponseDto updateSocialLinksForBand(Band band, SocialLinksRequestDto dto);
 }
