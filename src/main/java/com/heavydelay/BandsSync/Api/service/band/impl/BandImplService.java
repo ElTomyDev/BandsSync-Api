@@ -23,6 +23,9 @@ import com.heavydelay.BandsSync.Api.repository.external_data.RoleRepository;
 import com.heavydelay.BandsSync.Api.repository.external_data.SocialLinksRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserRepository;
 import com.heavydelay.BandsSync.Api.service.band.IBand;
+import com.heavydelay.BandsSync.Api.service.external_data.IGender;
+import com.heavydelay.BandsSync.Api.service.external_data.IRole;
+import com.heavydelay.BandsSync.Api.service.external_data.ISocialLinks;
 import com.heavydelay.BandsSync.Api.util.AccessCodeGenerator;
 
 @Service
@@ -30,15 +33,22 @@ public class BandImplService implements IBand{
     
     // Repositorios
     private BandRepository bandRepository;
-    private GenderRepository genderRepository;
+    private UserRepository userRepository;
+
+    private GenderRepository genderRepository; // seguro a borrar
     private SocialLinksRepository socialRepository;
     private BandMemberRepository memberRepository;
-    private UserRepository userRepository;
     private RoleRepository roleRepository;
+
+    // Servicios
+    private IGender genderService;
+    private ISocialLinks socialService;
+    private IRole roleService;
 
     // Mapeos
     private IBandMapper bandMapper;
-    private ISocialLinksMapper socialMapper;
+
+    private ISocialLinksMapper socialMapper;// seguro a borrar
 
     
 
@@ -87,17 +97,11 @@ public class BandImplService implements IBand{
 
         Band newBand = Band.builder()
                        .bandName(dto.getBandName())
-                       .gender(genderRepository.findByGenderName(dto.getGenderName()).orElseThrow(
-                            () -> new ResourceNotFoundException("The gender with gender name '" + dto.getGenderName() + "' not found")
-                       ))
+                       .gender(genderService.getNoneGender())
+                       .socialLinks(socialService.createEmptySocialLinks())
                        .accessCode(AccessCodeGenerator.generateAccessCode(6))
                        .build();
         
-        // Crear las redes sociales
-        SocialLinks socialLinks = new SocialLinks();
-        socialRepository.save(socialLinks);
-
-        newBand.setSocialLinks(socialLinks);
 
         bandRepository.save(newBand);
 
