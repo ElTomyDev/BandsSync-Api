@@ -16,7 +16,7 @@ public interface IBandMember {
 
     // AUTH AND REGISTER
     BandMemberResponseDto joinBand(String username, Long idUser, BandMemberRequestDto dto);
-    BandMemberResponseDto leaveBand(String username, Long idUser, String bandName, Long idBand, Long idMember, BandMemberRequestDto dto);
+    BandMemberResponseDto leaveBand(String username, Long idUser, String bandName, Long idBand);
     void createFirstMember(User user, Band band);
 
     // ELIMINAR BANDA

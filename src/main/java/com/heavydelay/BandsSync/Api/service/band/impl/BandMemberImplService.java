@@ -140,8 +140,8 @@ public class BandMemberImplService implements IBandMember{
     }
 
     @Override
-    public BandMemberResponseDto leaveBand(String username, Long idUser, String bandName, Long idBand, Long idMember, BandMemberRequestDto dto) {
-        BandMember member = this.findMemberByBandAndUserOrId(username, idUser, bandName, idBand, idMember);
+    public BandMemberResponseDto leaveBand(String username, Long idUser, String bandName, Long idBand) {
+        BandMember member = this.findMemberByBandAndUserOrId(username, idUser, bandName, idBand, null);
         
         
         member.setIsAdmin(false);
