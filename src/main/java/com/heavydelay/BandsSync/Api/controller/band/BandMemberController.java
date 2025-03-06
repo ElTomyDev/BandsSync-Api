@@ -141,12 +141,12 @@ public class BandMemberController {
 
     ///// POST ENDPOINTS ////////////////////////////////////////////
     @JsonView(BandMemberRequestDto.JoinBandView.class)
-    @PostMapping("/join-by-username/{username}")
-    public ResponseEntity<MessageResponse> joinBandByUsername(@PathVariable String username, @RequestBody BandMemberRequestDto dto){
-        BandMemberResponseDto newMember = memberService.joinBand(username, null, dto);
+    @PostMapping("/join-by-id-band/{idBand}/for-user-id/{idUser}")
+    public ResponseEntity<MessageResponse> joinBandByBandId(@PathVariable Long idBand, @PathVariable Long idUser, @RequestBody BandMemberRequestDto dto){
+        BandMemberResponseDto newMember = memberService.joinBand(null, idUser, null, idBand, dto);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("Member with username '"+ username +"' successfully created and joined the band with ID '"+ dto.getIdBand() + "'.")
+            .message("Member with ID '"+ idUser +"' successfully created and joined the band with ID '"+ idBand + "'.")
             .status(HttpStatus.CREATED.value())
             .objectResponse(newMember)
             .build(), HttpStatus.CREATED
@@ -154,18 +154,44 @@ public class BandMemberController {
     }
 
     @JsonView(BandMemberRequestDto.JoinBandView.class)
-    @PostMapping("/join-by-id/{id}")
-    public ResponseEntity<MessageResponse> joinBandById(@PathVariable Long id, @RequestBody BandMemberRequestDto dto){
-        BandMemberResponseDto newMember = memberService.joinBand(null, id, dto);
+    @PostMapping("/join-by-bandName/{bandName}/for-user-id/{idUser}")
+    public ResponseEntity<MessageResponse> joinBandByBandName(@PathVariable String bandName, @PathVariable Long idUser, @RequestBody BandMemberRequestDto dto){
+        BandMemberResponseDto newMember = memberService.joinBand(null, idUser, bandName, null, dto);
         return new ResponseEntity<>(
             MessageResponse.builder()
-            .message("Member with USER ID '"+ id +"' successfully created and joined the band with ID '"+ dto.getIdBand() + "'.")
+            .message("Member with ID '"+ idUser +"' successfully created and joined the band with name '"+ bandName + "'.")
             .status(HttpStatus.CREATED.value())
             .objectResponse(newMember)
             .build(), HttpStatus.CREATED
-            );
+        );
     }
-        
+
+    @JsonView(BandMemberRequestDto.JoinBandView.class)
+    @PostMapping("/join-by-id-band/{idBand}/for-user-username/{username}")
+    public ResponseEntity<MessageResponse> joinBandByBandId(@PathVariable Long idBand, @PathVariable String username, @RequestBody BandMemberRequestDto dto){
+        BandMemberResponseDto newMember = memberService.joinBand(username, null, null, idBand, dto);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Member with username '"+ username +"' successfully created and joined the band with ID '"+ idBand + "'.")
+            .status(HttpStatus.CREATED.value())
+            .objectResponse(newMember)
+            .build(), HttpStatus.CREATED
+        );
+    }
+     
+    @JsonView(BandMemberRequestDto.JoinBandView.class)
+    @PostMapping("/join-by-bandName/{bandName}/for-user-username/{username}")
+    public ResponseEntity<MessageResponse> joinBandByBandName(@PathVariable String bandName, @PathVariable String username, @RequestBody BandMemberRequestDto dto){
+        BandMemberResponseDto newMember = memberService.joinBand(username, null, bandName, null, dto);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Member with username '"+ username +"' successfully created and joined the band with name '"+ bandName + "'.")
+            .status(HttpStatus.CREATED.value())
+            .objectResponse(newMember)
+            .build(), HttpStatus.CREATED
+        );
+    }
+
     //////// PUT ENDPOINTS ///////////////////////////////////////////
     @PutMapping("/leave-band-by-ids/{idUser}/{idBand}")
     public ResponseEntity<MessageResponse> leaveBandByIds(@PathVariable Long idUser, @PathVariable Long idBand){
@@ -191,7 +217,7 @@ public class BandMemberController {
         );
     }
 
-    @JsonView({BandMemberRequestDto.FindByUserAndBandView.class, BandMemberRequestDto.RoleNameView.class})
+    @JsonView({BandMemberRequestDto.RoleNameView.class})
     @PutMapping("/update-member-role-by-member-id/{idMember}")
     public ResponseEntity<MessageResponse> updateRoleByMemberId(@PathVariable Long idMember, @RequestBody BandMemberRequestDto dto){
         BandMemberResponseDto member = memberService.updateRole(null, null, null, null, idMember, dto);
@@ -204,7 +230,7 @@ public class BandMemberController {
         );
     }
 
-    @JsonView({BandMemberRequestDto.FindByUserAndBandView.class, BandMemberRequestDto.RoleNameView.class})
+    @JsonView({BandMemberRequestDto.RoleNameView.class})
     @PutMapping("/update-member-role-by-ids/{idUser}/{idBand}")
     public ResponseEntity<MessageResponse> updateRoleByIds(@PathVariable Long idUser, @PathVariable Long idBand, @RequestBody BandMemberRequestDto dto){
         BandMemberResponseDto member = memberService.updateRole(null, idUser, null, idBand, null, dto);
@@ -217,7 +243,7 @@ public class BandMemberController {
         );
     }
 
-    @JsonView({BandMemberRequestDto.FindByUserAndBandView.class, BandMemberRequestDto.RoleNameView.class})
+    @JsonView({BandMemberRequestDto.RoleNameView.class})
     @PutMapping("/update-member-role-by-names/{username}/{bandName}")
     public ResponseEntity<MessageResponse> updateRoleByNames(@PathVariable String username, @PathVariable String bandName, @RequestBody BandMemberRequestDto dto){
         BandMemberResponseDto member = memberService.updateRole(username, null, bandName, null, null, dto);

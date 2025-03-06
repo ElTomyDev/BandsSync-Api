@@ -106,14 +106,20 @@ public class BandMemberImplService implements IBandMember{
 
     ///////// AUTH AND REGISTER /////////////////////////////////////////////////////////
     @Override
-    public BandMemberResponseDto joinBand(String username, Long idUser, BandMemberRequestDto dto) {
+    public BandMemberResponseDto joinBand(String username, Long idUser, String bandName, Long idBand, BandMemberRequestDto dto) {
         User user;
-        Band band = bandRepository.findById(dto.getIdBand()).orElseThrow(
-            () -> new ResourceNotFoundException("The band with band name '" + dto.getIdBand() + "' was not found")
-        );
+        Band band;
 
-        if (!dto.getAccessCode().equals(band.getAccessCode())){
-            throw new IllegalArgumentException("The access code is incorrect");
+        if (idBand != null){
+            band = bandRepository.findById(idBand).orElseThrow(
+                () -> new ResourceNotFoundException("The band with ID '" + idBand + "' was not found")
+            );
+        } else if (bandName != null){
+            band = bandRepository.findByBandName(bandName).orElseThrow(
+                () -> new ResourceNotFoundException("The band with band name '" + bandName + "' was not found")
+            );
+        } else {
+            throw new IllegalArgumentException("idBand or bandName cannot be null");
         }
 
         if(username != null){
@@ -125,7 +131,12 @@ public class BandMemberImplService implements IBandMember{
                 () -> new ResourceNotFoundException("The user with ID '" + idUser + "' was not found")
             );
         }else{ // si todos los parametros son null
-            throw new IllegalArgumentException("Parameters cannot be null");
+            throw new IllegalArgumentException("idUser or username cannot be null");
+        }
+
+        // Si el codigo de acceso es incorrecto
+        if (!dto.getAccessCode().equals(band.getAccessCode())){
+            throw new IllegalArgumentException("The access code is incorrect");
         }
 
         BandMember newMember = BandMember.builder()
