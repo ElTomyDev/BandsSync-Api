@@ -18,9 +18,9 @@ public class BandRequestDto {
     public interface BandNameView {}
     public interface CreateBandView {}
 
-    @JsonView({CreateBandView.class, GenderNameView.class})
-    @NotBlank(groups = {CreateBandView.class, GenderNameView.class}, message = "Gender name cannot be blank")
-    @Size(groups = {CreateBandView.class, GenderNameView.class}, max = 60, message = "Gender name cannot exceed 60 characters")
+    @JsonView({GenderNameView.class})
+    @NotBlank(groups = {GenderNameView.class}, message = "Gender name cannot be blank")
+    @Size(groups = {GenderNameView.class}, max = 60, message = "Gender name cannot exceed 60 characters")
     private String genderName;
     
     @JsonView({ImageURLView.class})
@@ -40,10 +40,6 @@ public class BandRequestDto {
     @JsonView({CreateBandView.class})
     @NotBlank(groups = {CreateBandView.class}, message = "Username field cannot be blank")
     private String username;
-
-    @JsonView({CreateBandView.class})
-    @NotBlank(groups = {CreateBandView.class}, message = "Role name field cannot be blank")
-    private String roleName;
 
     @JsonView({FindMembersView.class})
     @NotNull(groups = {FindMembersView.class}, message = "Find members field cannot be null")

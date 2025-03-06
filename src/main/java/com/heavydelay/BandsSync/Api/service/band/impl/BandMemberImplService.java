@@ -34,12 +34,14 @@ public class BandMemberImplService implements IBandMember{
     // Mapeos
     private IBandMemberMapper bandMemberMapper;
 
+    
+
     public BandMemberImplService(BandMemberRepository bandMemberRepository, BandRepository bandRepository,
-            UserRepository userRepository, IBandMemberMapper bandMemberMapper) {
+            UserRepository userRepository, IRole roleService, IBandMemberMapper bandMemberMapper) {
         this.bandMemberRepository = bandMemberRepository;
         this.bandRepository = bandRepository;
         this.userRepository = userRepository;
-
+        this.roleService = roleService;
         this.bandMemberMapper = bandMemberMapper;
     }
 

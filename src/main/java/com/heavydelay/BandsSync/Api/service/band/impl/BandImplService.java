@@ -78,6 +78,7 @@ public class BandImplService implements IBand{
                        .bandName(dto.getBandName())
                        .gender(genderService.getNoneGender())
                        .socialLinks(socialService.createEmptySocialLinks())
+                       .isSolist(dto.getIsSolist())
                        .accessCode(AccessCodeGenerator.generateAccessCode(6))
                        .build();
 

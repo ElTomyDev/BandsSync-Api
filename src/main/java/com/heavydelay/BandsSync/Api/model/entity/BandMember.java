@@ -33,11 +33,11 @@ public class BandMember {
     private Long idBandMember;
 
     @ManyToOne
-    @JoinColumn(name = "id_users", updatable = false, nullable = false)
+    @JoinColumn(name = "id_user", updatable = false, nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "id_bands", updatable = false, nullable = false)
+    @JoinColumn(name = "id_band", updatable = false, nullable = false)
     private Band band;
 
     @ManyToOne
@@ -53,6 +53,6 @@ public class BandMember {
     private LocalDateTime joinDate;
 
     @Column(name = "leave_date", nullable = true)
-    private LocalDateTime leaveDate;    
+    private LocalDateTime leaveDate;
 
 }
