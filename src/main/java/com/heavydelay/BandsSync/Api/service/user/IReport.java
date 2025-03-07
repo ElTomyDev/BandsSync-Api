@@ -30,6 +30,6 @@ public interface IReport {
     /// AUXILIAR
     Report findReportByIdOrUsers(Long idReport, Long idUserReporter, Long idUserReported);
 
-    List<Report> findAllReportBy(ReportType reportType, ResolutionType resolutionType, boolean resolved, Long idUserReporter, Long idUserReported);
+    Iterable<Report> findAllReportBy(ReportType reportType, ResolutionType resolutionType, Boolean resolved, Long idUserReporter, Long idUserReported);
 
 }
