@@ -1,4 +1,4 @@
-package com.heavydelay.BandsSync.Api.model.dto.external_data.location;
+package com.heavydelay.BandsSync.Api.model.dto.user.location;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

@@ -2,12 +2,12 @@ package com.heavydelay.BandsSync.Api.service.user;
 
 import java.util.List;
 
-import com.heavydelay.BandsSync.Api.model.dto.external_data.location.LocationRequestDto;
-import com.heavydelay.BandsSync.Api.model.dto.external_data.location.LocationResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.external_data.social.SocialLinksResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.UserResponseDto;
+import com.heavydelay.BandsSync.Api.model.dto.user.location.LocationRequestDto;
+import com.heavydelay.BandsSync.Api.model.dto.user.location.LocationResponseDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.user_email.UserEmailRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.user_password.UserPasswordRequestDto;
 import com.heavydelay.BandsSync.Api.model.entity.User;

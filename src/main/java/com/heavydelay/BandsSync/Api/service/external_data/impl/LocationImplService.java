@@ -3,12 +3,12 @@ package com.heavydelay.BandsSync.Api.service.external_data.impl;
 import org.springframework.stereotype.Service;
 
 import com.heavydelay.BandsSync.Api.exception.ResourceNotFoundException;
-import com.heavydelay.BandsSync.Api.model.dto.external_data.location.LocationRequestDto;
-import com.heavydelay.BandsSync.Api.model.dto.external_data.location.LocationResponseDto;
+import com.heavydelay.BandsSync.Api.model.dto.user.location.LocationRequestDto;
+import com.heavydelay.BandsSync.Api.model.dto.user.location.LocationResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Location;
 import com.heavydelay.BandsSync.Api.model.entity.User;
-import com.heavydelay.BandsSync.Api.model.mapper.external_data.ILocationMapper;
-import com.heavydelay.BandsSync.Api.repository.external_data.LocationRepository;
+import com.heavydelay.BandsSync.Api.model.mapper.user.ILocationMapper;
+import com.heavydelay.BandsSync.Api.repository.user.LocationRepository;
 import com.heavydelay.BandsSync.Api.service.external_data.ILocation;
 
 @Service

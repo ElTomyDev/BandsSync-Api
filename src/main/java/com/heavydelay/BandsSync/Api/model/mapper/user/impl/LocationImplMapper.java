@@ -1,10 +1,10 @@
-package com.heavydelay.BandsSync.Api.model.mapper.external_data.impl;
+package com.heavydelay.BandsSync.Api.model.mapper.user.impl;
 
 import org.springframework.stereotype.Component;
 
-import com.heavydelay.BandsSync.Api.model.dto.external_data.location.LocationResponseDto;
+import com.heavydelay.BandsSync.Api.model.dto.user.location.LocationResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Location;
-import com.heavydelay.BandsSync.Api.model.mapper.external_data.ILocationMapper;
+import com.heavydelay.BandsSync.Api.model.mapper.user.ILocationMapper;
 
 @Component
 public class LocationImplMapper implements ILocationMapper{

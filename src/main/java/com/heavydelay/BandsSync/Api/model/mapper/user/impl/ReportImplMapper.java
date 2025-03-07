@@ -1,10 +1,10 @@
-package com.heavydelay.BandsSync.Api.model.mapper.external_data.impl;
+package com.heavydelay.BandsSync.Api.model.mapper.user.impl;
 
 import org.springframework.stereotype.Component;
 
-import com.heavydelay.BandsSync.Api.model.dto.external_data.report.ReportResponseDto;
+import com.heavydelay.BandsSync.Api.model.dto.user.report.ReportResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Report;
-import com.heavydelay.BandsSync.Api.model.mapper.external_data.IReportMapper;
+import com.heavydelay.BandsSync.Api.model.mapper.user.IReportMapper;
 
 @Component
 public class ReportImplMapper implements IReportMapper{

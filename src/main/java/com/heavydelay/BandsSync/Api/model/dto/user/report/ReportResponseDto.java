@@ -1,4 +1,4 @@
-package com.heavydelay.BandsSync.Api.model.dto.external_data.report;
+package com.heavydelay.BandsSync.Api.model.dto.user.report;
 
 import java.time.LocalDateTime;
 
