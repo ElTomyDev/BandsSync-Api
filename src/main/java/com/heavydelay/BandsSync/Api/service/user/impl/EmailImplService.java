@@ -10,7 +10,7 @@ import com.heavydelay.BandsSync.Api.repository.user.UserEmailRepository;
 import com.heavydelay.BandsSync.Api.service.user.IEmail;
 
 @Service
-public class EmailService implements IEmail{
+public class EmailImplService implements IEmail{
 
     @Autowired
     UserEmailRepository emailRepository;

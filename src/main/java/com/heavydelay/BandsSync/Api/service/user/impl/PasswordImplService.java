@@ -10,14 +10,14 @@ import com.heavydelay.BandsSync.Api.repository.user.UserPasswordRepository;
 import com.heavydelay.BandsSync.Api.service.user.IPassword;
 
 @Service
-public class PasswordService implements IPassword{
+public class PasswordImplService implements IPassword{
 
     private UserPasswordRepository passwordRepository;
     private BCryptPasswordEncoder encoder;
 
     
 
-    public PasswordService(UserPasswordRepository passwordRepository, BCryptPasswordEncoder encoder) {
+    public PasswordImplService(UserPasswordRepository passwordRepository, BCryptPasswordEncoder encoder) {
         this.passwordRepository = passwordRepository;
         this.encoder = encoder;
     }

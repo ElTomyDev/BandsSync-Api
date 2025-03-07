@@ -1,4 +1,4 @@
-package com.heavydelay.BandsSync.Api.service.external_data;
+package com.heavydelay.BandsSync.Api.service.user;
 
 import com.heavydelay.BandsSync.Api.model.dto.user.location.LocationRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.location.LocationResponseDto;

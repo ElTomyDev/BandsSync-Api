@@ -1,4 +1,4 @@
-package com.heavydelay.BandsSync.Api.service.external_data.impl;
+package com.heavydelay.BandsSync.Api.service.user.impl;
 
 import org.springframework.stereotype.Service;
 
@@ -9,7 +9,7 @@ import com.heavydelay.BandsSync.Api.model.entity.Location;
 import com.heavydelay.BandsSync.Api.model.entity.User;
 import com.heavydelay.BandsSync.Api.model.mapper.user.ILocationMapper;
 import com.heavydelay.BandsSync.Api.repository.user.LocationRepository;
-import com.heavydelay.BandsSync.Api.service.external_data.ILocation;
+import com.heavydelay.BandsSync.Api.service.user.ILocation;
 
 @Service
 public class LocationImplService implements ILocation{

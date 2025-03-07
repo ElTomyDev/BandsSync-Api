@@ -18,15 +18,15 @@ import com.heavydelay.BandsSync.Api.model.dto.user.user_password.UserPasswordReq
 import com.heavydelay.BandsSync.Api.model.entity.User;
 import com.heavydelay.BandsSync.Api.model.mapper.user.IUserMapper;
 import com.heavydelay.BandsSync.Api.repository.user.UserRepository;
-import com.heavydelay.BandsSync.Api.service.external_data.ILocation;
 import com.heavydelay.BandsSync.Api.service.external_data.IRole;
 import com.heavydelay.BandsSync.Api.service.external_data.ISocialLinks;
 import com.heavydelay.BandsSync.Api.service.user.IEmail;
+import com.heavydelay.BandsSync.Api.service.user.ILocation;
 import com.heavydelay.BandsSync.Api.service.user.IPassword;
 import com.heavydelay.BandsSync.Api.service.user.IUser;
 
 @Service
-public class UserService implements IUser{
+public class UserImplService implements IUser{
     // FALTA LAS PREFERENCIAS DEL USUARIO Y LA AUTENTICACION PARA EMAIL Y EL LOGIN Y ALGUNAS VALIDACIONES PARA LA CONTRASEÑA
     
     // Repositorios
@@ -42,7 +42,7 @@ public class UserService implements IUser{
     // Mappeos
     private IUserMapper userMapper;
     
-    public UserService(UserRepository userRepository, IEmail emailService,
+    public UserImplService(UserRepository userRepository, IEmail emailService,
             IPassword passwordService, ILocation locationService, ISocialLinks socialService, IRole roleService,
             IUserMapper userMapper) {
         this.userRepository = userRepository;
