@@ -1,6 +1,9 @@
 package com.heavydelay.BandsSync.Api.service.user.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -11,6 +14,7 @@ import com.heavydelay.BandsSync.Api.model.dto.user.report.ReportRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.report.ReportResponseDto;
 import com.heavydelay.BandsSync.Api.model.entity.Report;
 import com.heavydelay.BandsSync.Api.model.entity.User;
+import com.heavydelay.BandsSync.Api.model.mapper.user.IReportMapper;
 import com.heavydelay.BandsSync.Api.repository.user.ReportRepository;
 import com.heavydelay.BandsSync.Api.repository.user.UserRepository;
 import com.heavydelay.BandsSync.Api.service.user.IReport;
@@ -21,55 +25,104 @@ public class ReportImplService implements IReport{
     ReportRepository reportRepository;
     UserRepository userRepository;
 
-    public ReportImplService(ReportRepository reportRepository, UserRepository userRepository) {
+    IReportMapper reportMapper;
+
+    public ReportImplService(ReportRepository reportRepository, UserRepository userRepository,
+            IReportMapper reportMapper) {
         this.reportRepository = reportRepository;
         this.userRepository = userRepository;
+        this.reportMapper = reportMapper;
     }
 
     @Override
     public ReportResponseDto createReport(Long userReporter, Long userReported, ReportRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+        User reporterUser = userRepository.findById(userReporter).orElseThrow(
+            () -> new ResourceNotFoundException("The user reporter with ID '" + userReporter +"' not found")
+        );
+        
+        User reportedUser = userRepository.findById(userReported).orElseThrow(
+            () -> new ResourceNotFoundException("The user reported with ID '" + userReported +"' not found")
+        );
+
+        if (userReporter == null || userReported == null){
+            throw new IllegalArgumentException("Paremeters cannot be null");
+        }
+
+        Report newReport = Report.builder()
+                           .userReporter(reporterUser)
+                           .userReported(reportedUser)
+                           .reportType(dto.getReportType())
+                           .reportReason(dto.getReportReason())
+                           .reportDate(LocalDateTime.now())
+                           .isResolved(false)
+                           .resolutionType(ResolutionType.no_action)
+                           .build();
+        
+        reportRepository.save(newReport);
+
+        return reportMapper.toBasicDto(newReport);
     }
 
     @Override
     public void deleteReport(Long idReport) {
-        // TODO Auto-generated method stub
-        
+        Report reportDelete = this.findReportByIdOrUsers(idReport, null, null);
+
+        reportRepository.delete(reportDelete);
     }
 
     @Override
     public ReportResponseDto resolveReport(Long idReport, Long idUserReporter, Long idUserReported,
             ReportRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+        Report report = this.findReportByIdOrUsers(idReport, idUserReporter, idUserReported);
+
+        report.setResolutionType(dto.getResolutionType());
+        report.setResolutionDate(LocalDateTime.now());
+        report.setIsResolved(dto.getIsResolved());
+
+        reportRepository.save(report);
+
+        return reportMapper.toBasicDto(report);
     }
 
     @Override
     public List<ReportResponseDto> showAllReports(ReportType reportType, ResolutionType resolutionType,
             boolean resolved, Long idUserReporter, Long idUserReported, boolean detailed) {
-        // TODO Auto-generated method stub
-        return null;
+        List<Report> reports = (List<Report>) this.findAllReportBy(reportType, resolutionType, null, idUserReporter, idUserReported);
+
+        Function<Report, ReportResponseDto> mapper = detailed ? reportMapper::toDetailedDto : reportMapper::toBasicDto;
+
+        return reports.stream().map(mapper).collect(Collectors.toList());
     }
 
     @Override
     public ReportResponseDto showReport(Long idReport, Long idUserReporter, Long idUserReported, boolean detailed) {
-        // TODO Auto-generated method stub
-        return null;
+        Report report = this.findReportByIdOrUsers(idReport, idUserReporter, idUserReported);
+        return detailed ? reportMapper.toDetailedDto(report) : reportMapper.toBasicDto(report);
     }
 
     @Override
     public ReportResponseDto updateReportIsResolved(Long idReport, Long idUserReporter, Long idUserReported,
-            boolean resolved) {
-        // TODO Auto-generated method stub
-        return null;
+            ReportRequestDto dto) {
+        
+        Report report = this.findReportByIdOrUsers(idReport, idUserReporter, idUserReported);
+
+        report.setIsResolved(dto.getIsResolved());
+
+        reportRepository.save(report);
+                
+        return reportMapper.toBasicDto(report);
     }
 
     @Override
     public ReportResponseDto updateReportResolutionType(Long idReport, Long idUserReporter, Long idUserReported,
             ReportRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+        Report report = this.findReportByIdOrUsers(idReport, idUserReporter, idUserReported);
+
+        report.setResolutionType(dto.getResolutionType());
+
+        reportRepository.save(report);
+
+        return reportMapper.toBasicDto(report);
     }
     
     /////////// AUXILIARES //////////////////////////////////////////////

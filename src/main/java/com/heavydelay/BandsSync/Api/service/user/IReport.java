@@ -25,7 +25,7 @@ public interface IReport {
 
     ReportResponseDto updateReportResolutionType(Long idReport, Long idUserReporter, Long idUserReported, ReportRequestDto dto);
 
-    ReportResponseDto updateReportIsResolved(Long idReport, Long idUserReporter, Long idUserReported, boolean resolved);
+    ReportResponseDto updateReportIsResolved(Long idReport, Long idUserReporter, Long idUserReported, ReportRequestDto dto);
 
     /// AUXILIAR
     Report findReportByIdOrUsers(Long idReport, Long idUserReporter, Long idUserReported);
