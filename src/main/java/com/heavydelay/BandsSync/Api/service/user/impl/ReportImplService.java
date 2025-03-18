@@ -124,6 +124,8 @@ public class ReportImplService implements IReport{
         return reportMapper.toBasicDto(report);
     }
     
+    ////// FALTAN MAS METODOS DE TIPO UPDATE ////////
+
     /////////// AUXILIARES //////////////////////////////////////////////
     @Override
     public Iterable<Report> findAllReportBy(ReportType reportType, ResolutionType resolutionType, Boolean resolved, Long idUserReporter, Long idUserReported) {

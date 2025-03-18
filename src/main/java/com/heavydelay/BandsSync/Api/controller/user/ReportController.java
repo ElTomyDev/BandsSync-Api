@@ -8,6 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,8 +21,6 @@ import com.heavydelay.BandsSync.Api.model.dto.user.report.ReportRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.report.ReportResponseDto;
 import com.heavydelay.BandsSync.Api.model.payload.MessageResponse;
 import com.heavydelay.BandsSync.Api.service.user.IReport;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -147,12 +148,89 @@ public class ReportController {
         return new ResponseEntity<>(
             MessageResponse.builder()
             .message("Report with ID '" + idReport + "' successfully Deleted")
-            .status(HttpStatus.CREATED.value())
+            .status(HttpStatus.OK.value())
             .objectResponse("Report ID: " + idReport)
-            .build(), HttpStatus.CREATED
+            .build(), HttpStatus.OK
         );
     }
 
     //// PUT METHODS ////////////////////////////////////////////////////////////////
-    /// 
+    @JsonView(ReportRequestDto.ResolvedReportView.class)
+    @PutMapping("/resolved-by-id/{idReport}")
+    public ResponseEntity<MessageResponse> resolveReportById(@PathVariable Long idReport, @RequestBody ReportRequestDto dto) {
+        ReportResponseDto report = reportService.resolveReport(idReport, null, null, dto);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Report with ID '" + idReport + "' successfully Resolved")
+            .status(HttpStatus.NO_CONTENT.value())
+            .objectResponse(report)
+            .build(), HttpStatus.NO_CONTENT
+        );
+    }
+
+    @JsonView(ReportRequestDto.ResolvedReportView.class)
+    @PutMapping("/resolved-by-user/reporter/{idUserReporter}/reported/{idUserReported}")
+    public ResponseEntity<MessageResponse> resolveReportByUserReporterAndReported(@PathVariable Long idUserReporter, @PathVariable Long idUserReported, @PathVariable ReportRequestDto dto) {
+        ReportResponseDto report = reportService.resolveReport(null, idUserReporter, idUserReported, dto);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Report with user reporter ID '" + idUserReporter + "' and user reported ID '" + idUserReported + "' successfully resolved")
+            .status(HttpStatus.NO_CONTENT.value())
+            .objectResponse(report)
+            .build(), HttpStatus.NO_CONTENT
+        );
+    }
+
+    @JsonView(ReportRequestDto.UpdateIsResolvedView.class)
+    @PutMapping("/update-is-resolved-by-id/{idReport}")
+    public ResponseEntity<MessageResponse> updateIsResolvedById(@PathVariable Long idReport, @RequestBody ReportRequestDto dto) {
+        ReportResponseDto report = reportService.updateReportIsResolved(idReport, null, null, dto);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Report with ID '" + idReport + "' successfully Update")
+            .status(HttpStatus.NO_CONTENT.value())
+            .objectResponse(report)
+            .build(), HttpStatus.NO_CONTENT
+        );
+    }
+
+    @JsonView(ReportRequestDto.UpdateIsResolvedView.class)
+    @PutMapping("/update-is-resolved-by-user/reporter/{idUserReporter}/reported/{idUserReported}")
+    public ResponseEntity<MessageResponse> updateIsResolvedByUsers(@PathVariable Long idUserReporter, @PathVariable Long idUserReported, @PathVariable ReportRequestDto dto) {
+        ReportResponseDto report = reportService.updateReportIsResolved(null, idUserReporter, idUserReported, dto);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Report with user reporter ID '" + idUserReporter + "' and user reported ID '" + idUserReported + "' successfully Update")
+            .status(HttpStatus.NO_CONTENT.value())
+            .objectResponse(report)
+            .build(), HttpStatus.NO_CONTENT
+        );
+    }
+
+    @JsonView(ReportRequestDto.UpdateResolutionTypeView.class)
+    @PutMapping("/update-resolution-type-by-id/{idReport}")
+    public ResponseEntity<MessageResponse> updateResolutionTypeById(@PathVariable Long idReport, @RequestBody ReportRequestDto dto) {
+        ReportResponseDto report = reportService.updateReportResolutionType(idReport, null, null, dto);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Report with ID '" + idReport + "' successfully Update")
+            .status(HttpStatus.NO_CONTENT.value())
+            .objectResponse(report)
+            .build(), HttpStatus.NO_CONTENT
+        );
+    }
+
+    @JsonView(ReportRequestDto.UpdateResolutionTypeView.class)
+    @PutMapping("/update-resolution-type-by-user/reporter/{idUserReporter}/reported/{idUserReported}")
+    public ResponseEntity<MessageResponse> updateResolutionTypeByUsers(@PathVariable Long idUserReporter, @PathVariable Long idUserReported, @PathVariable ReportRequestDto dto) {
+        ReportResponseDto report = reportService.updateReportResolutionType(null, idUserReporter, idUserReported, dto);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Report with user reporter ID '" + idUserReporter + "' and user reported ID '" + idUserReported + "' successfully Update")
+            .status(HttpStatus.NO_CONTENT.value())
+            .objectResponse(report)
+            .build(), HttpStatus.NO_CONTENT
+        );
+    }
+
 }
