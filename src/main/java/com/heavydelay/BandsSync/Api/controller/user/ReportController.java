@@ -95,4 +95,28 @@ public class ReportController {
             .build(), HttpStatus.OK
         );
     }
+
+    @GetMapping("/show-by-id/{idReport}/{detailed}")
+    public ResponseEntity<MessageResponse> showByIdReport(@PathVariable Long idReport, @PathVariable boolean detailed) {
+        ReportResponseDto report = reportService.showReport(idReport, null, null, detailed);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Report with ID '" + idReport + "' successfully obtained")
+            .status(HttpStatus.OK.value())
+            .objectResponse(report)
+            .build(), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/show-by-user/reporter/{idUserReporter}/reported/{idUserReported}/{detailed}")
+    public ResponseEntity<MessageResponse> showByUserReporterAndReported(@PathVariable Long idUserReporter, @PathVariable Long idUserReported,@PathVariable boolean detailed) {
+        ReportResponseDto report = reportService.showReport(null, idUserReporter, idUserReported, detailed);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Report with user reporter ID '" + idUserReporter + "' and user reported ID '" + idUserReported + "' successfully obtained")
+            .status(HttpStatus.OK.value())
+            .objectResponse(report)
+            .build(), HttpStatus.OK
+        );
+    }
 }
