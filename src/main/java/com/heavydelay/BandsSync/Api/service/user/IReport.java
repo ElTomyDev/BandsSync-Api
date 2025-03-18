@@ -10,7 +10,7 @@ import com.heavydelay.BandsSync.Api.model.entity.Report;
 
 public interface IReport {
     //// SHOW METHODS
-    List<ReportResponseDto> showAllReports(ReportType reportType, ResolutionType resolutionType, boolean resolved, Long idUserReporter, Long idUserReported, boolean detailed);
+    List<ReportResponseDto> showAllReports(ReportType reportType, ResolutionType resolutionType, Boolean resolved, Long idUserReporter, Long idUserReported, boolean detailed);
     
     ReportResponseDto showReport(Long idReport, Long idUserReporter, Long idUserReported, boolean detailed);
 

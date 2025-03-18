@@ -24,7 +24,6 @@ public class ReportImplService implements IReport{
 
     ReportRepository reportRepository;
     UserRepository userRepository;
-
     IReportMapper reportMapper;
 
     public ReportImplService(ReportRepository reportRepository, UserRepository userRepository,
@@ -86,8 +85,8 @@ public class ReportImplService implements IReport{
 
     @Override
     public List<ReportResponseDto> showAllReports(ReportType reportType, ResolutionType resolutionType,
-            boolean resolved, Long idUserReporter, Long idUserReported, boolean detailed) {
-        List<Report> reports = (List<Report>) this.findAllReportBy(reportType, resolutionType, null, idUserReporter, idUserReported);
+            Boolean resolved, Long idUserReporter, Long idUserReported, boolean detailed) {
+        List<Report> reports = (List<Report>) this.findAllReportBy(reportType, resolutionType, resolved, idUserReporter, idUserReported);
 
         Function<Report, ReportResponseDto> mapper = detailed ? reportMapper::toDetailedDto : reportMapper::toBasicDto;
 
