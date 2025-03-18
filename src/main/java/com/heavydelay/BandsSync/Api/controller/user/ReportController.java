@@ -10,11 +10,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.heavydelay.BandsSync.Api.enums.ReportType;
 import com.heavydelay.BandsSync.Api.enums.ResolutionType;
+import com.heavydelay.BandsSync.Api.model.dto.user.report.ReportRequestDto;
 import com.heavydelay.BandsSync.Api.model.dto.user.report.ReportResponseDto;
 import com.heavydelay.BandsSync.Api.model.payload.MessageResponse;
 import com.heavydelay.BandsSync.Api.service.user.IReport;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/report")
@@ -119,4 +124,19 @@ public class ReportController {
             .build(), HttpStatus.OK
         );
     }
+
+    //// POST METHODS //////////////////////////////////////////////////
+    @JsonView(ReportRequestDto.CreateReportView.class)
+    @PostMapping("/create/user-reporter/{idUserReporter}/user-reported/{idUserReported}")
+    public ResponseEntity<MessageResponse> createNewReport(@PathVariable Long idUserReporter, @PathVariable Long idUserReported,@RequestBody ReportRequestDto dto) {
+        ReportResponseDto createReport = reportService.createReport(idUserReporter, idUserReported, dto);
+        return new ResponseEntity<>(
+            MessageResponse.builder()
+            .message("Report with user reporter ID '" + idUserReporter + "' and user reported ID '" + idUserReported + "' successfully Created")
+            .status(HttpStatus.CREATED.value())
+            .objectResponse(createReport)
+            .build(), HttpStatus.CREATED
+        );
+    }
+    
 }
