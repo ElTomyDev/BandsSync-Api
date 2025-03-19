@@ -41,8 +41,9 @@ public class SetlistImplService implements ISetlist{
 
     @Override
     public void deteleSetlist(Long idSetlist, Long idBand, String setlistName) {
-        // TODO Auto-generated method stub
-        
+        Setlist setlistDelete = this.findSetlist(idSetlist, idBand, setlistName);
+
+        setlistRepository.delete(setlistDelete);
     }
 
     @Override
