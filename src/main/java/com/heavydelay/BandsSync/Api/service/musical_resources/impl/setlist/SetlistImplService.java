@@ -1,6 +1,8 @@
 package com.heavydelay.BandsSync.Api.service.musical_resources.impl.setlist;
 
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -45,14 +47,17 @@ public class SetlistImplService implements ISetlist{
 
     @Override
     public List<SetlistResponseDto> showAllSetlist(Long bandId, Boolean inUse, boolean detailed) {
-        // TODO Auto-generated method stub
-        return null;
+        List<Setlist> setlists = (List<Setlist>) this.findAllSetlist(bandId, inUse);
+
+        Function<Setlist, SetlistResponseDto> mapper = detailed ? setlistMapper::toDetailedDto : setlistMapper::toBasicDto;
+
+        return setlists.stream().map(mapper).collect(Collectors.toList());
     }
 
     @Override
     public SetlistResponseDto showSetlist(Long idSetlist, Long idBand, String setlistName, boolean detailed) {
-        // TODO Auto-generated method stub
-        return null;
+        Setlist setlist = this.findSetlist(idSetlist, idBand, setlistName);
+        return detailed ? setlistMapper.toDetailedDto(setlist) : setlistMapper.toBasicDto(setlist);
     }
 
     @Override
