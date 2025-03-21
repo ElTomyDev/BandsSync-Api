@@ -1,5 +1,6 @@
 package com.heavydelay.BandsSync.Api.service.musical_resources.impl.setlist;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -35,8 +36,24 @@ public class SetlistImplService implements ISetlist{
 
     @Override
     public SetlistResponseDto createSetlist(Long idBand, SetlistRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+        if (idBand == null){
+            throw new IllegalArgumentException("Paremeter 'idBand' cannot be null");
+        }
+
+        Band band = bandRepository.findById(idBand).orElseThrow(
+            () -> new ResourceNotFoundException("The Band with ID '" + idBand + "' not found")
+        );
+
+        Setlist newSetlist = Setlist.builder()
+                             .band(band)
+                             .setlistName(dto.getSetlistName())
+                             .createDate(LocalDateTime.now())
+                             .inUse(true)
+                             .build();
+
+        setlistRepository.save(newSetlist);
+
+        return setlistMapper.toBasicDto(newSetlist);
     }
 
     @Override
