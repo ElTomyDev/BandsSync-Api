@@ -80,15 +80,26 @@ public class SetlistImplService implements ISetlist{
 
     @Override
     public SetlistResponseDto updateInUse(Long idSetlist, Long idBand, String setlistName, SetlistRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+        Setlist setlistUpdate = this.findSetlist(idSetlist, idBand, setlistName);
+        
+        if (dto.getInUse() != null){
+            setlistUpdate.setInUse(dto.getInUse());
+        }
+        
+        setlistRepository.save(setlistUpdate);
+        return setlistMapper.toBasicDto(setlistUpdate);
     }
 
     @Override
-    public SetlistResponseDto updateSetlistName(Long idSetlist, Long idBand, String setlistName,
-            SetlistRequestDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+    public SetlistResponseDto updateSetlistName(Long idSetlist, Long idBand, String setlistName, SetlistRequestDto dto) {
+        Setlist setlistUpdate = this.findSetlist(idSetlist, idBand, setlistName);
+
+        if (dto.getSetlistName() != null){
+            setlistUpdate.setSetlistName(dto.getSetlistName());
+        }
+        
+        setlistRepository.save(setlistUpdate);
+        return setlistMapper.toBasicDto(setlistUpdate);
     }
 
     ////////// AUXILIAR METHODS ////////////////////////////////////////////
