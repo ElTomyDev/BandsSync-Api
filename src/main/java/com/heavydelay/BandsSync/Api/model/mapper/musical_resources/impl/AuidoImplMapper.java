@@ -27,5 +27,11 @@ public class AuidoImplMapper implements IAudioMapper{
                .uploadDate(audio.getUploadDate())
                .build();
     }
+
+    @Override
+    public String toFilePathDto(Audio audio){
+        AudioResponseDto audioFilePath = AudioResponseDto.builder().filePath(audio.getFilePath()).build();
+        return audioFilePath.getFilePath();
+    }
     
 }

@@ -6,4 +6,5 @@ import com.heavydelay.BandsSync.Api.model.entity.Audio;
 public interface IAudioMapper {
     AudioResponseDto toBasicDto(Audio audio);
     AudioResponseDto toDetailedDto(Audio audio);
+    String toFilePathDto(Audio audio);
 }
